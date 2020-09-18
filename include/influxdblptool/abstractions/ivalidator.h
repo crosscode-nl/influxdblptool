@@ -5,7 +5,7 @@
 namespace influxdblptool {
 
     struct IValidator {
-        virtual void validate(std::string_view v) = 0;
+        virtual void validate(std::string_view v) const = 0;
     };
 
 }

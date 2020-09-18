@@ -5,7 +5,7 @@
 namespace influxdblptool {
 
     struct NotEmptyValidator : public IValidator {
-        void validate(std::string_view v) override;
+        void validate(std::string_view v) const override;
     };
 
 }

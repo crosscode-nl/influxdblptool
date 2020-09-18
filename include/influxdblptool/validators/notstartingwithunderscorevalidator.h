@@ -5,7 +5,7 @@
 namespace influxdblptool {
 
     struct NotStartingWithUnderscoreValidator : public IValidator {
-        void validate(std::string_view v) override;
+        void validate(std::string_view v) const override;
     };
 
 }

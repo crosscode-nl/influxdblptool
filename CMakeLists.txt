@@ -12,6 +12,7 @@ list(APPEND INFLUXDBLPTOOL_HEADERS
         include/influxdblptool/validators/notemptyvalidator.h
         include/influxdblptool/validators/notstartingwithunderscorevalidator.h
         include/influxdblptool/validators/notequaltostringvalidator.h
+        include/influxdblptool/validators/validator_aggregate.h
         )
 
 list(APPEND INFLUXDBLPTOOL_SRC
@@ -20,6 +21,6 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/validators/notstartingwithunderscorevalidator.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} )
 target_include_directories(influxdblptool PUBLIC include)
 add_subdirectory(tests)

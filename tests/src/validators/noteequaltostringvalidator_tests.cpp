@@ -3,10 +3,10 @@
 
 using namespace std::literals;
 
-const char TIME_STR[]{"time"};
-const char TIME_CASE_STR[]{"TIME"};
+const auto TIME_CASE_STR{"TIME"sv};
+const auto TIME_STR{"time"sv};
 
-TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorThrowsExceptionWhenEqualsToString)
+TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToString)
 {
     influxdblptool::NotEqualToStringValidator<TIME_STR> notEqualToStringValidator;
     try {
@@ -18,8 +18,9 @@ TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorThrowsExceptionWhen
     FAIL();
 }
 
-TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorThrowsExceptionWhenEqualsToCaseMismatch1String)
+TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToCaseMismatch1String)
 {
+
     influxdblptool::NotEqualToStringValidator<TIME_STR> notEqualToStringValidator;
     try {
         notEqualToStringValidator.validate("tImE");
@@ -30,7 +31,7 @@ TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorThrowsExceptionWhen
     FAIL();
 }
 
-TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorThrowsExceptionWhenEqualsToCaseMismatch2String) {
+TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToCaseMismatch2String) {
     influxdblptool::NotEqualToStringValidator<TIME_CASE_STR> notEqualToStringValidator;
     try {
         notEqualToStringValidator.validate("time");
@@ -41,7 +42,7 @@ TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorThrowsExceptionWhen
     FAIL();
 }
 
-TEST(NotEqualToStringValidatorTests,NotEqualToStringValidatorDoesNoThrowWhenValuesAreDifferent)
+TEST(NotEqualToStringValidator,DoesNotThrowWhenValuesAreDifferent)
 {
     influxdblptool::NotEqualToStringValidator<TIME_CASE_STR> notEqualToStringValidator;
     notEqualToStringValidator.validate("nottime");
