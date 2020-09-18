@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "influxdblptool/validators/notequaltostringvalidator.h"
+#include "influxdblptool/validators/not_equal_to_string_validator.h"
 
 using namespace std::literals;
 
@@ -8,7 +8,7 @@ const auto TIME_STR{"time"sv};
 
 TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToString)
 {
-    influxdblptool::NotEqualToStringValidator<TIME_STR> notEqualToStringValidator;
+    influxdblptool::not_equal_to_string_validator<TIME_STR> notEqualToStringValidator;
     try {
         notEqualToStringValidator.validate("time");
     } catch (std::invalid_argument &e) {
@@ -21,7 +21,7 @@ TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToString)
 TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToCaseMismatch1String)
 {
 
-    influxdblptool::NotEqualToStringValidator<TIME_STR> notEqualToStringValidator;
+    influxdblptool::not_equal_to_string_validator<TIME_STR> notEqualToStringValidator;
     try {
         notEqualToStringValidator.validate("tImE");
     } catch (std::invalid_argument &e) {
@@ -32,7 +32,7 @@ TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToCaseMismatch1String)
 }
 
 TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToCaseMismatch2String) {
-    influxdblptool::NotEqualToStringValidator<TIME_CASE_STR> notEqualToStringValidator;
+    influxdblptool::not_equal_to_string_validator<TIME_CASE_STR> notEqualToStringValidator;
     try {
         notEqualToStringValidator.validate("time");
     } catch (std::invalid_argument &e) {
@@ -44,6 +44,6 @@ TEST(NotEqualToStringValidator,ThrowsExceptionWhenEqualsToCaseMismatch2String) {
 
 TEST(NotEqualToStringValidator,DoesNotThrowWhenValuesAreDifferent)
 {
-    influxdblptool::NotEqualToStringValidator<TIME_CASE_STR> notEqualToStringValidator;
+    influxdblptool::not_equal_to_string_validator<TIME_CASE_STR> notEqualToStringValidator;
     notEqualToStringValidator.validate("nottime");
 }

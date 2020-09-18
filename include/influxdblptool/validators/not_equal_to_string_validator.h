@@ -1,5 +1,5 @@
-#ifndef INFLUXDBLPTOOL_NOTEQUALTOSTRINGVALIDATOR_H
-#define INFLUXDBLPTOOL_NOTEQUALTOSTRINGVALIDATOR_H
+#ifndef INFLUXDBLPTOOL_NOT_EQUAL_TO_STRING_VALIDATOR_H
+#define INFLUXDBLPTOOL_NOT_EQUAL_TO_STRING_VALIDATOR_H
 #include "influxdblptool/abstractions/ivalidator.h"
 #include <algorithm>
 #include <stdexcept>
@@ -7,7 +7,7 @@
 namespace influxdblptool {
 
     template<auto &str>
-    struct NotEqualToStringValidator : public IValidator {
+    struct not_equal_to_string_validator : public IValidator {
         static_assert(std::is_constructible<std::string_view, decltype(str)>::value,"Cannot construct a std::string_view with template argument.");
         void validate(std::string_view v) const {
             std::string_view s{str};
@@ -21,4 +21,4 @@ namespace influxdblptool {
     };
 
 }
-#endif //INFLUXDBLPTOOL_NOTEQUALTOSTRINGVALIDATOR_H
+#endif //INFLUXDBLPTOOL_NOT_EQUAL_TO_STRING_VALIDATOR_H
