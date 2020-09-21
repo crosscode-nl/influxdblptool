@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+/*
 #include "influxdblptool/validators/not_equal_to_string_validator.h"
 
 using namespace std::literals;
@@ -46,4 +47,4 @@ TEST(NotEqualToStringValidator,DoesNotThrowWhenValuesAreDifferent)
 {
     influxdblptool::not_equal_to_string_validator<TIME_CASE_STR> notEqualToStringValidator;
     notEqualToStringValidator.validate("nottime");
-}
+}*/

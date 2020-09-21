@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+/*
 #include "influxdblptool/validators/notstartingwithunderscorevalidator.h"
 
 using namespace std::literals;
@@ -20,3 +21,4 @@ TEST(NotStartingWithUnderscoreValidator,ExceptionWhenStringStartsWithUnderscore)
     }
     FAIL();
 }
+ */

@@ -1,6 +1,6 @@
-#include "influxdblptool/abstractions/iserializable.h"
+#include "influxdblptool/abstractions/serializable.h"
 
-namespace influxdblptool {
+namespace influxdblptool::abstractions {
 
     std::ostream &operator<<(std::ostream &os, const ISerializable &serializable) {
         serializable.serialize(os);

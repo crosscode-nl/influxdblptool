@@ -1,8 +1,8 @@
-#ifndef INFLUXDBLPTOOL_ISERIALIZABLE_H
-#define INFLUXDBLPTOOL_ISERIALIZABLE_H
+#ifndef INFLUXDBLPTOOL_SERIALIZABLE_H
+#define INFLUXDBLPTOOL_SERIALIZABLE_H
 #include <ostream>
 
-namespace influxdblptool {
+namespace influxdblptool::abstractions {
 
     struct ISerializable {
         virtual void serialize(std::ostream &s) const = 0;
@@ -14,4 +14,4 @@ namespace influxdblptool {
 
 }
 
-#endif //INFLUXDBLPTOOL_ISERIALIZABLE_H
+#endif //INFLUXDBLPTOOL_SERIALIZABLE_H

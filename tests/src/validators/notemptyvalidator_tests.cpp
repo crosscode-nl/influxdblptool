@@ -1,8 +1,9 @@
 #include "gtest/gtest.h"
+/*
 #include "influxdblptool/validators/notemptyvalidator.h"
 
 using namespace std::literals;
-/*
+
 TEST(NotEmptyValidator,NoExceptionWhenStringNotEmpty)
 {
     influxdblptool::NotEmptyValidator notEmptyValidator;

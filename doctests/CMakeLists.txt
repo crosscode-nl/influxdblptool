@@ -5,23 +5,19 @@ project(influxdblptooltests
         LANGUAGES C CXX
         )
 
-include(cmake/googletest.cmake)
-
 list(APPEND TEST_SRC
-        src/escapers_tests.cpp
-        src/validators/noteequaltostringvalidator_tests.cpp
-        src/validators/notstartingwithunderscorevalidator_tests.cpp
-        src/validators/notemptyvalidator_tests.cpp
-)
+        main.cpp
+        escapers_tests.cpp
+        )
 
 list(APPEND TEST_INCLUDE
-)
+        )
 
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE} src/validators_tests.cpp)
+add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE} validators_tests.cpp)
 target_link_libraries(influxdblptooltests influxdblptool ${3RDPARTY_LIBRARIES})
 target_include_directories(influxdblptooltests PUBLIC include)
 
-gtest_discover_tests(influxdblptooltests)
+
 
