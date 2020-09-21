@@ -17,4 +17,4 @@ list(APPEND INFLUXDBLPTOOL_SRC
 
 add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} src/influxdblptool/validatedstring.cpp include/influxdblptool/validatedstring.h)
 target_include_directories(influxdblptool PUBLIC include)
-add_subdirectory(doctests)
+add_subdirectory(tests)
