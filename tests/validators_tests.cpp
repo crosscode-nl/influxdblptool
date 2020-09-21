@@ -166,7 +166,7 @@ TEST_SUITE("validators") {
     }
     TEST_CASE("throw_when_field_value_invalid")
     {
-        auto fut=&throw_when_field_value_invalid;
+        auto fut= &throw_when_field_string_value_invalid;
         SUBCASE("invalid input") {
             SUBCASE("string with newline character throws validator_exception(\"Input must not contain new line character '\\\\n'\")") {
                 CHECK_THROWS_WITH_AS(fut("some\nthing"), "Input must not contain new line character '\\n'", validator_exception);

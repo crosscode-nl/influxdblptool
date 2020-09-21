@@ -36,7 +36,7 @@ TEST_SUITE("escapers") {
 
     TEST_CASE("escape_field_value escapes: Double quote, Backslash")
     {
-        CHECK_EQ(", \\\"\\\\=abc"s,escape_field_value(", \"\\=abc"s));
+        CHECK_EQ(", \\\"\\\\=abc"s, escape_field_string_value(", \"\\=abc"s));
     }
 }
 

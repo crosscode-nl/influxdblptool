@@ -33,7 +33,7 @@ namespace influxdblptool::escapers {
         return escape<',', '=', ' '>(s);
     }
 
-    std::string escape_field_value(std::string_view s) {
+    std::string escape_field_string_value(std::string_view s) {
         return escape<'\"', '\\'>(s);
     }
 

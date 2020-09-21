@@ -7,14 +7,17 @@ list(APPEND INFLUXDBLPTOOL_HEADERS
         include/influxdblptool/abstractions/serializable.h
         include/influxdblptool/escapers.h
         include/influxdblptool/validators.h
+        include/influxdblptool/string_types.h
+        include/influxdblptool/field.h
         )
 
 list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/abstractions/serializable.cpp
         src/influxdblptool/validators.cpp
         src/influxdblptool/escapers.cpp
+        src/influxdblptool/field.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} src/influxdblptool/validatedstring.cpp include/influxdblptool/validatedstring.h)
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
 target_include_directories(influxdblptool PUBLIC include)
 add_subdirectory(tests)

@@ -4,13 +4,13 @@
 
 namespace influxdblptool::abstractions {
 
-    struct ISerializable {
+    struct serializable {
         virtual void serialize(std::ostream &s) const = 0;
 
-        virtual ~ISerializable() = default;
+        virtual ~serializable() = default;
     };
 
-    std::ostream &operator<<(std::ostream &os, const ISerializable &serializable);
+    std::ostream &operator<<(std::ostream &os, const serializable &serializable);
 
 }
 

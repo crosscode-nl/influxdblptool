@@ -1,5 +1,6 @@
 #include "influxdblptool/validators.h"
 #include <algorithm>
+#include <cmath>
 
 namespace influxdblptool::validators {
 
@@ -71,13 +72,20 @@ namespace influxdblptool::validators {
         throw_when_length_exceeds_64KB(input);
     }
 
-    void throw_when_field_value_invalid(std::string_view input) {
+    void throw_when_field_string_value_invalid(std::string_view input) {
         throw_when_field_invalid(input);
     }
 
     void throw_when_tag_value_invalid(std::string_view input) {
         throw_when_field_invalid(input);
     }
+
+    void throw_when_double_value_invalid(const double &value) {
+        if (std::isnan(value)) throw validator_exception("NaN value not allowed.");
+        if (std::isinf(value)) throw validator_exception("Infinite value not allowed.");
+    }
+
+
 
     // TODO: Test how influxDB behaves when # not at start of line.
     // TODO: Test how influxDB behaves with \n in keys. Maybe it is allowed?
