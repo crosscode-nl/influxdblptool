@@ -20,20 +20,20 @@ namespace influxdblptool {
                 throw_when_invalid(value_);
             }
 
-            explicit validated_serializable_string(std::string input) : value_{input} {
+            explicit validated_serializable_string(std::string input) : value_{std::move(input)} {
                 throw_when_invalid(value_);
             }
 
-            explicit validated_serializable_string(const validated_serializable_string &input) : value_{input.value_} {
+            validated_serializable_string(const validated_serializable_string<throw_when_invalid,escape> &input) : value_{input.value_} {
                 throw_when_invalid(value_);
             }
 
-            explicit validated_serializable_string(const validated_serializable_string &&input) : value_{
+            validated_serializable_string(validated_serializable_string<throw_when_invalid,escape> &&input) : value_{
                 std::move(input.value_)} {
                 throw_when_invalid(value_);
             }
 
-            validated_serializable_string &operator=(std::string s) {
+            validated_serializable_string<throw_when_invalid,escape> &operator=(std::string s) {
                 value_ = std::move(s);
                 throw_when_invalid(value_);
                 return *this;
@@ -55,19 +55,19 @@ namespace influxdblptool {
                 s << escape(value_);
             }
 
-            bool operator<(const validated_serializable_string&rhs) const {
+            bool operator<(const validated_serializable_string<throw_when_invalid,escape>&rhs) const {
                 return value_<rhs.value_;
             }
 
-            bool operator>(const validated_serializable_string&rhs) const {
+            bool operator>(const validated_serializable_string<throw_when_invalid,escape>&rhs) const {
                 return value_>rhs.value_;
             }
 
-            bool operator==(const validated_serializable_string&rhs) const {
+            bool operator==(const validated_serializable_string<throw_when_invalid,escape>&rhs) const {
                 return value_==rhs.value_;
             }
 
-            bool operator!=(const validated_serializable_string&rhs) const {
+            bool operator!=(const validated_serializable_string<throw_when_invalid,escape>&rhs) const {
                 return value_!=rhs.value_;
             }
         };
