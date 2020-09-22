@@ -17,24 +17,20 @@ namespace influxdblptool {
         field_double(const field_double &s);
         explicit operator double() const;
         field_double &operator=(double value);
+        field_double &operator=(const field_double &value);
     };
 
     using field_variant = std::variant<field_double,field_string_value,bool,std::uint64_t,std::int64_t>;
 
-    template<class T>
-    constexpr auto is_allowed_as_int64_t() {
-        return std::is_same<int32_t,T>::value && std::is_same<int64_t,T>::value && std::is_same<int16_t,T>::value && std::is_same<int8_t,T>::value;
-    }
-
-    template<class T>
-    constexpr auto is_allowed_as_uint64_t(){
-        return std::is_same<uint32_t,T>::value && std::is_same<uint64_t,T>::value && std::is_same<uint16_t,T>::value && std::is_same<uint8_t,T>::value;
-    }
 
 
+    // TODO: template this
     class field : public field_variant, public abstractions::serializable {
     public:
         using field_variant::field_variant;
+        using field_variant::operator=;
+        field(const field &f);
+        field(field &&f) noexcept;
         explicit field(const double &v);
         explicit field(const float &v);
         explicit field(const int32_t &v);
@@ -46,6 +42,18 @@ namespace influxdblptool {
         explicit field(const char* v);
         explicit field(std::string v);
         explicit field(std::string_view v);
+        field& operator=(const double &v);
+        field& operator=(const float &v);
+        field& operator=(const int32_t &v);
+        field& operator=(const int16_t &v);
+        field& operator=(const int8_t &v);
+        field& operator=(const uint32_t &v);
+        field& operator=(const uint16_t &v);
+        field& operator=(const uint8_t &v);
+        field& operator=(const char* v);
+        field& operator=(std::string v);
+        field& operator=(std::string_view v);
+        field& operator=(const field &v);
         void serialize(std::ostream &s) const override;
     };
 }

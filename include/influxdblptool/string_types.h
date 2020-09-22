@@ -39,11 +39,11 @@ namespace influxdblptool {
                 return *this;
             }
 
-            operator std::string() const {
+            explicit operator std::string() const {
                 return value_;
             }
 
-            operator std::string_view() const {
+            explicit operator std::string_view() const {
                 return value_;
             }
 
@@ -69,6 +69,10 @@ namespace influxdblptool {
 
             bool operator!=(const validated_serializable_string<throw_when_invalid,escape>&rhs) const {
                 return value_!=rhs.value_;
+            }
+            validated_serializable_string<throw_when_invalid,escape>& operator=(validated_serializable_string<throw_when_invalid,escape> rhs) {
+                value_ = std::move(rhs.value_);
+                return *this;
             }
         };
     }
