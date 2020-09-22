@@ -57,6 +57,8 @@ public:
     }
 
 };
+// TODO: delete this
+
 
 using ValidDouble = valid_floating_point<double>;
 using ValidFloat = valid_floating_point<float>;

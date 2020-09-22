@@ -4,6 +4,7 @@
 #include <algorithm>
 
 
+using namespace influxdblptool;
 using namespace influxdblptool::validators;
 
 const int KB = 1024;

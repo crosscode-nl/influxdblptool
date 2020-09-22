@@ -8,6 +8,8 @@ project(influxdblptooltests
 list(APPEND TEST_SRC
         main.cpp
         escapers_tests.cpp
+        validators_tests.cpp
+        field_tests.cpp
         )
 
 list(APPEND TEST_INCLUDE
@@ -15,7 +17,7 @@ list(APPEND TEST_INCLUDE
 
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE} validators_tests.cpp)
+add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE})
 target_link_libraries(influxdblptooltests influxdblptool ${3RDPARTY_LIBRARIES})
 target_include_directories(influxdblptooltests PUBLIC include)
 
