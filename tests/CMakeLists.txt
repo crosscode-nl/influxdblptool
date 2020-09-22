@@ -17,7 +17,7 @@ list(APPEND TEST_INCLUDE
 
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE})
+add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE} string_types_tests.cpp)
 target_link_libraries(influxdblptooltests influxdblptool ${3RDPARTY_LIBRARIES})
 target_include_directories(influxdblptooltests PUBLIC include)
 

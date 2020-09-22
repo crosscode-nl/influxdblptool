@@ -18,6 +18,18 @@ TEST_SUITE("field") {
             field_double fd{d};
             CHECK_EQ(d,double{fd});
         }
+        SUBCASE("field_double assigns from double") {
+            const double d{100.5};
+            field_double fd{};
+            fd = d;
+            CHECK_EQ(d,double{fd});
+        }
+        SUBCASE("field_double assigns from float") {
+            const float d{100.5};
+            field_double fd{};
+            fd = d;
+            CHECK_EQ(d,double{fd});
+        }
         SUBCASE("field_double throws when infinite double is given") {
             CHECK_THROWS_AS_MESSAGE(field_double{std::numeric_limits<double>::infinity()},validator_exception,"Infinite value not allowed.");
         }
@@ -141,7 +153,21 @@ TEST_SUITE("field") {
             s << f;
             CHECK_EQ("-128"s,s.str());
         }
-        
+        SUBCASE("field accepts field by copy and serializes correctly") {
+            field f2{std::numeric_limits<int8_t>::min()};
+            field f{f2};
+            f2 = std::numeric_limits<int8_t>::max();
+            std::stringstream s;
+            s << f;
+            CHECK_EQ("-128"s,s.str());
+        }
+        SUBCASE("field accepts field by move and serializes correctly") {
+            field f2{std::numeric_limits<int8_t>::min()};
+            field f(std::move(f2));
+            std::stringstream s;
+            s << f;
+            CHECK_EQ("-128"s,s.str());
+        }
     }
     TEST_CASE("field assigns and serializes correctly") {
         SUBCASE("field assigns field_double and serializes correctly") {
@@ -264,13 +290,45 @@ TEST_SUITE("field") {
             s << f;
             CHECK_EQ("-128"s,s.str());
         }
-        SUBCASE("field assigns field and serializes correctly") {
-            field f2{std::numeric_limits<int8_t>::min()};
+        SUBCASE("field assigns uint64_t field and serializes correctly") {
+            field f2{std::numeric_limits<uint64_t>::max()};
             field f{};
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128"s,s.str());
+            CHECK_EQ("18446744073709551615"s,s.str());
+        }
+        SUBCASE("field assigns int64_t field and serializes correctly") {
+            field f2{std::numeric_limits<int64_t>::min()};
+            field f{};
+            f=f2;
+            std::stringstream s;
+            s << f;
+            CHECK_EQ("-9223372036854775808"s,s.str());
+        }
+        SUBCASE("field assigns field_double field and serializes correctly") {
+            field f2{field_double{1.5}};
+            field f{};
+            f=f2;
+            std::stringstream s;
+            s << f;
+            CHECK_EQ("1.5"s,s.str());
+        }
+        SUBCASE("field assigns bool field and serializes correctly") {
+            field f2{true};
+            field f{};
+            f=f2;
+            std::stringstream s;
+            s << f;
+            CHECK_EQ("t"s,s.str());
+        }
+        SUBCASE("field assigns field_string_value field and serializes correctly") {
+            field f2{field_string_value{"test"}};
+            field f{};
+            f=f2;
+            std::stringstream s;
+            s << f;
+            CHECK_EQ("\"test\""s,s.str());
         }
     }
 }
