@@ -1,4 +1,4 @@
-#include "influxdblptool/field.h"
+#include "influxdblptool/field_value.h"
 
 namespace influxdblptool {
 
@@ -54,9 +54,9 @@ namespace influxdblptool {
     };
 
     class assigning_visitor {
-        field *f_;
+        field_value *f_;
     public:
-        explicit assigning_visitor(field* f) : f_(f) {}
+        explicit assigning_visitor(field_value* f) : f_(f) {}
 
         template <typename T>
         void operator()(const T &v) {
@@ -64,24 +64,24 @@ namespace influxdblptool {
         }
     };
 
-    field::field(const char* v) : field_variant{field_string_value{v}} {}
-    field::field(std::string_view v) : field_variant{field_string_value{v}} {}
-    field::field(std::string v) : field_variant{field_string_value{std::move(v)}} {}
-    field& field::operator=(const char* v) {
+    field_value::field_value(const char* v) : field_variant{field_string_value{v}} {}
+    field_value::field_value(std::string_view v) : field_variant{field_string_value{v}} {}
+    field_value::field_value(std::string v) : field_variant{field_string_value{std::move(v)}} {}
+    field_value& field_value::operator=(const char* v) {
         *(this) = field_string_value{v};
         return *this;
     }
-    field& field::operator=(std::string v) {
+    field_value& field_value::operator=(std::string v) {
         *(this) = field_string_value{std::move(v)};
         return *this;
     }
 
-    field& field::operator=(std::string_view v) {
+    field_value& field_value::operator=(std::string_view v) {
         *(this) = field_string_value{v};
         return *this;
     }
 
-    field& field::operator=(const field &v) {
+    field_value& field_value::operator=(const field_value &v) {
         assigning_visitor av{this};
         // We do it this quirky way, otherwise slicing warning is given by static analysis. We don't care about
         // slicing here.
@@ -89,7 +89,7 @@ namespace influxdblptool {
         return *this;
     }
 
-    void field::serialize(std::ostream& s) const {
+    void field_value::serialize(std::ostream& s) const {
         std::visit(serializing_visitor{&s},*dynamic_cast<const field_variant*>(this));
     }
 

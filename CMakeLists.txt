@@ -8,16 +8,16 @@ list(APPEND INFLUXDBLPTOOL_HEADERS
         include/influxdblptool/escapers.h
         include/influxdblptool/validators.h
         include/influxdblptool/string_types.h
-        include/influxdblptool/field.h
+        include/influxdblptool/field_value.h
         )
 
 list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/abstractions/serializable.cpp
         src/influxdblptool/validators.cpp
         src/influxdblptool/escapers.cpp
-        src/influxdblptool/field.cpp
+        src/influxdblptool/field_value.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} include/influxdblptool/collections.h)
 target_include_directories(influxdblptool PUBLIC include)
 add_subdirectory(tests)
