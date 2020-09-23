@@ -13,14 +13,15 @@ namespace influxdblptool {
         public:
         using std::map<TKey, TValue>::map;
         void serialize(std::ostream &s) const override {
-            std::for_each(begin(*this),end(*this),[&s,first=true](auto item) mutable {
+            auto serialize_pair = [&s,first=true](auto item) mutable {
                 if (first) {
                     first = false;
                 } else {
                     s << ",";
                 }
                 s << item.first << "=" << item.second;
-            });
+            };
+            std::for_each(begin(*this),end(*this),serialize_pair);
         }
     };
 

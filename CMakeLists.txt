@@ -9,6 +9,7 @@ list(APPEND INFLUXDBLPTOOL_HEADERS
         include/influxdblptool/validators.h
         include/influxdblptool/string_types.h
         include/influxdblptool/field_value.h
+        include/influxdblptool/collections.h
         )
 
 list(APPEND INFLUXDBLPTOOL_SRC
@@ -18,6 +19,6 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/field_value.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} include/influxdblptool/collections.h)
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
 target_include_directories(influxdblptool PUBLIC include)
 add_subdirectory(tests)
