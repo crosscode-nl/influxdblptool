@@ -9,7 +9,7 @@ list(APPEND TEST_SRC
         main.cpp
         escapers_tests.cpp
         validators_tests.cpp
-        field_tests.cpp
+        field_value_tests.cpp
         )
 
 list(APPEND TEST_INCLUDE
