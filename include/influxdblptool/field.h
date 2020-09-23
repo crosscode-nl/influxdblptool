@@ -8,24 +8,32 @@
 
 namespace influxdblptool {
 
-    namespace intern {
+    namespace traits {
 
-        template <typename Type>
-        constexpr bool is_fp_to_accept =
-                std::is_same<double,Type>::value ||
-                std::is_same<float,Type>::value;
+        template <typename T>
+        struct is_acceptable_fp_base : std::false_type {};
+        template<> struct is_acceptable_fp_base<double> : std::true_type {};
+        template<> struct is_acceptable_fp_base<float> : std::true_type {};
+        template<typename T> struct is_acceptable_fp: is_acceptable_fp_base<std::remove_cv_t<T>> {};
+        template<typename T> inline constexpr bool is_acceptable_fp_v = is_acceptable_fp<T>::value;
 
-        template <typename Type>
-        constexpr bool is_int_to_accept =
-                std::is_same<int32_t,Type>::value ||
-                std::is_same<int16_t,Type>::value ||
-                std::is_same<int8_t,Type>::value;
 
-        template <typename Type>
-        constexpr bool is_uint_to_accept =
-                std::is_same<uint32_t,Type>::value ||
-                std::is_same<uint16_t,Type>::value ||
-                std::is_same<uint8_t,Type>::value;
+        template <typename T>
+        struct is_acceptable_int_base : std::false_type {};
+        template<> struct is_acceptable_int_base<int32_t> : std::true_type {};
+        template<> struct is_acceptable_int_base<int16_t> : std::true_type {};
+        template<> struct is_acceptable_int_base<int8_t> : std::true_type {};
+        template<typename T> struct is_acceptable_int: is_acceptable_int_base<std::remove_cv_t<T>> {};
+        template<typename T> inline constexpr bool is_acceptable_int_v = is_acceptable_int<T>::value;
+
+        template <typename T>
+        struct is_acceptable_uint_base : std::false_type {};
+        template<> struct is_acceptable_uint_base<uint32_t> : std::true_type {};
+        template<> struct is_acceptable_uint_base<uint16_t> : std::true_type {};
+        template<> struct is_acceptable_uint_base<uint8_t> : std::true_type {};
+        template<typename T> struct is_acceptable_uint: is_acceptable_uint_base<std::remove_cv_t<T>> {};
+        template<typename T> inline constexpr bool is_acceptable_uint_v = is_acceptable_uint<T>::value;
+
     }
 
     class field_double {
@@ -48,26 +56,26 @@ namespace influxdblptool {
         using field_variant::operator=;
         field(const field& f) : field_variant{f} {}
         field(field&& f) noexcept : field_variant{std::move(f)} {}
-        template<typename Type, std::enable_if_t<intern::is_fp_to_accept<Type>, int> = 0>
+        template<typename Type, std::enable_if_t<traits::is_acceptable_fp_v<Type>, int> = 0>
         field(const Type& v) : field_variant{field_double{v}} {}
-        template<typename Type, std::enable_if_t<intern::is_int_to_accept<Type>, int> = 0>
+        template<typename Type, std::enable_if_t<traits::is_acceptable_int_v<Type>, int> = 0>
         explicit field(const Type& v) : field_variant{int64_t{v}} {}
-        template<typename Type, std::enable_if_t<intern::is_uint_to_accept<Type>, int> = 0>
+        template<typename Type, std::enable_if_t<traits::is_acceptable_uint_v<Type>, int> = 0>
         explicit field(const Type& v) : field_variant{uint64_t{v}} {}
         explicit field(const char* v);
         explicit field(std::string_view v);
         explicit field(std::string v);
-        template<typename Type, std::enable_if_t<intern::is_fp_to_accept<Type>, int> = 0>
+        template<typename Type, std::enable_if_t<traits::is_acceptable_fp_v<Type>, int> = 0>
         field& operator=(const Type& v) {
             *(this) = field_double{v};
             return *this;
         }
-        template<typename Type, std::enable_if_t<intern::is_int_to_accept<Type>, int> = 0>
+        template<typename Type, std::enable_if_t<traits::is_acceptable_int_v<Type>, int> = 0>
         field& operator=(const Type& v) {
             *(this) = int64_t{v};
             return *this;
         }
-        template<typename Type, std::enable_if_t<intern::is_uint_to_accept<Type>, int> = 0>
+        template<typename Type, std::enable_if_t<traits::is_acceptable_uint_v<Type>, int> = 0>
         field& operator=(const Type& v) {
             *(this) = uint64_t{v};
             return *this;
