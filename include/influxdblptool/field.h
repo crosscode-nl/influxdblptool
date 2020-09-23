@@ -17,7 +17,6 @@ namespace influxdblptool {
         template<typename T> struct is_acceptable_fp: is_acceptable_fp_base<std::remove_cv_t<T>> {};
         template<typename T> inline constexpr bool is_acceptable_fp_v = is_acceptable_fp<T>::value;
 
-
         template <typename T>
         struct is_acceptable_int_base : std::false_type {};
         template<> struct is_acceptable_int_base<int32_t> : std::true_type {};
@@ -87,11 +86,6 @@ namespace influxdblptool {
         void serialize(std::ostream &s) const override;
     };
 
-
 }
-
-
-
-
 
 #endif //INFLUXDBLPTOOL_FIELD_H
