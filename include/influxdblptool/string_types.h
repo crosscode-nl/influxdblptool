@@ -6,7 +6,7 @@
 #include "influxdblptool/escapers.h"
 
 namespace influxdblptool {
-    namespace internal {
+    namespace intern {
 
         template <auto throw_when_invalid, auto escape>
         class validated_serializable_string : public influxdblptool::abstractions::serializable {
@@ -77,11 +77,11 @@ namespace influxdblptool {
         };
     }
 
-    using tag_key = internal::validated_serializable_string<validators::throw_when_tag_key_invalid,escapers::escape_tag_key>;
-    using tag_value = internal::validated_serializable_string<validators::throw_when_tag_value_invalid,escapers::escape_tag_value>;
-    using field_key = internal::validated_serializable_string<validators::throw_when_field_key_invalid,escapers::escape_field_key>;
-    using field_string_value = internal::validated_serializable_string<validators::throw_when_field_string_value_invalid,escapers::escape_field_string_value>;
-    using measurement = internal::validated_serializable_string<validators::throw_when_measurement_invalid,escapers::escape_measurement>;
+    using tag_key = intern::validated_serializable_string<validators::throw_when_tag_key_invalid,escapers::escape_tag_key>;
+    using tag_value = intern::validated_serializable_string<validators::throw_when_tag_value_invalid,escapers::escape_tag_value>;
+    using field_key = intern::validated_serializable_string<validators::throw_when_field_key_invalid,escapers::escape_field_key>;
+    using field_string_value = intern::validated_serializable_string<validators::throw_when_field_string_value_invalid,escapers::escape_field_string_value>;
+    using measurement = intern::validated_serializable_string<validators::throw_when_measurement_invalid,escapers::escape_measurement>;
 
 }
 
