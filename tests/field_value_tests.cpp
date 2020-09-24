@@ -109,49 +109,49 @@ TEST_SUITE("field_value") {
             field_value f{std::numeric_limits<uint64_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("18446744073709551615"s,s.str());
+            CHECK_EQ("18446744073709551615u"s,s.str());
         }
         SUBCASE("field_value accepts int64_t and serializes correctly") {
             field_value f{std::numeric_limits<int64_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-9223372036854775808"s,s.str());
+            CHECK_EQ("-9223372036854775808i"s,s.str());
         }
         SUBCASE("field_value accepts uint32_t and serializes correctly") {
             field_value f{std::numeric_limits<uint32_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("4294967295"s,s.str());
+            CHECK_EQ("4294967295u"s,s.str());
         }
         SUBCASE("field_value accepts int32_t and serializes correctly") {
             field_value f{std::numeric_limits<int32_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-2147483648"s,s.str());
+            CHECK_EQ("-2147483648i"s,s.str());
         }
         SUBCASE("field_value accepts uint16_t and serializes correctly") {
             field_value f{std::numeric_limits<uint16_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("65535"s,s.str());
+            CHECK_EQ("65535u"s,s.str());
         }
         SUBCASE("field_value accepts int16_t and serializes correctly") {
             field_value f{std::numeric_limits<int16_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-32768"s,s.str());
+            CHECK_EQ("-32768i"s,s.str());
         }
         SUBCASE("field_value accepts uint8_t and serializes correctly") {
             field_value f{std::numeric_limits<uint8_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("255"s,s.str());
+            CHECK_EQ("255u"s,s.str());
         }
         SUBCASE("field_value accepts int8_t and serializes correctly") {
             field_value f{std::numeric_limits<int8_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128"s,s.str());
+            CHECK_EQ("-128i"s,s.str());
         }
         SUBCASE("field_value accepts field by copy and serializes correctly") {
             field_value f2{std::numeric_limits<int8_t>::min()};
@@ -159,14 +159,14 @@ TEST_SUITE("field_value") {
             f2 = std::numeric_limits<int8_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128"s,s.str());
+            CHECK_EQ("-128i"s,s.str());
         }
         SUBCASE("field_value accepts field by move and serializes correctly") {
             field_value f2{std::numeric_limits<int8_t>::min()};
             field_value f(std::move(f2));
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128"s,s.str());
+            CHECK_EQ("-128i"s,s.str());
         }
     }
     TEST_CASE("field_value assigns and serializes correctly") {
@@ -239,56 +239,56 @@ TEST_SUITE("field_value") {
             f=std::numeric_limits<uint64_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("18446744073709551615"s,s.str());
+            CHECK_EQ("18446744073709551615u"s,s.str());
         }
         SUBCASE("field_value assigns int64_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int64_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-9223372036854775808"s,s.str());
+            CHECK_EQ("-9223372036854775808i"s,s.str());
         }
         SUBCASE("field_value assigns uint32_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint32_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("4294967295"s,s.str());
+            CHECK_EQ("4294967295u"s,s.str());
         }
         SUBCASE("field_value assigns int32_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int32_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-2147483648"s,s.str());
+            CHECK_EQ("-2147483648i"s,s.str());
         }
         SUBCASE("field_value assigns uint16_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint16_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("65535"s,s.str());
+            CHECK_EQ("65535u"s,s.str());
         }
         SUBCASE("field_value assigns int16_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int16_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-32768"s,s.str());
+            CHECK_EQ("-32768i"s,s.str());
         }
         SUBCASE("field_value assigns uint8_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint8_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("255"s,s.str());
+            CHECK_EQ("255u"s,s.str());
         }
         SUBCASE("field_value assigns int8_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int8_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128"s,s.str());
+            CHECK_EQ("-128i"s,s.str());
         }
         SUBCASE("field_value assigns uint64_t field and serializes correctly") {
             field_value f2{std::numeric_limits<uint64_t>::max()};
@@ -296,7 +296,7 @@ TEST_SUITE("field_value") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("18446744073709551615"s,s.str());
+            CHECK_EQ("18446744073709551615u"s,s.str());
         }
         SUBCASE("field_value assigns int64_t field and serializes correctly") {
             field_value f2{std::numeric_limits<int64_t>::min()};
@@ -304,7 +304,7 @@ TEST_SUITE("field_value") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("-9223372036854775808"s,s.str());
+            CHECK_EQ("-9223372036854775808i"s,s.str());
         }
         SUBCASE("field_value assigns field_double field and serializes correctly") {
             field_value f2{field_double{1.5}};

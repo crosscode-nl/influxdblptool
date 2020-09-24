@@ -46,10 +46,10 @@ namespace influxdblptool {
             *os_ << (v?"t":"f");
         }
         void operator()(const uint64_t &v) {
-            *os_ << std::to_string(v);
+            *os_ << std::to_string(v) << "u";
         }
         void operator()(const int64_t &v) {
-            *os_ << std::to_string(v);
+            *os_ << std::to_string(v) << "i";
         }
     };
 
