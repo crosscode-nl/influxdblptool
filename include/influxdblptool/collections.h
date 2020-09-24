@@ -34,6 +34,7 @@ namespace influxdblptool {
     using fields = intern::serializable_map<field_key, field_value>;
     using tag = tags::value_type;
     using field = fields::value_type;
+
 }
 
 #endif

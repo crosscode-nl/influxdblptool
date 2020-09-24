@@ -7,6 +7,12 @@ using namespace std::literals;
 const int KB = 1024;
 
 TEST_SUITE("string_types_tests") {
+    
+    static_assert(std::is_same_v<tag_key,traits::validated_serializable_string<validators::throw_when_tag_key_invalid,escapers::escape_tag_key>>);
+    static_assert(std::is_same_v<tag_value,traits::validated_serializable_string<validators::throw_when_tag_value_invalid,escapers::escape_tag_value>>);
+    static_assert(std::is_same_v<field_key,traits::validated_serializable_string<validators::throw_when_field_key_invalid,escapers::escape_field_key>>);
+    static_assert(std::is_same_v<field_string_value,traits::validated_serializable_string<validators::throw_when_field_string_value_invalid,escapers::escape_field_string_value>>);
+    static_assert(std::is_same_v<measurement,traits::validated_serializable_string<validators::throw_when_measurement_invalid,escapers::escape_measurement>>);
   TEST_CASE("measurement")
   {
         SUBCASE("invalid input") {

@@ -50,6 +50,8 @@ TEST_SUITE("field_value") {
         }
     }
     TEST_CASE("field_value constructs and serializes correctly") {
+        static_assert(std::is_same_v<field_variant,std::variant<field_double,field_string_value,bool,std::uint64_t,std::int64_t>>);
+        static_assert(std::is_base_of_v<field_variant,field_value>);
         SUBCASE("field_value accepts field_double and serializes correctly") {
             field_value f{field_double{100.5}};
             std::stringstream s;
