@@ -1,0 +1,1 @@
+#include "influxdblptool/point.h"

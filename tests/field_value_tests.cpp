@@ -1,9 +1,11 @@
 #include "doctest.h"
 #include "influxdblptool/field_value.h"
 #include <sstream>
+#include "influxdblptool/serializers.h"
 
 using namespace std::literals;
 using namespace influxdblptool;
+using namespace influxdblptool::serializers;
 
 TEST_SUITE("field_value") {
     TEST_CASE("field_double works correctly") {

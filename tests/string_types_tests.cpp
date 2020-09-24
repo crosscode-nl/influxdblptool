@@ -1,58 +1,60 @@
 #include "doctest.h"
 #include "influxdblptool/string_types.h"
+#include "influxdblptool/serializers.h"
 
 using namespace influxdblptool;
 using namespace std::literals;
+using namespace influxdblptool::serializers;
 
 const int KB = 1024;
 
 TEST_SUITE("string_types_tests") {
     
-    static_assert(std::is_same_v<tag_key,traits::validated_serializable_string<validators::throw_when_tag_key_invalid,escapers::escape_tag_key>>);
-    static_assert(std::is_same_v<tag_value,traits::validated_serializable_string<validators::throw_when_tag_value_invalid,escapers::escape_tag_value>>);
-    static_assert(std::is_same_v<field_key,traits::validated_serializable_string<validators::throw_when_field_key_invalid,escapers::escape_field_key>>);
-    static_assert(std::is_same_v<field_string_value,traits::validated_serializable_string<validators::throw_when_field_string_value_invalid,escapers::escape_field_string_value>>);
-    static_assert(std::is_same_v<measurement,traits::validated_serializable_string<validators::throw_when_measurement_invalid,escapers::escape_measurement>>);
+    static_assert(std::is_same_v<tag_key,influxdblptool::intern::validated_string<validators::throw_when_tag_key_invalid>>);
+    static_assert(std::is_same_v<tag_value,influxdblptool::intern::validated_string<validators::throw_when_tag_value_invalid>>);
+    static_assert(std::is_same_v<field_key,influxdblptool::intern::validated_string<validators::throw_when_field_key_invalid>>);
+    static_assert(std::is_same_v<field_string_value,influxdblptool::intern::validated_string<validators::throw_when_field_string_value_invalid>>);
+    static_assert(std::is_same_v<measurement_value,influxdblptool::intern::validated_string<validators::throw_when_measurement_invalid>>);
   TEST_CASE("measurement")
   {
         SUBCASE("invalid input") {
             SUBCASE("# at start of string throws validator_exception(\"Input must not start with hashtags.\")") {
-                CHECK_THROWS_WITH_AS(measurement{"#something"}, "Input must not start with hashtags.", validator_exception);
+                CHECK_THROWS_WITH_AS(measurement_value{"#something"}, "Input must not start with hashtags.", validator_exception);
             }
             SUBCASE("_ at start of string throws validator_exception(\"Input must not start with underscore.\")") {
-                CHECK_THROWS_WITH_AS(measurement{"_something"}, "Input must not start with underscore.", validator_exception);
+                CHECK_THROWS_WITH_AS(measurement_value{"_something"}, "Input must not start with underscore.", validator_exception);
             }
             SUBCASE("empty string throws validator_exception(\"Input must not start with hashtags.\")") {
-                CHECK_THROWS_WITH_AS(measurement{""}, "Input must not be empty.", validator_exception);
+                CHECK_THROWS_WITH_AS(measurement_value{""}, "Input must not be empty.", validator_exception);
             }
             SUBCASE("string with newline character throws validator_exception(\"Input must not contain new line character '\\\\n'\")") {
-                CHECK_THROWS_WITH_AS(measurement{"some\nthing"}, "Input must not contain new line character '\\n'", validator_exception);
+                CHECK_THROWS_WITH_AS(measurement_value{"some\nthing"}, "Input must not contain new line character '\\n'", validator_exception);
             }
             SUBCASE("string case insensitive compares to time throws validator_exception(\"Input must not be equal to `time'\")") {
-                CHECK_THROWS_WITH_AS(measurement{"tImE"}, "Input must not be equal to `time'", validator_exception);
+                CHECK_THROWS_WITH_AS(measurement_value{"tImE"}, "Input must not be equal to `time'", validator_exception);
             }
             SUBCASE("string exceeding 64KB throws validator_exception(\"Input must be <64KB\")") {
                 std::string s;
                 s.resize(64*KB);
                 fill(begin(s),end(s),' ');
-                CHECK_THROWS_WITH_AS(measurement{s}, "Input must be <64KB", validator_exception);
+                CHECK_THROWS_WITH_AS(measurement_value{s}, "Input must be <64KB", validator_exception);
             }
         }
         SUBCASE("valid input") {
             SUBCASE("The string \"valid_#input_time\" does not throw") {
-                CHECK_NOTHROW(measurement{"valid_#input_time"});
+                CHECK_NOTHROW(measurement_value{"valid_#input_time"});
             }
             SUBCASE("string of 64KB-1 does not throw") {
                 std::string s;
                 s.resize(64*KB-1);
                 fill(begin(s),end(s),' ');
-                CHECK_NOTHROW(measurement{s});
+                CHECK_NOTHROW(measurement_value{s});
             }
         }
         SUBCASE("assigns and serializes correctly") {
             std::stringstream s;
-            measurement m{"overwrite"};
-            m = measurement{", \"\\=abc"s};
+            measurement_value m{"overwrite"};
+            m = measurement_value{", \"\\=abc"s};
             s << m;
             CHECK_EQ("\\,\\ \"\\=abc"s,s.str());
         }

@@ -4,7 +4,6 @@
 #include "validators.h"
 #include <variant>
 #include "string_types.h"
-#include "abstractions/serializable.h"
 
 namespace influxdblptool {
 
@@ -49,7 +48,7 @@ namespace influxdblptool {
 
     using field_variant = std::variant<field_double,field_string_value,bool,std::uint64_t,std::int64_t>;
 
-    class field_value : public field_variant, public abstractions::serializable {
+    class field_value : public field_variant {
     public:
         using field_variant::field_variant;
         using field_variant::operator=;
@@ -83,7 +82,6 @@ namespace influxdblptool {
         field_value& operator=(std::string v);
         field_value& operator=(std::string_view v);
         field_value& operator=(const field_value &v);
-        void serialize(std::ostream &s) const override;
     };
 
 }
