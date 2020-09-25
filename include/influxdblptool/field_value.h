@@ -39,7 +39,7 @@ namespace influxdblptool {
     class field_double {
         double value_;
     public:
-        explicit field_double();
+        explicit field_double()=default;
         explicit field_double(double value);
         explicit field_double(float value);
         field_double(const field_double& s);
@@ -54,11 +54,11 @@ namespace influxdblptool {
     private:
         field_variant field_variant_;
     public:
-        field_value();
-        field_value(const field_value& f) : field_variant_{f.field_variant_} {}
+        field_value() = default;
+        field_value(const field_value& f) = default;
         field_value(field_value&& f) noexcept : field_variant_{std::move(f.field_variant_)} {}
         template<typename Type, std::enable_if_t<traits::is_acceptable_fp_v<Type>, int> = 0>
-        field_value(const Type& v) : field_variant_{field_double{v}} {}
+        explicit field_value(const Type& v) : field_variant_{field_double{v}} {}
         template<typename Type, std::enable_if_t<traits::is_acceptable_int_v<Type>, int> = 0>
         explicit field_value(const Type& v) : field_variant_{int64_t{v}} {}
         template<typename Type, std::enable_if_t<traits::is_acceptable_uint_v<Type>, int> = 0>
