@@ -14,14 +14,14 @@ using namespace std::literals;
 
 using namespace influxdblptool::escapers;
 TEST_SUITE("escapers") {
-    TEST_CASE("escape_measurement escapes: Comma, Space")
+    TEST_CASE("escape_measurement_value escapes: Comma, Space")
     {
-        CHECK_EQ("\\,\\ \"\\=abc"s,escape_measurement(", \"\\=abc"s));
+        CHECK_EQ("\\,\\ \"\\=abc"s,escape_measurement_value(", \"\\=abc"s));
     }
 
-    TEST_CASE("escape_measurement_count counts: 8 (original length) + 2 (escaped chars) = 10")
+    TEST_CASE("escape_measurement_value_count counts: 8 (original length) + 2 (escaped chars) = 10")
     {
-        CHECK_EQ(10,escape_measurement_count(", \"\\=abc"s));
+        CHECK_EQ(10,escape_measurement_value_count(", \"\\=abc"s));
     }
 
     TEST_CASE("escape_tag_key escapes: Comma, Equals Sign, Space")

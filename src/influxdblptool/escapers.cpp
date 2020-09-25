@@ -19,7 +19,7 @@ namespace influxdblptool::escapers {
     template <char... Ch>
     std::string escape(std::string_view input) {
         std::string result;
-        result.reserve(escape_count<Ch...>(input));
+        result.reserve(escape_count<Ch...>(input) + 1);
         auto escape_char = [&result](const char& inputChar){
             auto needsEscape = [](const char& matchChar) {
                 return (...||(Ch==matchChar));
@@ -33,11 +33,11 @@ namespace influxdblptool::escapers {
         return result;
     }
 
-    std::string escape_measurement(std::string_view s) {
+    std::string escape_measurement_value(std::string_view s) {
         return escape<',', ' '>(s);
     }
 
-    std::size_t escape_measurement_count(std::string_view s) {
+    std::size_t escape_measurement_value_count(std::string_view s) {
         return escape_count<',', ' '>(s);
     }
 

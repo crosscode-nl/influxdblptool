@@ -1,4 +1,5 @@
 #include "influxdblptool/serializers.h"
+#include <numeric>
 
 namespace influxdblptool::serializers {
 
@@ -23,9 +24,30 @@ namespace influxdblptool::serializers {
     }
 
     std::ostream& operator<<(std::ostream& s, const measurement_value& mv) {
-        s << escapers::escape_measurement(static_cast<std::string_view>(mv));
+        s << escapers::escape_measurement_value(static_cast<std::string_view>(mv));
         return s;
     }
+
+    std::size_t escape_count(const tag_key& tk) {
+        return escapers::escape_tag_key_count(static_cast<std::string_view>(tk));
+    }
+
+    std::size_t escape_count(const tag_value& tk) {
+        return escapers::escape_tag_value_count(static_cast<std::string_view>(tk));
+    }
+
+    std::size_t escape_count(const field_key& tk) {
+        return escapers::escape_field_key_count(static_cast<std::string_view>(tk));
+    }
+
+    std::size_t escape_count(const field_string_value& tk) {
+        return escapers::escape_field_string_value_count(static_cast<std::string_view>(tk));
+    }
+
+    std::size_t escape_count(const measurement_value& tk) {
+        return escapers::escape_measurement_value_count(static_cast<std::string_view>(tk));
+    }
+
 
     class serializing_visitor {
         std::ostream *os_;
@@ -59,6 +81,12 @@ namespace influxdblptool::serializers {
         return s;
     }
 
+    std::size_t escape_count(const field_variant& fv) {
+        std::stringstream s{};
+        s << fv;
+        return s.str().size();
+    }
+
     template<typename TDuration=std::chrono::nanoseconds>
     std::ostream& operator<<(std::ostream& s, const std::chrono::system_clock::time_point& timePoint) {
         // This assumes that epoch is 1970-01-01T00:00:00Z, which it probably is in case of a system_clock. However,
@@ -85,13 +113,12 @@ namespace influxdblptool::serializers {
 
     template<typename TValue>
     std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items) {
-        auto serialize = [&s, first = true](auto item) mutable {
-            s << item;
+        auto serialize = [&s](auto item) mutable {
+            s << item << "\n";
         };
         std::for_each(begin(items), end(items), serialize);
         return s;
     }
-
 
     std::ostream& operator<<(std::ostream& s, const fields_map& items) {
         return serialize_map(s, items);
@@ -112,6 +139,7 @@ namespace influxdblptool::serializers {
     }
 
     std::ostream& operator<<(std::ostream& s, const point& item) {
+        item.validate();
         s << item.measurement;
         if (!item.tags.empty()) {
             s << "," << item.tags;
@@ -125,7 +153,7 @@ namespace influxdblptool::serializers {
     }
 
     std::ostream& operator<<(std::ostream& s, const points& items) {
-        return serialize_vector(s, items);
+        return serialize_vector(s, static_cast<const std::vector<point>>(items));
     }
 
 }

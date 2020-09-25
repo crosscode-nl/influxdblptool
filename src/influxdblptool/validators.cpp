@@ -1,10 +1,12 @@
 #include "influxdblptool/validators.h"
 #include <algorithm>
 #include <cmath>
+#include "influxdblptool/point.h"
 
 namespace influxdblptool::validators {
 
     using namespace std::literals;
+    using namespace influxdblptool;
 
     void throw_when_empty(std::string_view input) {
         if (empty(input)) throw validator_exception("Input must not be empty.");

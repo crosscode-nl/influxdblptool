@@ -6,6 +6,13 @@ using namespace influxdblptool;
 using namespace influxdblptool::serializers;
 
 TEST_SUITE("serializers") {
+    TEST_CASE("point") {
+        SUBCASE("point throws when no field has been added.") {
+            point p;
+            p << measurement_value{"mease1"};
+            std::stringstream s;
+            CHECK_THROWS_WITH_AS(s << p,"At least one field must be provided.",validator_exception);}
+    }
     TEST_CASE("string_types") {
         SUBCASE("measurement assigns and serializes correctly") {
             std::stringstream s;
