@@ -40,10 +40,10 @@ namespace influxdblptool {
         explicit field_double();
         explicit field_double(double value);
         explicit field_double(float value);
-        field_double(const field_double &s);
+        field_double(const field_double& s);
         explicit operator double() const;
-        field_double &operator=(double value);
-        field_double &operator=(const field_double &value);
+        field_double& operator=(double value);
+        field_double& operator=(const field_double& value);
     };
 
     using field_variant = std::variant<field_double,field_string_value,bool,std::uint64_t,std::int64_t>;
@@ -81,7 +81,7 @@ namespace influxdblptool {
         field_value& operator=(const char* v);
         field_value& operator=(std::string v);
         field_value& operator=(std::string_view v);
-        field_value& operator=(const field_value &v);
+        field_value& operator=(const field_value& v);
     };
 
 }

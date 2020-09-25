@@ -11,8 +11,8 @@ list(APPEND TEST_SRC
         validators_tests.cpp
         field_value_tests.cpp
         string_types_tests.cpp
-        collections_tests.cpp
-        )
+        serializers_tests.cpp
+)
 
 list(APPEND TEST_INCLUDE
         )

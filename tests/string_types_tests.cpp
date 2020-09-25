@@ -1,10 +1,8 @@
 #include "doctest.h"
 #include "influxdblptool/string_types.h"
-#include "influxdblptool/serializers.h"
 
 using namespace influxdblptool;
 using namespace std::literals;
-using namespace influxdblptool::serializers;
 
 const int KB = 1024;
 
@@ -15,8 +13,8 @@ TEST_SUITE("string_types_tests") {
     static_assert(std::is_same_v<field_key,influxdblptool::intern::validated_string<validators::throw_when_field_key_invalid>>);
     static_assert(std::is_same_v<field_string_value,influxdblptool::intern::validated_string<validators::throw_when_field_string_value_invalid>>);
     static_assert(std::is_same_v<measurement_value,influxdblptool::intern::validated_string<validators::throw_when_measurement_invalid>>);
-  TEST_CASE("measurement")
-  {
+    TEST_CASE("measurement")
+    {
         SUBCASE("invalid input") {
             SUBCASE("# at start of string throws validator_exception(\"Input must not start with hashtags.\")") {
                 CHECK_THROWS_WITH_AS(measurement_value{"#something"}, "Input must not start with hashtags.", validator_exception);
@@ -50,13 +48,6 @@ TEST_SUITE("string_types_tests") {
                 fill(begin(s),end(s),' ');
                 CHECK_NOTHROW(measurement_value{s});
             }
-        }
-        SUBCASE("assigns and serializes correctly") {
-            std::stringstream s;
-            measurement_value m{"overwrite"};
-            m = measurement_value{", \"\\=abc"s};
-            s << m;
-            CHECK_EQ("\\,\\ \"\\=abc"s,s.str());
         }
     }
     TEST_CASE("tag_key")
@@ -96,13 +87,6 @@ TEST_SUITE("string_types_tests") {
                 CHECK_NOTHROW(tag_key{s});
             }
         }
-        SUBCASE("assigns and serializes correctly") {
-            std::stringstream s;
-            tag_key t{"overwrite"};
-            t = tag_key{", \"\\=abc"s};
-            s << t;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s,s.str());
-        }
     }
     TEST_CASE("field_key")
     {       
@@ -141,13 +125,6 @@ TEST_SUITE("string_types_tests") {
                 CHECK_NOTHROW(field_key{s});
             }
         }
-        SUBCASE("assigns and serializes correctly") {
-            std::stringstream s;
-            field_key f{"overwrite"};
-            f = field_key{", \"\\=abc"s};
-            s << f;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s,s.str());
-        }
     }
     TEST_CASE("tag_value")
     {
@@ -185,13 +162,6 @@ TEST_SUITE("string_types_tests") {
                 CHECK_NOTHROW(tag_value{s});
             }
         }
-        SUBCASE("assigns and serializes correctly") {
-            std::stringstream s;
-            tag_value t{"overwrite"};
-            t = tag_value{", \"\\=abc"s};
-            s << t;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s,s.str());
-        }
     }
     TEST_CASE("field_value")
     {
@@ -228,13 +198,6 @@ TEST_SUITE("string_types_tests") {
                 fill(begin(s),end(s),' ');
                 CHECK_NOTHROW(field_string_value{s});
             }
-        }
-        SUBCASE("assigns and serializes correctly") {
-            std::stringstream s;
-            field_string_value f{"overwrite"};
-            f = field_string_value{", \"\\=abc"s};
-            s << f;
-            CHECK_EQ(", \\\"\\\\=abc"s,s.str());
         }
     }
 }

@@ -14,7 +14,7 @@ namespace influxdblptool {
         void throw_when_field_key_invalid(std::string_view input);
         void throw_when_tag_value_invalid(std::string_view input);
         void throw_when_field_string_value_invalid(std::string_view input);
-        void throw_when_double_value_invalid(const double &value);
+        void throw_when_double_value_invalid(const double& value);
     }
 }
 

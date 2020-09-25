@@ -18,7 +18,7 @@ namespace influxdblptool::validators {
         if (input.substr(0,1)=="#"sv) throw validator_exception("Input must not start with hashtags.");
     }
 
-    bool case_insensitive_char_compare(const char &a, const char &b) {
+    bool case_insensitive_char_compare(const char& a, const char& b) {
         return tolower(a)==tolower(b);
     }
 
@@ -36,7 +36,7 @@ namespace influxdblptool::validators {
         if (size(input)>=LIMIT) throw validator_exception("Input must be <64KB");
     }
 
-    bool is_new_line(const char &c) {
+    bool is_new_line(const char& c) {
         return c=='\n';
     }
 

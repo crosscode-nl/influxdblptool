@@ -18,17 +18,17 @@ namespace influxdblptool {
             Tfields_map fields;
             std::optional<std::chrono::system_clock::time_point> timestamp;
 
-            point &operator<<(Tmeasurement_value m) {
+            point& operator<<(Tmeasurement_value m) {
                 measurement = std::move(m);
                 return *this;
             }
 
-            point &operator<<(typename Ttags_map::value_type t) {
+            point& operator<<(typename Ttags_map::value_type t) {
                 tags.emplace(std::move(t));
                 return *this;
             }
 
-            point &operator<<(typename Tfields_map::value_type f) {
+            point& operator<<(typename Tfields_map::value_type f) {
                 fields.emplace(std::move(f));
                 return *this;
             }

@@ -5,8 +5,8 @@ namespace influxdblptool::escapers {
     template <char... Ch>
     std::string escape(std::string_view input) {
         std::stringstream ss;
-        std::for_each(begin(input), end(input), [&ss](const char &inputChar){
-            auto needsEscape = [](const char &matchChar) {
+        std::for_each(begin(input), end(input), [&ss](const char& inputChar){
+            auto needsEscape = [](const char& matchChar) {
                 return (...||(Ch==matchChar));
             };
             if (needsEscape(inputChar)) {

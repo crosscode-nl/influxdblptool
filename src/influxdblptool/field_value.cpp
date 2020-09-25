@@ -12,7 +12,7 @@ namespace influxdblptool {
         validators::throw_when_double_value_invalid(value_);
     }
 
-    field_double::field_double(const field_double &s) : value_(s.value_) {
+    field_double::field_double(const field_double& s) : value_(s.value_) {
         validators::throw_when_double_value_invalid(value_);
     }
 
@@ -20,13 +20,13 @@ namespace influxdblptool {
         return value_;
     }
 
-    field_double &field_double::operator=(double value) {
+    field_double& field_double::operator=(double value) {
         validators::throw_when_double_value_invalid(value_);
         value_ = value;
         return *this;
     }
 
-    field_double &field_double::operator=(const field_double &v) {
+    field_double& field_double::operator=(const field_double& v) {
         value_ = v.value_;
         return *this;
     }
@@ -37,7 +37,7 @@ namespace influxdblptool {
         explicit assigning_visitor(field_value* f) : f_(f) {}
 
         template <typename T>
-        void operator()(const T &v) {
+        void operator()(const T& v) {
             *f_ = v;
         }
     };
@@ -59,7 +59,7 @@ namespace influxdblptool {
         return *this;
     }
 
-    field_value& field_value::operator=(const field_value &v) {
+    field_value& field_value::operator=(const field_value& v) {
         assigning_visitor av{this};
         // We do it this quirky way, otherwise slicing warning is given by static analysis. We don't care about
         // slicing here.

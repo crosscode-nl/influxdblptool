@@ -23,16 +23,16 @@ namespace influxdblptool {
                 throw_when_invalid(value_);
             }
 
-            validated_string(const validated_string<throw_when_invalid> &input) : value_{input.value_} {
+            validated_string(const validated_string<throw_when_invalid>& input) : value_{input.value_} {
                 throw_when_invalid(value_);
             }
 
-            validated_string(validated_string<throw_when_invalid> &&input) : value_{
+            validated_string(validated_string<throw_when_invalid>&& input) : value_{
                 std::move(input.value_)} {
                 throw_when_invalid(value_);
             }
 
-            validated_string<throw_when_invalid> &operator=(std::string s) {
+            validated_string<throw_when_invalid>& operator=(std::string s) {
                 value_ = std::move(s);
                 throw_when_invalid(value_);
                 return *this;
@@ -46,23 +46,23 @@ namespace influxdblptool {
                 return value_;
             }
 
-            const std::string &operator*() const {
+            const std::string& operator*() const {
                 return value_;
             }
 
-            bool operator<(const validated_string<throw_when_invalid>&rhs) const {
+            bool operator<(const validated_string<throw_when_invalid>& rhs) const {
                 return value_<rhs.value_;
             }
 
-            bool operator>(const validated_string<throw_when_invalid>&rhs) const {
+            bool operator>(const validated_string<throw_when_invalid>& rhs) const {
                 return value_>rhs.value_;
             }
 
-            bool operator==(const validated_string<throw_when_invalid>&rhs) const {
+            bool operator==(const validated_string<throw_when_invalid>& rhs) const {
                 return value_==rhs.value_;
             }
 
-            bool operator!=(const validated_string<throw_when_invalid>&rhs) const {
+            bool operator!=(const validated_string<throw_when_invalid>& rhs) const {
                 return value_!=rhs.value_;
             }
             validated_string<throw_when_invalid>& operator=(validated_string<throw_when_invalid> rhs) {

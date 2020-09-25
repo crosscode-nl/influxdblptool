@@ -3,12 +3,10 @@
 #include <vector>
 #include <algorithm>
 
-
 using namespace influxdblptool;
 using namespace influxdblptool::validators;
 
 const int KB = 1024;
-
 
 TEST_SUITE("validators") {
     TEST_CASE("throw_when_measurement_invalid")
