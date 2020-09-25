@@ -6,54 +6,41 @@ using namespace influxdblptool;
 using namespace influxdblptool::serializers;
 
 TEST_SUITE("serializers") {
-  TEST_CASE("measurement")
-  {
-        SUBCASE("assigns and serializes correctly") {
+    TEST_CASE("string_types") {
+        SUBCASE("measurement assigns and serializes correctly") {
             std::stringstream s;
             measurement_value m{"overwrite"};
             m = measurement_value{", \"\\=abc"s};
             s << m;
-            CHECK_EQ("\\,\\ \"\\=abc"s,s.str());
+            CHECK_EQ("\\,\\ \"\\=abc"s, s.str());
         }
-    }
-    TEST_CASE("tag_key")
-    {
-        SUBCASE("assigns and serializes correctly") {
+        SUBCASE("tag_key assigns and serializes correctly") {
             std::stringstream s;
             tag_key t{"overwrite"};
             t = tag_key{", \"\\=abc"s};
             s << t;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s,s.str());
+            CHECK_EQ("\\,\\ \"\\\\=abc"s, s.str());
         }
-    }
-    TEST_CASE("field_key")
-    {
-        SUBCASE("assigns and serializes correctly") {
+        SUBCASE("field_key assigns and serializes correctly") {
             std::stringstream s;
             field_key f{"overwrite"};
             f = field_key{", \"\\=abc"s};
             s << f;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s,s.str());
+            CHECK_EQ("\\,\\ \"\\\\=abc"s, s.str());
         }
-    }
-    TEST_CASE("tag_value")
-    {
-        SUBCASE("assigns and serializes correctly") {
+        SUBCASE("tag_value assigns and serializes correctly") {
             std::stringstream s;
             tag_value t{"overwrite"};
             t = tag_value{", \"\\=abc"s};
             s << t;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s,s.str());
+            CHECK_EQ("\\,\\ \"\\\\=abc"s, s.str());
         }
-    }
-    TEST_CASE("field_value")
-    {
-        SUBCASE("assigns and serializes correctly") {
+        SUBCASE("field_value assigns and serializes correctly") {
             std::stringstream s;
             field_string_value f{"overwrite"};
             f = field_string_value{", \"\\=abc"s};
             s << f;
-            CHECK_EQ(", \\\"\\\\=abc"s,s.str());
+            CHECK_EQ(", \\\"\\\\=abc"s, s.str());
         }
     }
     TEST_CASE ("tags serialize correctly in order") {
