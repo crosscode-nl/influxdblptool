@@ -18,6 +18,7 @@ namespace influxdblptool {
 
         template <typename T>
         struct is_acceptable_int_base : std::false_type {};
+        template<> struct is_acceptable_int_base<int64_t> : std::true_type {};
         template<> struct is_acceptable_int_base<int32_t> : std::true_type {};
         template<> struct is_acceptable_int_base<int16_t> : std::true_type {};
         template<> struct is_acceptable_int_base<int8_t> : std::true_type {};
@@ -26,6 +27,7 @@ namespace influxdblptool {
 
         template <typename T>
         struct is_acceptable_uint_base : std::false_type {};
+        template<> struct is_acceptable_uint_base<uint64_t> : std::true_type {};
         template<> struct is_acceptable_uint_base<uint32_t> : std::true_type {};
         template<> struct is_acceptable_uint_base<uint16_t> : std::true_type {};
         template<> struct is_acceptable_uint_base<uint8_t> : std::true_type {};
@@ -48,40 +50,48 @@ namespace influxdblptool {
 
     using field_variant = std::variant<field_double,field_string_value,bool,std::uint64_t,std::int64_t>;
 
-    class field_value : public field_variant {
+    class field_value  {
+    private:
+        field_variant field_variant_;
     public:
-        using field_variant::field_variant;
-        using field_variant::operator=;
-        field_value(const field_value& f) : field_variant{f} {}
-        field_value(field_value&& f) noexcept : field_variant{std::move(f)} {}
+        field_value();
+        field_value(const field_value& f) : field_variant_{f.field_variant_} {}
+        field_value(field_value&& f) noexcept : field_variant_{std::move(f.field_variant_)} {}
         template<typename Type, std::enable_if_t<traits::is_acceptable_fp_v<Type>, int> = 0>
-        field_value(const Type& v) : field_variant{field_double{v}} {}
+        field_value(const Type& v) : field_variant_{field_double{v}} {}
         template<typename Type, std::enable_if_t<traits::is_acceptable_int_v<Type>, int> = 0>
-        explicit field_value(const Type& v) : field_variant{int64_t{v}} {}
+        explicit field_value(const Type& v) : field_variant_{int64_t{v}} {}
         template<typename Type, std::enable_if_t<traits::is_acceptable_uint_v<Type>, int> = 0>
-        explicit field_value(const Type& v) : field_variant{uint64_t{v}} {}
+        explicit field_value(const Type& v) : field_variant_{uint64_t{v}} {}
+        explicit field_value(field_string_value v);
+        explicit field_value(field_double v);
+        explicit field_value(bool v);
         explicit field_value(const char* v);
         explicit field_value(std::string_view v);
         explicit field_value(std::string v);
         template<typename Type, std::enable_if_t<traits::is_acceptable_fp_v<Type>, int> = 0>
         field_value& operator=(const Type& v) {
-            *(this) = field_double{v};
+            field_variant_ = field_double{v};
             return *this;
         }
         template<typename Type, std::enable_if_t<traits::is_acceptable_int_v<Type>, int> = 0>
         field_value& operator=(const Type& v) {
-            *(this) = int64_t{v};
+            field_variant_ = int64_t{v};
             return *this;
         }
         template<typename Type, std::enable_if_t<traits::is_acceptable_uint_v<Type>, int> = 0>
         field_value& operator=(const Type& v) {
-            *(this) = uint64_t{v};
+            field_variant_ = uint64_t{v};
             return *this;
         }
+        field_value& operator=(bool v);
+        field_value& operator=(const field_string_value &v);
+        field_value& operator=(const field_double &v);
         field_value& operator=(const char* v);
         field_value& operator=(std::string v);
         field_value& operator=(std::string_view v);
         field_value& operator=(const field_value& v);
+        explicit operator const field_variant&() const;
     };
 
 }

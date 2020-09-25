@@ -15,6 +15,7 @@ namespace influxdblptool::serializers {
     std::ostream& operator<<(std::ostream& s, const field_string_value& fsv);
     std::ostream& operator<<(std::ostream& s, const measurement_value& mv);
     std::ostream& operator<<(std::ostream& s, const field_variant& fv);
+    std::ostream& operator<<(std::ostream& s, const field_value& fv);
     std::ostream& operator<<(std::ostream& s, const fields_map& items);
     std::ostream& operator<<(std::ostream& s, const tags_map& items);
     std::ostream& operator<<(std::ostream& s, const point& item);

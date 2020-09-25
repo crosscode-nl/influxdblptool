@@ -81,10 +81,9 @@ namespace influxdblptool::serializers {
         return s;
     }
 
-    std::size_t escape_count(const field_variant& fv) {
-        std::stringstream s{};
-        s << fv;
-        return s.str().size();
+    std::ostream& operator<<(std::ostream& s, const field_value& fv) {
+        s << static_cast<const field_variant>(fv);
+        return s;
     }
 
     template<typename TDuration=std::chrono::nanoseconds>
