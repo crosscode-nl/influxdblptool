@@ -24,7 +24,11 @@ namespace influxdblptool {
             opt_time timestamp_;
 
             public:
-            point(Tmeasurement_value mv, typename Tfields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_{now()} {}
+            explicit point(Tmeasurement_value mv, typename Tfields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_{now()} {}
+            explicit point(const char* mv, typename Tfields_map::value_type field) : measurement_{Tmeasurement_value{mv}}, fields_{std::move(field)}, timestamp_{now()} {}
+            explicit point(std::string_view mv, typename Tfields_map::value_type field) : measurement_{Tmeasurement_value{mv}}, fields_{std::move(field)}, timestamp_{now()} {}
+            explicit point(const std::string& mv, typename Tfields_map::value_type field) : measurement_{Tmeasurement_value{mv}}, fields_{std::move(field)}, timestamp_{now()} {}
+            explicit point(std::string&& mv, typename Tfields_map::value_type field) : measurement_{Tmeasurement_value{std::move(mv)}}, fields_{std::move(field)}, timestamp_{now()} {}
 
             const Tmeasurement_value& measurement() const { return measurement_; }
             const Tfields_map& fields() const { return fields_; }

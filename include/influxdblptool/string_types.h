@@ -1,6 +1,7 @@
 #ifndef INFLUXDBLPTOOL_VALIDATED_SERIALIZABLE_STRING_H
 #define INFLUXDBLPTOOL_VALIDATED_SERIALIZABLE_STRING_H
 #include <string>
+#include <utility>
 #include "influxdblptool/validators.h"
 #include "influxdblptool/escapers.h"
 

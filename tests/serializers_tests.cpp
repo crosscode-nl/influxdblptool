@@ -11,6 +11,20 @@ std::chrono::system_clock::time_point fake_now() {
 
 TEST_SUITE("serializers") {
     static_assert(!std::is_default_constructible_v<point>,"point must not be default constructable");
+    TEST_CASE("point with string instead of measurement works correctly") {
+        point_custom_timestamp<fake_now> p("test", field{"field", "value"});
+        std::stringstream s;
+        s << p;
+        REQUIRE(s.str() == "test field=\"value\" 1000000000");
+    }
+    TEST_CASE("point with all types of field serializes correctly") {
+        point_custom_timestamp<fake_now> p(measurement{"test"}, field{"double", 1.5});
+        std::stringstream s;
+        s << (p << field{"float",2.5f} << field{"bool_true",true} << field{"bool_false",false}
+                << field{"int",int32_t{-1000}} << field{"uint64",uint64_t{10000}}
+                << field("text","some text"));
+        REQUIRE(s.str() == "test bool_false=f,bool_true=t,double=1.5,float=2.5,int=-1000i,text=\"some text\",uint64=10000u 1000000000");
+    }
     TEST_CASE("point with string field") {
         point_custom_timestamp<fake_now> p(measurement{"test"}, field{"field", "value"});
         SUBCASE("and 1 extra tag serializes correctly") {
@@ -25,6 +39,14 @@ TEST_SUITE("serializers") {
             p << tag{"tag1", "tagv1"};
             s << p;
             REQUIRE(s.str() == "test,tag1=tagv1,tag2=tagv2 field=\"value\" 1000000000");
+        }
+        SUBCASE("and 3 extra tags serializes correctly") {
+            std::stringstream s;
+            p << tag{"tag2", "tagv2"};
+            p << tag{"tag3", "tagv3"};
+            p << tag{"tag1", "tagv1"};
+            s << p;
+                    REQUIRE(s.str() == "test,tag1=tagv1,tag2=tagv2,tag3=tagv3 field=\"value\" 1000000000");
         }
         SUBCASE("point serializes string field correctly") {
             std::stringstream s;
