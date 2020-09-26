@@ -56,7 +56,7 @@ TEST_SUITE("escapers") {
 
     TEST_CASE("escape_field_string_value escapes: Double quote, Backslash")
     {
-        CHECK_EQ(", \\\"\\\\=abc"s, escape_field_string_value(", \"\\=abc"s));
+        REQUIRE(", \\\"\\\\=abc"s==escape_field_string_value(", \"\\=abc"s));
     }
 
     TEST_CASE("escape_field_string_value_count counts: 8 (original length) + 2 (escaped chars) = 10")
