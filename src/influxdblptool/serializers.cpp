@@ -76,9 +76,9 @@ namespace influxdblptool::serializers {
     }
 
     template<typename TValue>
-    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items) {
-        auto serialize = [&s](auto item) mutable {
-            s << item << "\n";
+    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, const std::string &prefix) {
+        auto serialize = [&s,&prefix](auto item) mutable {
+            s << prefix << item << "\n";
         };
         std::for_each(begin(items), end(items), serialize);
         return s;
@@ -107,7 +107,7 @@ namespace influxdblptool::serializers {
     }
 
     std::ostream& operator<<(std::ostream& s, const points& items) {
-        return serialize_vector(s, static_cast<const std::vector<point>>(items));
+        return serialize_vector(s, static_cast<const std::vector<point>>(items), items.prefix());
     }
 
 }

@@ -10,14 +10,29 @@ std::chrono::system_clock::time_point fake_now() {
 }
 
 TEST_SUITE("serializers") {
+    TEST_CASE("multiple points serialize correctly with INSERT prefix") {
+        points pts;
+        pts << insert_prefix{};
+        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 2s);
+        pts << (point{"system",field{"cpu%", 1}} << tag{"name","unittest"} << field{"memory%",30} << 3s);
+        pts << (point{"system",field{"cpu%", 1}} << tag{"name","unittest"} << field{"memory%",10} << 1s);
+        std::stringstream s;
+        s << pts;
+                REQUIRE(s.str() == "INSERT system,name=unittest cpu%=50i,memory%=40i 2000000000\n"
+                                   "INSERT system,name=unittest cpu%=1i,memory%=30i 3000000000\n"
+                                   "INSERT system,name=unittest cpu%=1i,memory%=10i 1000000000\n");
+    }
     TEST_CASE("multiple points serialize correctly") {
-      //  points pts;
-        auto p = point{"system",field{"cpu%", 1}} << field{"memory%",10} << 1s;;
-     //   pts << p;
-//        pts << point{"system",field{"cpu%", 50}} << field{"memory%",40} << 2s;
-  //      pts << point{"system",field{"cpu%", 1}} << field{"memory%",30} << 3s;
+        points pts;
 
-
+        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 2s);
+        pts << (point{"system",field{"cpu%", 1}} << tag{"name","unittest"} << field{"memory%",30} << 3s);
+        pts << (point{"system",field{"cpu%", 1}} << tag{"name","unittest"} << field{"memory%",10} << 1s);
+        std::stringstream s;
+        s << pts;
+        REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000000000\n"
+                           "system,name=unittest cpu%=1i,memory%=30i 3000000000\n"
+                           "system,name=unittest cpu%=1i,memory%=10i 1000000000\n");
     }
     static_assert(!std::is_default_constructible_v<point>,"point must not be default constructable");
     TEST_CASE("point with string instead of measurement works correctly") {

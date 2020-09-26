@@ -14,6 +14,10 @@ namespace influxdblptool {
         using Tcurrent_time_provider = std::chrono::system_clock::time_point (*)();
     }
 
+    struct insert_prefix {
+        explicit operator std::string() const;
+    };
+
     namespace intern {
 
         template<typename Tmeasurement_value, typename Ttags_map, typename Tfields_map, time::Tcurrent_time_provider now>
@@ -64,9 +68,17 @@ namespace influxdblptool {
 
         template <typename Tpoint>
         class points {
-            std::vector<Tpoint> points_;
+            std::vector<Tpoint> points_{};
+            std::string prefix_{};
         public:
-            Tpoint& operator<<(Tpoint p) {
+            [[nodiscard]] std::string prefix() const {
+                return prefix_;
+            }
+            points<Tpoint>& operator<<(insert_prefix p) {
+                prefix_ = static_cast<std::string>(p);
+                return *this;
+            }
+            points<Tpoint>& operator<<(Tpoint p) {
                 points_.emplace_back(std::move(p));
                 return *this;
             }
