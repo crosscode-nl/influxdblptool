@@ -39,6 +39,7 @@ namespace influxdblptool {
             *f_ = v;
         }
     };
+
     field_value::field_value(field_string_value v) : field_variant_{std::move(v)} {}
     field_value::field_value(field_double v) : field_variant_{std::move(v)} {}
     field_value::field_value(bool v) : field_variant_{v} {}
@@ -50,18 +51,22 @@ namespace influxdblptool {
         field_variant_ = v;
         return *this;
     }
+
     field_value& field_value::operator=(const field_string_value &v) {
         field_variant_ = v;
         return *this;
     }
+
     field_value& field_value::operator=(const field_double &v) {
         field_variant_ = v;
         return *this;
     }
+
     field_value& field_value::operator=(const char* v) {
         field_variant_ = field_string_value{v};
         return *this;
     }
+
     field_value& field_value::operator=(std::string v) {
         field_variant_ = field_string_value{std::move(v)};
         return *this;

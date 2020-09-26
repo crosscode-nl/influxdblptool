@@ -44,8 +44,6 @@ namespace influxdblptool::serializers {
     std::ostream& operator<<(std::ostream& s, const tags_map& items);
     std::ostream& operator<<(std::ostream& s, const points& items);
 
-
 }
-
 
 #endif //INFLUXDBLPTOOL_SERIALIZERS_H

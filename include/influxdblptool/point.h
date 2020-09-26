@@ -74,7 +74,7 @@ namespace influxdblptool {
             [[nodiscard]] std::string prefix() const {
                 return prefix_;
             }
-            points<Tpoint>& operator<<(insert_prefix p) {
+            points<Tpoint>& operator<<(const insert_prefix& p) {
                 prefix_ = static_cast<std::string>(p);
                 return *this;
             }
@@ -93,7 +93,6 @@ namespace influxdblptool {
     using point_custom_timestamp = intern::point<measurement_value, tags_map, fields_map, now>;
     using point = point_custom_timestamp<time::now>;
     using points = intern::points<point>;
-
 
 }
 

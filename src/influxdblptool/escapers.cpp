@@ -3,7 +3,6 @@
 
 namespace influxdblptool::escapers {
 
-
     template <char... Ch>
     std::size_t escape_count(std::string_view input) {
         auto char_count = [](std::size_t& in, const char& inputChar) {

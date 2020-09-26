@@ -6,6 +6,7 @@
 #include "influxdblptool/escapers.h"
 
 namespace influxdblptool {
+
     namespace intern {
 
         template <auto throw_when_invalid>
