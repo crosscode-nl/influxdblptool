@@ -10,6 +10,15 @@ std::chrono::system_clock::time_point fake_now() {
 }
 
 TEST_SUITE("serializers") {
+    TEST_CASE("multiple points serialize correctly") {
+      //  points pts;
+        auto p = point{"system",field{"cpu%", 1}} << field{"memory%",10} << 1s;;
+     //   pts << p;
+//        pts << point{"system",field{"cpu%", 50}} << field{"memory%",40} << 2s;
+  //      pts << point{"system",field{"cpu%", 1}} << field{"memory%",30} << 3s;
+
+
+    }
     static_assert(!std::is_default_constructible_v<point>,"point must not be default constructable");
     TEST_CASE("point with string instead of measurement works correctly") {
         point_custom_timestamp<fake_now> p("test", field{"field", "value"});

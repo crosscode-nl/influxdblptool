@@ -1,7 +1,6 @@
 #include "influxdblptool/point.h"
 
-namespace influxdblptool::intern {
-
+namespace influxdblptool::time {
 
     std::chrono::system_clock::time_point now()
     {

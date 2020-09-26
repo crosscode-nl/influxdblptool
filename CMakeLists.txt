@@ -18,8 +18,9 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/escapers.cpp
         src/influxdblptool/field_value.cpp
         src/influxdblptool/serializers.cpp
+        src/influxdblptool/point.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} src/point.cpp)
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
 target_include_directories(influxdblptool PUBLIC include)
 add_subdirectory(tests)
