@@ -12,31 +12,49 @@ std::chrono::system_clock::time_point fake_now() {
 TEST_SUITE("serializers") {
     static_assert(!std::is_default_constructible_v<point>,"point must not be default constructable");
     TEST_CASE("point with string field") {
-        point_custom_timestamp<fake_now> p(measurement_value{"mease1"}, field{"field", "value"});
+        point_custom_timestamp<fake_now> p(measurement{"test"}, field{"field", "value"});
         SUBCASE("and 1 extra tag serializes correctly") {
             std::stringstream s;
             p << tag{"tag1", "tagv1"};
             s << p;
-            REQUIRE(s.str() == "mease1,tag1=tagv1 field=\"value\" 1000000000");
+            REQUIRE(s.str() == "test,tag1=tagv1 field=\"value\" 1000000000");
         }
         SUBCASE("and 2 extra tags serializes correctly") {
             std::stringstream s;
             p << tag{"tag2", "tagv2"};
             p << tag{"tag1", "tagv1"};
             s << p;
-            REQUIRE(s.str() == "mease1,tag1=tagv1,tag2=tagv2 field=\"value\" 1000000000");
+            REQUIRE(s.str() == "test,tag1=tagv1,tag2=tagv2 field=\"value\" 1000000000");
         }
         SUBCASE("point serializes string field correctly") {
             std::stringstream s;
             s << p;
-            REQUIRE(s.str() == "mease1 field=\"value\" 1000000000");
+            REQUIRE(s.str() == "test field=\"value\" 1000000000");
+        }
+        SUBCASE("point with custom timestamp 9s from opt_time serializes correctly") {
+            p << opt_time{9s};
+            std::stringstream s;
+            s << p;
+            REQUIRE(s.str() == "test field=\"value\" 9000000000");
+        }
+        SUBCASE("point with no timestamp serializes correctly") {
+            p << opt_time{};
+            std::stringstream s;
+            s << p;
+            REQUIRE(s.str() == "test field=\"value\"");
+        }
+        SUBCASE("point with 9s duration serializes correctly") {
+            p << 9s;
+            std::stringstream s;
+            s << p;
+            REQUIRE(s.str() == "test field=\"value\" 9000000000");
         }
     }
     TEST_CASE("string_types") {
         SUBCASE("measurement assigns and serializes correctly") {
             std::stringstream s;
             measurement_value m{"overwrite"};
-            m = measurement_value{", \"\\=abc"s};
+            m = measurement{", \"\\=abc"s};
             s << m;
             REQUIRE("\\,\\ \"\\=abc"s == s.str());
         }

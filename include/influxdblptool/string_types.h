@@ -77,6 +77,7 @@ namespace influxdblptool {
     using field_key = intern::validated_string<validators::throw_when_field_key_invalid>;
     using field_string_value = intern::validated_string<validators::throw_when_field_string_value_invalid>;
     using measurement_value = intern::validated_string<validators::throw_when_measurement_invalid>;
+    using measurement = measurement_value;
 
 }
 

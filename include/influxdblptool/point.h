@@ -7,8 +7,9 @@
 
 namespace influxdblptool {
 
+    using opt_time = std::optional<std::chrono::system_clock::time_point>;
+
     namespace time {
-        using Ttimestamp = std::optional<std::chrono::system_clock::time_point>;
         std::chrono::system_clock::time_point now();
         using Tcurrent_time_provider = std::chrono::system_clock::time_point (*)();
     }
@@ -20,15 +21,15 @@ namespace influxdblptool {
             Tmeasurement_value measurement_;
             Tfields_map fields_;
             Ttags_map tags_;
-            time::Ttimestamp timestamp_;
+            opt_time timestamp_;
 
             public:
-            point(Tmeasurement_value mv, typename Tfields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_(now()) {}
+            point(Tmeasurement_value mv, typename Tfields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_{now()} {}
 
             const Tmeasurement_value& measurement() const { return measurement_; }
             const Tfields_map& fields() const { return fields_; }
             const Ttags_map& tags() const { return tags_; }
-            [[nodiscard]] const time::Ttimestamp& timestamp() const { return timestamp_; }
+            [[nodiscard]] const opt_time& timestamp() const { return timestamp_; }
 
             point<Tmeasurement_value, Ttags_map, Tfields_map, now>& operator<<(Tmeasurement_value m) {
                 measurement_ = std::move(m);
@@ -45,7 +46,16 @@ namespace influxdblptool {
                 return *this;
             }
 
+            point<Tmeasurement_value, Ttags_map, Tfields_map, now>& operator<<(const opt_time &ot) {
+                timestamp_ = ot;
+                return *this;
+            }
 
+            template<typename Rep, typename Period>
+            point<Tmeasurement_value, Ttags_map, Tfields_map, now>& operator<<(const std::chrono::duration<Rep,Period> &d) {
+                timestamp_ = opt_time{d};
+                return *this;
+            }
         };
 
         template <typename Tpoint>
