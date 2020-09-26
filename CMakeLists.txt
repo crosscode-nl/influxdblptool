@@ -20,6 +20,6 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/serializers.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} src/point.cpp)
 target_include_directories(influxdblptool PUBLIC include)
 add_subdirectory(tests)

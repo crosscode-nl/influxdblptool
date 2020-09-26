@@ -17,19 +17,19 @@ TEST_SUITE("field_value") {
         SUBCASE("field_double casts to double") {
             const double d{100.5};
             field_double fd{d};
-            CHECK_EQ(d,double{fd});
+            REQUIRE(d==double{fd});
         }
         SUBCASE("field_double assigns from double") {
             const double d{100.5};
             field_double fd{};
             fd = d;
-            CHECK_EQ(d,double{fd});
+            REQUIRE(d==double{fd});
         }
         SUBCASE("field_double assigns from float") {
             const float d{100.5};
             field_double fd{};
             fd = d;
-            CHECK_EQ(d,double{fd});
+            REQUIRE(d==double{fd});
         }
         SUBCASE("field_double throws when infinite double is given") {
             CHECK_THROWS_AS_MESSAGE(field_double{std::numeric_limits<double>::infinity()},validator_exception,"Infinite value not allowed.");

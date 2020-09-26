@@ -7,40 +7,45 @@
 
 namespace influxdblptool {
 
+    namespace time {
+        using Ttimestamp = std::optional<std::chrono::system_clock::time_point>;
+        std::chrono::system_clock::time_point now();
+        using Tcurrent_time_provider = std::chrono::system_clock::time_point (*)();
+    }
+
     namespace intern {
 
-        template<typename Tmeasurement_value=measurement_value, typename Ttags_map=tags_map, typename Tfields_map = fields_map>
+        template<typename Tmeasurement_value, typename Ttags_map, typename Tfields_map, time::Tcurrent_time_provider now>
         class point {
-            void throw_when_fields_are_empty() const {
-                if (fields.empty()) {
-                    throw validator_exception("At least one field must be provided.");
-                }
-            }
+            Tmeasurement_value measurement_;
+            Tfields_map fields_;
+            Ttags_map tags_;
+            time::Ttimestamp timestamp_;
 
             public:
-            Tmeasurement_value measurement{"measurement"};
-            Ttags_map tags;
-            Tfields_map fields;
-            std::optional<std::chrono::system_clock::time_point> timestamp;
+            point(Tmeasurement_value mv, typename Tfields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_(now()) {}
 
-            void validate() const {
-                throw_when_fields_are_empty();
-            }
+            const Tmeasurement_value& measurement() const { return measurement_; }
+            const Tfields_map& fields() const { return fields_; }
+            const Ttags_map& tags() const { return tags_; }
+            [[nodiscard]] const time::Ttimestamp& timestamp() const { return timestamp_; }
 
-            point& operator<<(Tmeasurement_value m) {
-                measurement = std::move(m);
+            point<Tmeasurement_value, Ttags_map, Tfields_map, now>& operator<<(Tmeasurement_value m) {
+                measurement_ = std::move(m);
                 return *this;
             }
 
-            point& operator<<(typename Ttags_map::value_type t) {
-                tags.emplace(std::move(t));
+            point<Tmeasurement_value, Ttags_map, Tfields_map, now>& operator<<(typename Ttags_map::value_type t) {
+                tags_.emplace(std::move(t));
                 return *this;
             }
 
-            point& operator<<(typename Tfields_map::value_type f) {
-                fields.emplace(std::move(f));
+            point<Tmeasurement_value, Ttags_map, Tfields_map, now>& operator<<(typename Tfields_map::value_type f) {
+                fields_.emplace(std::move(f));
                 return *this;
             }
+
+
         };
 
         template <typename Tpoint>
@@ -58,7 +63,9 @@ namespace influxdblptool {
 
     }
 
-    using point = intern::point<>;
+    template <time::Tcurrent_time_provider now>
+    using point_custom_timestamp = intern::point<measurement_value, tags_map, fields_map, now>;
+    using point = point_custom_timestamp<time::now>;
     using points = intern::points<point>;
 
 

@@ -5,13 +5,32 @@ using namespace std::literals;
 using namespace influxdblptool;
 using namespace influxdblptool::serializers;
 
+std::chrono::system_clock::time_point fake_now() {
+    return std::chrono::system_clock::time_point{1s};
+}
+
 TEST_SUITE("serializers") {
-    TEST_CASE("point") {
-        SUBCASE("point throws when no field has been added.") {
-            point p;
-            p << measurement_value{"mease1"};
+    static_assert(!std::is_default_constructible_v<point>,"point must not be default constructable");
+    TEST_CASE("point with string field") {
+        point_custom_timestamp<fake_now> p(measurement_value{"mease1"}, field{"field", "value"});
+        SUBCASE("and 1 extra tag serializes correctly") {
             std::stringstream s;
-            CHECK_THROWS_WITH_AS(s << p,"At least one field must be provided.",validator_exception);}
+            p << tag{"tag1", "tagv1"};
+            s << p;
+            REQUIRE(s.str() == "mease1,tag1=tagv1 field=\"value\" 1000000000");
+        }
+        SUBCASE("and 2 extra tags serializes correctly") {
+            std::stringstream s;
+            p << tag{"tag2", "tagv2"};
+            p << tag{"tag1", "tagv1"};
+            s << p;
+            REQUIRE(s.str() == "mease1,tag1=tagv1,tag2=tagv2 field=\"value\" 1000000000");
+        }
+        SUBCASE("point serializes string field correctly") {
+            std::stringstream s;
+            s << p;
+            REQUIRE(s.str() == "mease1 field=\"value\" 1000000000");
+        }
     }
     TEST_CASE("string_types") {
         SUBCASE("measurement assigns and serializes correctly") {
@@ -19,35 +38,35 @@ TEST_SUITE("serializers") {
             measurement_value m{"overwrite"};
             m = measurement_value{", \"\\=abc"s};
             s << m;
-            CHECK_EQ("\\,\\ \"\\=abc"s, s.str());
+            REQUIRE("\\,\\ \"\\=abc"s == s.str());
         }
         SUBCASE("tag_key assigns and serializes correctly") {
             std::stringstream s;
             tag_key t{"overwrite"};
             t = tag_key{", \"\\=abc"s};
             s << t;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s, s.str());
+            REQUIRE("\\,\\ \"\\\\=abc"s == s.str());
         }
         SUBCASE("field_key assigns and serializes correctly") {
             std::stringstream s;
             field_key f{"overwrite"};
             f = field_key{", \"\\=abc"s};
             s << f;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s, s.str());
+            REQUIRE("\\,\\ \"\\\\=abc"s == s.str());
         }
         SUBCASE("tag_value assigns and serializes correctly") {
             std::stringstream s;
             tag_value t{"overwrite"};
             t = tag_value{", \"\\=abc"s};
             s << t;
-            CHECK_EQ("\\,\\ \"\\\\=abc"s, s.str());
+            REQUIRE("\\,\\ \"\\\\=abc"s == s.str());
         }
         SUBCASE("field_value assigns and serializes correctly") {
             std::stringstream s;
             field_string_value f{"overwrite"};
             f = field_string_value{", \"\\=abc"s};
             s << f;
-            CHECK_EQ(", \\\"\\\\=abc"s, s.str());
+            REQUIRE(", \\\"\\\\=abc"s == s.str());
         }
     }
     TEST_CASE ("tags serialize correctly in order") {
@@ -60,7 +79,7 @@ TEST_SUITE("serializers") {
             t.emplace(tag{"keyD", "testValueD"});
             std::stringstream ss;
             ss << t;
-            CHECK_EQ("keyA=testValueA,keyB=testValueB,keyC=testValueC,keyD=testValueD"s,ss.str());
+            REQUIRE("keyA=testValueA,keyB=testValueB,keyC=testValueC,keyD=testValueD"s == ss.str());
         }
     }
     TEST_CASE ("fields serialize correctly in order") {
@@ -74,7 +93,7 @@ TEST_SUITE("serializers") {
             t.emplace(field{"keyE", true});
             std::stringstream ss;
             ss << t;
-            CHECK_EQ("keyA=1u,keyB=1.5,keyC=\"testValueC\",keyD=-1i,keyE=t"s,ss.str());
+            REQUIRE("keyA=1u,keyB=1.5,keyC=\"testValueC\",keyD=-1i,keyE=t"s == ss.str());
         }
         SUBCASE("escape values") {
             fields_map t;
@@ -85,7 +104,7 @@ TEST_SUITE("serializers") {
             t.emplace(field{"keyE=", true});
             std::stringstream ss;
             ss << t;
-            CHECK_EQ("keyA=1u,keyB=1.5,keyC=\"test\\\"ValueC\",keyD=-1i,keyE\\==t"s,ss.str());
+            REQUIRE("keyA=1u,keyB=1.5,keyC=\"test\\\"ValueC\",keyD=-1i,keyE\\==t"s == ss.str());
         }
     }
       TEST_CASE("field_value constructs and serializes correctly") {
@@ -94,104 +113,104 @@ TEST_SUITE("serializers") {
             field_value f{field_double{100.5}};
             std::stringstream s;
             s << f;
-            CHECK_EQ("100.5"s,s.str());
+            REQUIRE("100.5"s==s.str());
         }
         SUBCASE("field_value accepts double and serializes correctly") {
             field_value f{100.5};
             std::stringstream s;
             s << f;
-            CHECK_EQ("100.5"s,s.str());
+            REQUIRE("100.5"s==s.str());
         }
         SUBCASE("field_value accepts float and serializes correctly") {
             field_value f{100.5f};
             std::stringstream s;
             s << f;
-            CHECK_EQ("100.5"s,s.str());
+            REQUIRE("100.5"s==s.str());
         }
         SUBCASE("field_value accepts bool true and serializes correctly") {
             field_value f{true};
             std::stringstream s;
             s << f;
-            CHECK_EQ("t"s,s.str());
+            REQUIRE("t"s==s.str());
         }
         SUBCASE("field_value accepts bool true and serializes correctly") {
             field_value f{false};
             std::stringstream s;
             s << f;
-            CHECK_EQ("f"s,s.str());
+            REQUIRE("f"s==s.str());
         }
         SUBCASE("field_value accepts const char* string and serializes correctly") {
             field_value f{"string"};
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value accepts string_view and serializes correctly") {
             field_value f{"string"sv};
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value accepts string and serializes correctly") {
             field_value f{"string"s};
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value accepts field_string_value and serializes correctly") {
             field_string_value v{"string"s};
             field_value f{v};
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value accepts uint64_t and serializes correctly") {
             field_value f{std::numeric_limits<uint64_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("18446744073709551615u"s,s.str());
+            REQUIRE("18446744073709551615u"s==s.str());
         }
         SUBCASE("field_value accepts int64_t and serializes correctly") {
             field_value f{std::numeric_limits<int64_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-9223372036854775808i"s,s.str());
+            REQUIRE("-9223372036854775808i"s==s.str());
         }
         SUBCASE("field_value accepts uint32_t and serializes correctly") {
             field_value f{std::numeric_limits<uint32_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("4294967295u"s,s.str());
+            REQUIRE("4294967295u"s==s.str());
         }
         SUBCASE("field_value accepts int32_t and serializes correctly") {
             field_value f{std::numeric_limits<int32_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-2147483648i"s,s.str());
+            REQUIRE("-2147483648i"s==s.str());
         }
         SUBCASE("field_value accepts uint16_t and serializes correctly") {
             field_value f{std::numeric_limits<uint16_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("65535u"s,s.str());
+            REQUIRE("65535u"s==s.str());
         }
         SUBCASE("field_value accepts int16_t and serializes correctly") {
             field_value f{std::numeric_limits<int16_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-32768i"s,s.str());
+            REQUIRE("-32768i"s==s.str());
         }
         SUBCASE("field_value accepts uint8_t and serializes correctly") {
             field_value f{std::numeric_limits<uint8_t>::max()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("255u"s,s.str());
+            REQUIRE("255u"s==s.str());
         }
         SUBCASE("field_value accepts int8_t and serializes correctly") {
             field_value f{std::numeric_limits<int8_t>::min()};
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128i"s,s.str());
+            REQUIRE("-128i"s==s.str());
         }
         SUBCASE("field_value accepts field by copy and serializes correctly") {
             field_value f2{std::numeric_limits<int8_t>::min()};
@@ -199,14 +218,14 @@ TEST_SUITE("serializers") {
             f2 = std::numeric_limits<int8_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128i"s,s.str());
+            REQUIRE("-128i"s==s.str());
         }
         SUBCASE("field_value accepts field by move and serializes correctly") {
             field_value f2{std::numeric_limits<int8_t>::min()};
             field_value f(std::move(f2));
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128i"s,s.str());
+            REQUIRE("-128i"s==s.str());
         }
     }
     TEST_CASE("field_value assigns and serializes correctly") {
@@ -215,56 +234,56 @@ TEST_SUITE("serializers") {
             f = field_double{100.5};
             std::stringstream s;
             s << f;
-            CHECK_EQ("100.5"s,s.str());
+            REQUIRE("100.5"s==s.str());
         }
         SUBCASE("field_value assigns double and serializes correctly") {
             field_value f{};
             f=100.5;
             std::stringstream s;
             s << f;
-            CHECK_EQ("100.5"s,s.str());
+            REQUIRE("100.5"s==s.str());
         }
         SUBCASE("field_value assigns float and serializes correctly") {
             field_value f{};
             f=100.5f;
             std::stringstream s;
             s << f;
-            CHECK_EQ("100.5"s,s.str());
+            REQUIRE("100.5"s==s.str());
         }
         SUBCASE("field_value assigns bool true and serializes correctly") {
             field_value f{};
             f=true;
             std::stringstream s;
             s << f;
-            CHECK_EQ("t"s,s.str());
+            REQUIRE("t"s==s.str());
         }
         SUBCASE("field_value assigns bool true and serializes correctly") {
             field_value f{};
             f=false;
             std::stringstream s;
             s << f;
-            CHECK_EQ("f"s,s.str());
+            REQUIRE("f"s==s.str());
         }
         SUBCASE("field_value assigns const char* string and serializes correctly") {
             field_value f{};
             f="string";
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value assigns string_view and serializes correctly") {
             field_value f{};
             f="string"sv;
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value assigns string and serializes correctly") {
             field_value f{};
             f="string"s;
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value assigns field_string_value and serializes correctly") {
             field_string_value v{"string"s};
@@ -272,63 +291,63 @@ TEST_SUITE("serializers") {
             f=v;
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"string\""s,s.str());
+            REQUIRE("\"string\""s==s.str());
         }
         SUBCASE("field_value assigns uint64_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint64_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("18446744073709551615u"s,s.str());
+            REQUIRE("18446744073709551615u"s==s.str());
         }
         SUBCASE("field_value assigns int64_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int64_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-9223372036854775808i"s,s.str());
+            REQUIRE("-9223372036854775808i"s==s.str());
         }
         SUBCASE("field_value assigns uint32_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint32_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("4294967295u"s,s.str());
+            REQUIRE("4294967295u"s==s.str());
         }
         SUBCASE("field_value assigns int32_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int32_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-2147483648i"s,s.str());
+            REQUIRE("-2147483648i"s==s.str());
         }
         SUBCASE("field_value assigns uint16_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint16_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("65535u"s,s.str());
+            REQUIRE("65535u"s==s.str());
         }
         SUBCASE("field_value assigns int16_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int16_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-32768i"s,s.str());
+            REQUIRE("-32768i"s==s.str());
         }
         SUBCASE("field_value assigns uint8_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<uint8_t>::max();
             std::stringstream s;
             s << f;
-            CHECK_EQ("255u"s,s.str());
+            REQUIRE("255u"s==s.str());
         }
         SUBCASE("field_value assigns int8_t and serializes correctly") {
             field_value f{};
             f=std::numeric_limits<int8_t>::min();
             std::stringstream s;
             s << f;
-            CHECK_EQ("-128i"s,s.str());
+            REQUIRE("-128i"s==s.str());
         }
         SUBCASE("field_value assigns uint64_t field and serializes correctly") {
             field_value f2{std::numeric_limits<uint64_t>::max()};
@@ -336,7 +355,7 @@ TEST_SUITE("serializers") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("18446744073709551615u"s,s.str());
+            REQUIRE("18446744073709551615u"s==s.str());
         }
         SUBCASE("field_value assigns int64_t field and serializes correctly") {
             field_value f2{std::numeric_limits<int64_t>::min()};
@@ -344,7 +363,7 @@ TEST_SUITE("serializers") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("-9223372036854775808i"s,s.str());
+            REQUIRE("-9223372036854775808i"s==s.str());
         }
         SUBCASE("field_value assigns field_double field and serializes correctly") {
             field_value f2{field_double{1.5}};
@@ -352,7 +371,7 @@ TEST_SUITE("serializers") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("1.5"s,s.str());
+            REQUIRE("1.5"s==s.str());
         }
         SUBCASE("field_value assigns bool field and serializes correctly") {
             field_value f2{true};
@@ -360,7 +379,7 @@ TEST_SUITE("serializers") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("t"s,s.str());
+            REQUIRE("t"s==s.str());
         }
         SUBCASE("field_value assigns field_string_value field and serializes correctly") {
             field_value f2{field_string_value{"test"}};
@@ -368,7 +387,7 @@ TEST_SUITE("serializers") {
             f=f2;
             std::stringstream s;
             s << f;
-            CHECK_EQ("\"test\""s,s.str());
+            REQUIRE("\"test\""s==s.str());
         }
     }
 }
