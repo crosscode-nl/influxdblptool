@@ -28,27 +28,6 @@ namespace influxdblptool::serializers {
         return s;
     }
 
-    std::size_t escape_count(const tag_key& tk) {
-        return escapers::escape_tag_key_count(static_cast<std::string_view>(tk));
-    }
-
-    std::size_t escape_count(const tag_value& tk) {
-        return escapers::escape_tag_value_count(static_cast<std::string_view>(tk));
-    }
-
-    std::size_t escape_count(const field_key& tk) {
-        return escapers::escape_field_key_count(static_cast<std::string_view>(tk));
-    }
-
-    std::size_t escape_count(const field_string_value& tk) {
-        return escapers::escape_field_string_value_count(static_cast<std::string_view>(tk));
-    }
-
-    std::size_t escape_count(const measurement_value& tk) {
-        return escapers::escape_measurement_value_count(static_cast<std::string_view>(tk));
-    }
-
-
     class serializing_visitor {
         std::ostream *os_;
     public:
@@ -126,8 +105,6 @@ namespace influxdblptool::serializers {
     std::ostream& operator<<(std::ostream& s, const tags_map& items) {
         return serialize_map(s, items);
     }
-
-
 
     std::ostream& operator<<(std::ostream& s, const points& items) {
         return serialize_vector(s, static_cast<const std::vector<point>>(items));
