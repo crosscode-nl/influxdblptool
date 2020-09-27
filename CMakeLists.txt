@@ -7,9 +7,7 @@ project(influxdblptool
 
 include(cmake/buildsetup.cmake)
 
-configure_file(include/influxdblptool/version.h.in include/influxdblptool/version.h)
-
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/include/)
+configure_file(src/influxdblptool/version.cpp.in src/influxdblptool/version.cpp)
 
 list(APPEND INFLUXDBLPTOOL_HEADERS
         include/influxdblptool.h
@@ -29,9 +27,10 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/field_value.cpp
         src/influxdblptool/serializers.cpp
         src/influxdblptool/point.cpp
+        src/influxdblptool/version.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} )
 
 set_target_properties(influxdblptool PROPERTIES PUBLIC_HEADER "include/influxdblptool.h")
 

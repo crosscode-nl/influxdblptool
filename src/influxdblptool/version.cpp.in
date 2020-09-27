@@ -1,0 +1,8 @@
+#include "influxdblptool/version.h"
+
+using namespace std::literals;
+
+std::string_view version() {
+    constexpr std::string_view version_value = "@influxdblptool_VERSION@"sv;
+    return version_value;
+}

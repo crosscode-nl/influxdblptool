@@ -1,8 +1,0 @@
-#ifndef INFLUXDBLPTOOL_VERSION_H
-#define INFLUXDBLPTOOL_VERSION_H
-#include <string>
-
-using namespace std::literals;
-constexpr std::string_view version = "@influxdblptool_VERSION@"sv;
-
-#endif //INFLUXDBLPTOOL_VERSION_H
