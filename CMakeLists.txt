@@ -6,6 +6,7 @@ project(influxdblptool
         LANGUAGES C CXX)
 
 include(cmake/buildsetup.cmake)
+include(cmake/doxygen.cmake)
 
 configure_file(src/influxdblptool/version.cpp.in src/influxdblptool/version.cpp)
 
@@ -30,7 +31,7 @@ list(APPEND INFLUXDBLPTOOL_SRC
         ${CMAKE_BINARY_DIR}/src/influxdblptool/version.cpp
         )
 
-add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} )
+add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
 
 set_target_properties(influxdblptool PROPERTIES PUBLIC_HEADER "include/influxdblptool.h")
 
@@ -45,6 +46,7 @@ install(DIRECTORY include/influxdblptool DESTINATION ${CMAKE_INSTALL_PREFIX}/inc
 target_include_directories(influxdblptool PUBLIC include)
 
 add_subdirectory(tests)
+add_subdirectory(examples)
 
 
 

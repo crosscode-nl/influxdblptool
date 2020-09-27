@@ -7,7 +7,7 @@
 #include "string_types.h"
 #include "point.h"
 
-namespace influxdblptool::serializers {
+namespace influxdblptool {
 
     template<typename TDuration=std::chrono::nanoseconds>
     std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint) {

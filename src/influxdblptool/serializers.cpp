@@ -1,7 +1,7 @@
 #include "influxdblptool/serializers.h"
 #include <numeric>
 
-namespace influxdblptool::serializers {
+namespace influxdblptool {
 
     std::ostream& operator<<(std::ostream& s, const tag_key& tk) {
         s << escapers::escape_tag_key(static_cast<std::string_view>(tk));
