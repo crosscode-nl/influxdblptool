@@ -82,7 +82,7 @@ namespace influxdblptool::validators {
         throw_when_field_invalid(input);
     }
 
-    void throw_when_double_value_invalid(const double &value) {
+    void throw_when_double_value_invalid(double value) {
         if (std::isnan(value)) throw validator_exception("NaN value not allowed.");
         if (std::isinf(value)) throw validator_exception("Infinite value not allowed.");
     }

@@ -79,8 +79,6 @@ namespace influxdblptool {
 
     field_value& field_value::operator=(const field_value& v) {
         assigning_visitor av{this};
-        // We do it this quirky way, otherwise slicing warning is given by static analysis. We don't care about
-        // slicing here.
         std::visit(av,v.field_variant_);
         return *this;
     }
