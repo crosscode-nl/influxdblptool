@@ -12,6 +12,7 @@ list(APPEND TEST_SRC
         field_value_tests.cpp
         string_types_tests.cpp
         serializers_tests.cpp
+        version_tests.cpp
 )
 
 list(APPEND TEST_INCLUDE

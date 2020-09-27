@@ -4,6 +4,4 @@
 
 std::string_view version();
 
-
-
 #endif //INFLUXDBLPTOOL_VERSION_H

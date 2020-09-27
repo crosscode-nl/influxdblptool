@@ -27,7 +27,7 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/field_value.cpp
         src/influxdblptool/serializers.cpp
         src/influxdblptool/point.cpp
-        src/influxdblptool/version.cpp
+        ${CMAKE_BINARY_DIR}/src/influxdblptool/version.cpp
         )
 
 add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC} )
