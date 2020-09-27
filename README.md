@@ -50,4 +50,4 @@ Not all examples are created yet. See the [unit tests](tests/serializers_tests.c
 * Add comments for Doxygen doc generation.
 * Add more examples
 * Setup continuous integration
-* Code quality assessment by 3th party
+* Code quality assessment by 3rd party
