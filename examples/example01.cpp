@@ -17,7 +17,7 @@
 // The point can be serialized to an ostream.
 int main() {
     using namespace influxdblptool;
-    std::cout << point{"car",field{"engine_temperature","field_value"}};
+    std::cout << point{"measurement",field{"field_key","field_value"}};
 }
 // possible output:
-// measurement field_string="field_value" 1601204094249745562
+// measurement field_key="field_value" 1601205691780532675
