@@ -46,8 +46,8 @@ Not all examples are created yet. See the [unit tests](tests/serializers_tests.c
 ## TODO
 
 * Allow setting timestamp resolution.
-* Add Fluent interface.
+* Add a fluent interface.
 * Add comments for Doxygen doc generation.
-* Add more examples
-* Setup continuous integration
-* Code quality assessment by 3rd party
+* Add more examples.
+* Setup continuous integration.
+* Code quality assessment by a 3rd party.
