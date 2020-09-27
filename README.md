@@ -39,7 +39,7 @@ See the file [LICENSE](LICENSE).
 ## Examples
 
 * [example01.cpp](examples/example01.cpp) This is a minimal example and explains some key concepts.
-* [example01.cpp](examples/example02.cpp) This example demonstrates adding fields and field types.  
+* [example02.cpp](examples/example02.cpp) This example demonstrates adding fields and field types.  
 
 Not all examples are created yet. See the [unit tests](tests/serializers_tests.cpp) for more examples. 
 
