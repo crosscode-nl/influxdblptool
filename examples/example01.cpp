@@ -18,6 +18,7 @@
 int main() {
     using namespace influxdblptool;
     std::cout << point{"measurement",field{"field_key","field_value"}};
+    return 0;
 }
 // possible output:
 // measurement field_key="field_value" 1601205691780532675

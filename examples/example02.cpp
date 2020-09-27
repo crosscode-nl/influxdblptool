@@ -22,6 +22,7 @@ int main() {
     pt << field{"int",1};
     pt << field{"uint",1u};
     std::cout << pt;
+    return 0;
 }
 // possible output:
 // measurement bool=t,double=1.5,int=1i,string="string value",uint=1u 1601205708923005205
