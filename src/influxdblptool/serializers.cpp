@@ -65,20 +65,11 @@ namespace influxdblptool {
         return s;
     }
 
-    template<typename TDuration=std::chrono::nanoseconds>
-    std::ostream& operator<<(std::ostream& s, const std::chrono::system_clock::time_point& timePoint) {
-        // This assumes that epoch is 1970-01-01T00:00:00Z, which it probably is in case of a system_clock. However,
-        // technically it could be anything, because it is not specified in the spec of c++17. In the spec of c++2a
-        // it is specified. So, lets assume all library implementors have this implemented as 1970-01-01T00:00:00Z
-        // If a bug arises, it might be caused by a library that implemented a different epoch for system_clock.
-        s << std::chrono::duration_cast<TDuration>(timePoint.time_since_epoch()).count();
-        return s;
-    }
-
     template<typename TValue>
-    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, const std::string &prefix) {
-        auto serialize = [&s,&prefix](auto item) mutable {
-            s << prefix << item << "\n";
+    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, const std::string &prefix, time::Tserialize_timepoint timepoint_serializer) {
+        auto serialize = [&s,&prefix,&timepoint_serializer](auto item) mutable {
+            s << prefix ;
+            serialize_point_custom_timestamp(s,item, timepoint_serializer) << "\n";
         };
         std::for_each(begin(items), end(items), serialize);
         return s;
@@ -107,7 +98,8 @@ namespace influxdblptool {
     }
 
     std::ostream& operator<<(std::ostream& s, const points& items) {
-        return serialize_vector(s, static_cast<const std::vector<point>>(items), items.prefix());
+
+        return serialize_vector(s, static_cast<const std::vector<point>>(items), items.prefix(), items.timepoint_serializer());
     }
 
 }

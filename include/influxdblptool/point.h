@@ -12,6 +12,18 @@ namespace influxdblptool {
     namespace time {
         std::chrono::system_clock::time_point now();
         using Tcurrent_time_provider = std::chrono::system_clock::time_point (*)();
+
+        template<typename TDuration=std::chrono::nanoseconds>
+        std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint) {
+            // This assumes that epoch is 1970-01-01T00:00:00Z, which it probably is in case of a system_clock. However,
+            // technically it could be anything, because it is not specified in the spec of c++17. In the spec of c++2a
+            // it is specified. So, lets assume all library implementors have this implemented as 1970-01-01T00:00:00Z
+            // If a bug arises, it might be caused by a library that implemented a different epoch for system_clock.
+            s << std::chrono::duration_cast<TDuration>(timePoint.time_since_epoch()).count();
+            return s;
+        }
+
+        using Tserialize_timepoint = std::ostream& (*)(std::ostream& s, const std::chrono::system_clock::time_point& timePoint);
     }
 
     struct insert_prefix {
@@ -70,7 +82,12 @@ namespace influxdblptool {
         class points {
             std::vector<Tpoint> points_{};
             std::string prefix_{};
+            time::Tserialize_timepoint timepoint_serializer_ = time::serialize_timepoint<std::chrono::nanoseconds>;
         public:
+            time::Tserialize_timepoint timepoint_serializer() const {
+                return timepoint_serializer_;
+            }
+
             [[nodiscard]] std::string prefix() const {
                 return prefix_;
             }
@@ -80,6 +97,11 @@ namespace influxdblptool {
             }
             points<Tpoint>& operator<<(Tpoint p) {
                 points_.emplace_back(std::move(p));
+                return *this;
+            }
+            template<typename Rep, typename Period>
+            points<Tpoint>& operator<<(std::chrono::duration<Rep, Period> duration) {
+                timepoint_serializer_ = time::serialize_timepoint<decltype(duration)>;
                 return *this;
             }
             explicit operator const std::vector<Tpoint>&() const {

@@ -9,6 +9,14 @@ std::chrono::system_clock::time_point fake_now() {
 }
 
 TEST_SUITE("serializers") {
+    TEST_CASE("multiple points serialize correctly with time serializer resolution set to second") {
+        points pts;
+        pts << std::chrono::milliseconds{};
+        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 2s);
+        std::stringstream s;
+        s << pts;
+        REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000\n");
+    }
     TEST_CASE("multiple points serialize correctly with INSERT prefix") {
         points pts;
         pts << insert_prefix{};
