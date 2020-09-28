@@ -9,10 +9,10 @@ int main() {
     using namespace std::literals;
 
     point pt{"measurement",field{"field_key","field_value"}};
-    pt << optional_timestamp{3s};
+    pt << optional_timestamp{};
     std::cout << pt;
 
     return 0;
 }
 // output:
-// measurement field_key="field_value" 3000000000
+// measurement field_key="field_value"
