@@ -66,10 +66,18 @@ namespace influxdblptool {
     }
 
     template<typename TValue>
-    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, const std::string &prefix, time::Tserialize_timepoint timepoint_serializer) {
-        auto serialize = [&s,&prefix,&timepoint_serializer](auto item) mutable {
-            s << prefix ;
+    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, time::Tserialize_timepoint timepoint_serializer) {
+        auto serialize = [&s,&timepoint_serializer](auto item) mutable {
             serialize_point_custom_timestamp(s,item, timepoint_serializer) << "\n";
+        };
+        std::for_each(begin(items), end(items), serialize);
+        return s;
+    }
+
+    template<typename TValue>
+    std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, time::Tserialize_timepoint timepoint_serializer, const std::string &prefix) {
+        auto serialize = [&s,&prefix,&timepoint_serializer](auto item) mutable {
+            serialize_point_custom_timestamp(s,item, timepoint_serializer, prefix) << "\n";
         };
         std::for_each(begin(items), end(items), serialize);
         return s;
@@ -98,8 +106,10 @@ namespace influxdblptool {
     }
 
     std::ostream& operator<<(std::ostream& s, const points& items) {
-
-        return serialize_vector(s, static_cast<const std::vector<point>>(items), items.prefix(), items.timepoint_serializer());
+        if (empty(items.prefix())) {
+            return serialize_vector(s, static_cast<const std::vector<point>>(items), items.timepoint_serializer());
+        }
+        return serialize_vector(s, static_cast<const std::vector<point>>(items), items.timepoint_serializer(), items.prefix());
     }
 
 }

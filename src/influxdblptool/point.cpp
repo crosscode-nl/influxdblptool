@@ -2,6 +2,8 @@
 
 namespace influxdblptool {
 
+    using namespace std::literals;
+
     namespace time {
 
         std::chrono::system_clock::time_point now()
@@ -11,8 +13,8 @@ namespace influxdblptool {
 
     }
 
-    insert_prefix::operator std::string() const {
-        return "INSERT ";
+    [[nodiscard]] std::string insert_prefix::get() const {
+        return "INSERT "s;
     }
 
 }

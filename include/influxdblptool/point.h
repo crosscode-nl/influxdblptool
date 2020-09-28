@@ -26,20 +26,61 @@ namespace influxdblptool {
         using Tserialize_timepoint = std::ostream& (*)(std::ostream& s, const std::chrono::system_clock::time_point& timePoint);
     }
 
-    struct insert_prefix {
-        explicit operator std::string() const;
+    struct prefix_base {
+        [[nodiscard]] virtual std::string get() const = 0;
+    };
+
+
+    struct insert_prefix : prefix_base {
+        [[nodiscard]] std::string get() const override;
+    };
+
+    template <typename T> struct is_valid_duration : std::false_type {};
+    template <>struct is_valid_duration<std::chrono::seconds> : std::true_type {};
+    template <>struct is_valid_duration<std::chrono::milliseconds> : std::true_type {};
+    template <>struct is_valid_duration<std::chrono::microseconds> : std::true_type {};
+    template <>struct is_valid_duration<std::chrono::nanoseconds> : std::true_type {};
+    template<typename T> inline constexpr bool is_valid_duration_v = is_valid_duration<T>::value;
+
+    template<typename Tduration, typename std::enable_if<is_valid_duration_v<Tduration>,int>::type = 0>
+    struct timestamp_resolution {
+        using type = Tduration;
     };
 
     namespace intern {
 
+        class serializable_config {
+            std::string prefix_{};
+            time::Tserialize_timepoint timepoint_serializer_ = time::serialize_timepoint<std::chrono::nanoseconds>;
+        public:
+            void set_timepoint_serializer(time::Tserialize_timepoint ts) {
+                timepoint_serializer_ = ts;
+            }
+
+            [[nodiscard]] time::Tserialize_timepoint timepoint_serializer() const {
+                return timepoint_serializer_;
+            }
+
+            void set_prefix(const prefix_base &p) {
+                prefix_ = p.get();
+            }
+
+            [[nodiscard]] std::string prefix() const {
+                return prefix_;
+            }
+
+            virtual ~serializable_config()=default;
+
+        };
+
         template<typename Tmeasurement_value, typename Ttags_map, typename Tfields_map, time::Tcurrent_time_provider now>
-        class point {
+        class point : public serializable_config {
             Tmeasurement_value measurement_;
             Tfields_map fields_;
             Ttags_map tags_;
             opt_time timestamp_;
-
             public:
+
             explicit point(Tmeasurement_value mv, typename Tfields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_{now()} {}
             explicit point(const char* mv, typename Tfields_map::value_type field) : measurement_{Tmeasurement_value{mv}}, fields_{std::move(field)}, timestamp_{now()} {}
             explicit point(std::string_view mv, typename Tfields_map::value_type field) : measurement_{Tmeasurement_value{mv}}, fields_{std::move(field)}, timestamp_{now()} {}
@@ -76,39 +117,38 @@ namespace influxdblptool {
                 timestamp_ = opt_time{d};
                 return *this;
             }
+
         };
 
         template <typename Tpoint>
-        class points {
+        class points : public serializable_config {
             std::vector<Tpoint> points_{};
-            std::string prefix_{};
-            time::Tserialize_timepoint timepoint_serializer_ = time::serialize_timepoint<std::chrono::nanoseconds>;
         public:
-            time::Tserialize_timepoint timepoint_serializer() const {
-                return timepoint_serializer_;
-            }
 
-            [[nodiscard]] std::string prefix() const {
-                return prefix_;
-            }
-            points<Tpoint>& operator<<(const insert_prefix& p) {
-                prefix_ = static_cast<std::string>(p);
-                return *this;
-            }
             points<Tpoint>& operator<<(Tpoint p) {
                 points_.emplace_back(std::move(p));
                 return *this;
             }
-            template<typename Rep, typename Period>
-            points<Tpoint>& operator<<(std::chrono::duration<Rep, Period> duration) {
-                timepoint_serializer_ = time::serialize_timepoint<decltype(duration)>;
-                return *this;
-            }
+
             explicit operator const std::vector<Tpoint>&() const {
                 return points_;
             }
         };
 
+    }
+
+    template<typename T, typename TDuration>
+    typename std::enable_if<std::is_base_of_v<intern::serializable_config,T>,T>::type&
+    operator<<(T& o,timestamp_resolution<TDuration>) {
+        o.set_timepoint_serializer(time::serialize_timepoint<TDuration>);
+        return o;
+    }
+
+    template<typename T>
+    typename std::enable_if<std::is_base_of_v<intern::serializable_config,T>,T>::type&
+    operator<<(T& o,const insert_prefix& p) {
+        o.set_prefix(p);
+        return o;
     }
 
     template <time::Tcurrent_time_provider now>

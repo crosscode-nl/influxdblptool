@@ -10,7 +10,7 @@
 namespace influxdblptool {
 
     template <time::Tcurrent_time_provider currentTimeProvider>
-    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<currentTimeProvider>& item, time::Tserialize_timepoint serialize_timepoint){
+    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<currentTimeProvider>& item, time::Tserialize_timepoint serialize_timepoint) {
         s << item.measurement();
         if (!item.tags().empty()) {
             s << "," << item.tags();
@@ -24,17 +24,17 @@ namespace influxdblptool {
     }
 
     template <time::Tcurrent_time_provider currentTimeProvider>
+    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<currentTimeProvider>& item, time::Tserialize_timepoint serialize_timepoint, const std::string& prefix) {
+        s << prefix;
+        return serialize_point_custom_timestamp(s, item,serialize_timepoint);
+    }
+
+    template <time::Tcurrent_time_provider currentTimeProvider>
     std::ostream& operator<<(std::ostream& s, const point_custom_timestamp<currentTimeProvider>& item){
-        s << item.measurement();
-        if (!item.tags().empty()) {
-            s << "," << item.tags();
+        if (empty(item.prefix())) {
+            return serialize_point_custom_timestamp(s, item, item.timepoint_serializer());
         }
-        s << " " << item.fields();
-        if (item.timestamp().has_value()) {
-            s << " ";
-            time::serialize_timepoint(s,item.timestamp().value());;
-        }
-        return s;
+        return serialize_point_custom_timestamp(s, item, item.timepoint_serializer(),item.prefix());
     }
 
     std::ostream& operator<<(std::ostream& s, const tag_key& tk);

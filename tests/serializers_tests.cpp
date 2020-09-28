@@ -9,13 +9,62 @@ std::chrono::system_clock::time_point fake_now() {
 }
 
 TEST_SUITE("serializers") {
-    TEST_CASE("multiple points serialize correctly with time serializer resolution set to second") {
-        points pts;
-        pts << std::chrono::milliseconds{};
-        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 2s);
+    TEST_CASE("point serialize correctly with INSERT prefix") {
+        point pt{"system",field{"cpu%", 50}};
+        pt << insert_prefix{};
+        pt << tag{"name","unittest"} << field{"memory%",40} << 2s;
         std::stringstream s;
-        s << pts;
-        REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000\n");
+        s << pt;
+        REQUIRE(s.str() == "INSERT system,name=unittest cpu%=50i,memory%=40i 2000000000");
+    }
+    TEST_CASE("point serialize correctly with time serializer resolution set to:") {
+        point pt{"system",field{"cpu%", 50}};
+        pt << tag{"name","unittest"} << field{"memory%",40} << 2s;
+        std::stringstream s;
+        SUBCASE("microseconds") {
+            pt << timestamp_resolution<std::chrono::microseconds>{};
+            s << pt;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000000");
+        }
+        SUBCASE("milliseconds") {
+            pt << timestamp_resolution<std::chrono::milliseconds>{};
+            s << pt;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000");
+        }
+        SUBCASE("seconds") {
+            pt << timestamp_resolution<std::chrono::seconds>{};
+            s << pt;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2");
+        }
+    }
+    TEST_CASE("multiple points serialize correctly with time serializer resolution set to:") {
+        points pts;
+
+        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 2s);
+        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 3s);
+        pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 1s);
+        std::stringstream s;
+        SUBCASE("microseconds") {
+            pts << timestamp_resolution<std::chrono::microseconds>{};
+            s << pts;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000000\n"
+                               "system,name=unittest cpu%=50i,memory%=40i 3000000\n"
+                               "system,name=unittest cpu%=50i,memory%=40i 1000000\n");
+        }
+        SUBCASE("milliseconds") {
+            pts << timestamp_resolution<std::chrono::milliseconds>{};
+            s << pts;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000\n"
+                               "system,name=unittest cpu%=50i,memory%=40i 3000\n"
+                               "system,name=unittest cpu%=50i,memory%=40i 1000\n");
+        }
+        SUBCASE("milliseconds") {
+            pts << timestamp_resolution<std::chrono::seconds>{};
+            s << pts;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2\n"
+                               "system,name=unittest cpu%=50i,memory%=40i 3\n"
+                               "system,name=unittest cpu%=50i,memory%=40i 1\n");
+        }
     }
     TEST_CASE("multiple points serialize correctly with INSERT prefix") {
         points pts;
