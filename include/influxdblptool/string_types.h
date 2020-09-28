@@ -29,7 +29,7 @@ namespace influxdblptool {
                 throw_when_invalid(value_);
             }
 
-            validated_string(validated_string<throw_when_invalid>&& input) : value_{
+            validated_string(validated_string<throw_when_invalid>&& input)  noexcept : value_{
                 std::move(input.value_)} {
                 throw_when_invalid(value_);
             }
