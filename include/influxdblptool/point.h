@@ -7,7 +7,7 @@
 
 namespace influxdblptool {
 
-    using opt_time = std::optional<std::chrono::system_clock::time_point>;
+    using optional_timestamp = std::optional<std::chrono::system_clock::time_point>;
 
     namespace time {
         std::chrono::system_clock::time_point now();
@@ -78,7 +78,7 @@ namespace influxdblptool {
             Measurement_value measurement_;
             Fields_map fields_;
             Tags_map tags_;
-            opt_time timestamp_;
+            optional_timestamp timestamp_;
             public:
 
             explicit point(Measurement_value mv, typename Fields_map::value_type field) : measurement_{std::move(mv)}, fields_{std::move(field)}, timestamp_{now()} {}
@@ -90,7 +90,7 @@ namespace influxdblptool {
             const Measurement_value& measurement() const { return measurement_; }
             const Fields_map& fields() const { return fields_; }
             const Tags_map& tags() const { return tags_; }
-            [[nodiscard]] const opt_time& timestamp() const { return timestamp_; }
+            [[nodiscard]] const optional_timestamp& timestamp() const { return timestamp_; }
 
             point<Measurement_value, Tags_map, Fields_map, now>& operator<<(Measurement_value m) {
                 measurement_ = std::move(m);
@@ -107,14 +107,14 @@ namespace influxdblptool {
                 return *this;
             }
 
-            point<Measurement_value, Tags_map, Fields_map, now>& operator<<(const opt_time &ot) {
+            point<Measurement_value, Tags_map, Fields_map, now>& operator<<(const optional_timestamp &ot) {
                 timestamp_ = ot;
                 return *this;
             }
 
             template<typename Rep, typename Period>
             point<Measurement_value, Tags_map, Fields_map, now>& operator<<(const std::chrono::duration<Rep,Period> &d) {
-                timestamp_ = opt_time{d};
+                timestamp_ = optional_timestamp{d};
                 return *this;
             }
 

@@ -134,13 +134,13 @@ TEST_SUITE("serializers") {
             REQUIRE(s.str() == "test field=\"value\" 1000000000");
         }
         SUBCASE("point with custom timestamp 9s from opt_time serializes correctly") {
-            p << opt_time{9s};
+            p << optional_timestamp{9s};
             std::stringstream s;
             s << p;
             REQUIRE(s.str() == "test field=\"value\" 9000000000");
         }
         SUBCASE("point with no timestamp serializes correctly") {
-            p << opt_time{};
+            p << optional_timestamp{};
             std::stringstream s;
             s << p;
             REQUIRE(s.str() == "test field=\"value\"");
