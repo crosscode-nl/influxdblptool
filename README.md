@@ -47,8 +47,7 @@ See the file [LICENSE](LICENSE).
 * [example06.cpp](examples/example06.cpp) This example demonstrates changing the timestamp resolution.
 * [example07.cpp](examples/example07.cpp) This example demonstrates adding an INSERT prefix.
 * [example08.cpp](examples/example08.cpp) This example demonstrates the points collection.
-
-Not all examples are created yet. See the [unit tests](tests/serializers_tests.cpp) for more examples. 
+* [example09.cpp](examples/example09.cpp) This example demonstrates validation. 
 
 ## TODO
 
