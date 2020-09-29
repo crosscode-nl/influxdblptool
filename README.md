@@ -30,11 +30,12 @@ See the file [LICENSE](LICENSE).
   not explicitly documented. This library defines only one exception influxdb::validation_exception. It's thrown when
   invalid input is given at any point. This library tries to validate input as early as possible. 
 
-## Goals of creating this library
+## Goals of and reasons for creating this library
 
-* Improve C++ knowledge with more recent C++17 standards.
-* I needed this library for another project.
-* Try TDD development and SOLID principles using templates.
+* Refresh and update my C++ knowledge with more recent C++17 standards.
+* I need this library for another project.
+* Try out TDD development and SOLID principles using templates.
+* Try out different unit test frameworks. 
 
 ## Examples
 
@@ -45,6 +46,7 @@ See the file [LICENSE](LICENSE).
 * [example05.cpp](examples/example05.cpp) This example demonstrates setting a custom timestamp.
 * [example06.cpp](examples/example06.cpp) This example demonstrates changing the timestamp resolution.
 * [example07.cpp](examples/example07.cpp) This example demonstrates adding an INSERT prefix.
+* [example08.cpp](examples/example08.cpp) This example demonstrates the points collection.
 
 Not all examples are created yet. See the [unit tests](tests/serializers_tests.cpp) for more examples. 
 
