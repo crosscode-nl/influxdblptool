@@ -45,9 +45,11 @@ namespace influxdblptool {
     template<typename T> inline constexpr bool is_valid_duration_v = is_valid_duration<T>::value;
 
     template<typename Duration, typename std::enable_if<is_valid_duration_v<Duration>,int>::type = 0>
-    struct timestamp_resolution {
+    struct timestamp_resolution_type {
         using type = Duration;
     };
+    template<typename Duration>
+    inline constexpr timestamp_resolution_type timestamp_resolution = timestamp_resolution_type<Duration>{};
 
     namespace intern {
 
@@ -141,7 +143,7 @@ namespace influxdblptool {
 
     template<typename Type, typename Duration>
     typename std::enable_if<std::is_base_of_v<intern::serializable_config,Type>,Type>::type&
-    operator<<(Type& o,timestamp_resolution<Duration>) {
+    operator<<(Type& o,timestamp_resolution_type<Duration>) {
         o.set_timepoint_serializer(time::serialize_timepoint<Duration>);
         return o;
     }

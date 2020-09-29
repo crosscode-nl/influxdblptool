@@ -43,7 +43,8 @@ See the file [LICENSE](LICENSE).
 * [example03.cpp](examples/example03.cpp) This example demonstrates adding a tag to the point.
 * [example04.cpp](examples/example04.cpp) This example demonstrates removing a timestamp from a point.
 * [example05.cpp](examples/example05.cpp) This example demonstrates setting a custom timestamp.
-* [example06.cpp](examples/example06.cpp) This example demonstrates adding an INSERT prefix.
+* [example06.cpp](examples/example06.cpp) This example demonstrates changing the timestamp resolution.
+* [example07.cpp](examples/example07.cpp) This example demonstrates adding an INSERT prefix.
 
 Not all examples are created yet. See the [unit tests](tests/serializers_tests.cpp) for more examples. 
 
