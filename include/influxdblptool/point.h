@@ -10,8 +10,6 @@ namespace influxdblptool {
     using optional_timestamp = std::optional<std::chrono::system_clock::time_point>;
 
     namespace time {
-        std::chrono::system_clock::time_point now();
-        using current_time_provider = std::chrono::system_clock::time_point (*)();
 
         template<typename Duration=std::chrono::nanoseconds>
         std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint) {
@@ -77,7 +75,7 @@ namespace influxdblptool {
 
         };
 
-        template<typename Measurement_value, typename Tags_map, typename Fields_map, time::current_time_provider now>
+        template<typename Measurement_value, typename Tags_map, typename Fields_map, auto now>
         class point : public serializable_config {
             Measurement_value measurement_;
             Fields_map fields_;
@@ -155,9 +153,9 @@ namespace influxdblptool {
         return o;
     }
 
-    template <time::current_time_provider now>
+    template <auto now>
     using point_custom_timestamp = intern::point<measurement_value, tags_map, fields_map, now>;
-    using point = point_custom_timestamp<time::now>;
+    using point = point_custom_timestamp<std::chrono::system_clock::now>;
     using points = intern::points<point>;
 
 }
