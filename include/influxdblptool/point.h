@@ -9,25 +9,9 @@ namespace influxdblptool {
 
     using optional_timestamp = std::optional<std::chrono::system_clock::time_point>;
 
-    namespace time {
-
-        template<typename Duration=std::chrono::nanoseconds>
-        std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint) {
-            // This assumes that epoch is 1970-01-01T00:00:00Z, which it probably is in case of a system_clock. However,
-            // technically it could be anything, because it is not specified in the spec of c++17. In the spec of c++2a
-            // it is specified. So, lets assume all library implementors have this implemented as 1970-01-01T00:00:00Z
-            // If a bug arises, it might be caused by a library that implemented a different epoch for system_clock.
-            s << std::chrono::duration_cast<Duration>(timePoint.time_since_epoch()).count();
-            return s;
-        }
-
-        using Serialize_timepoint = std::ostream& (*)(std::ostream& s, const std::chrono::system_clock::time_point& timePoint);
-    }
-
     struct prefix_base {
         [[nodiscard]] virtual std::string get() const = 0;
     };
-
 
     struct insert_prefix_type : prefix_base {
         [[nodiscard]] std::string get() const override;
@@ -35,32 +19,25 @@ namespace influxdblptool {
 
     inline constexpr insert_prefix_type insert_prefix = insert_prefix_type{};
 
-    template <typename T> struct is_valid_duration : std::false_type {};
-    template <>struct is_valid_duration<std::chrono::seconds> : std::true_type {};
-    template <>struct is_valid_duration<std::chrono::milliseconds> : std::true_type {};
-    template <>struct is_valid_duration<std::chrono::microseconds> : std::true_type {};
-    template <>struct is_valid_duration<std::chrono::nanoseconds> : std::true_type {};
-    template<typename T> inline constexpr bool is_valid_duration_v = is_valid_duration<T>::value;
 
-    template<typename Duration, typename std::enable_if<is_valid_duration_v<Duration>,int>::type = 0>
-    struct timestamp_resolution_type {
-        using type = Duration;
+    enum class timestamp_resolution {
+        nanoseconds,
+        microseconds,
+        milliseconds,
+        seconds,
     };
-    template<typename Duration>
-    inline constexpr timestamp_resolution_type timestamp_resolution = timestamp_resolution_type<Duration>{};
 
     namespace intern {
-
         class serializable_config {
             std::string prefix_{};
-            time::Serialize_timepoint timepoint_serializer_ = time::serialize_timepoint<std::chrono::nanoseconds>;
+            timestamp_resolution timestamp_resolution_{timestamp_resolution::nanoseconds};
         public:
-            void set_timepoint_serializer(time::Serialize_timepoint ts) {
-                timepoint_serializer_ = ts;
+            void set_current_timestamp_resolution(timestamp_resolution ts) {
+                timestamp_resolution_ = ts;
             }
 
-            [[nodiscard]] time::Serialize_timepoint timepoint_serializer() const {
-                return timepoint_serializer_;
+            [[nodiscard]] timestamp_resolution current_timestamp_resolution() const {
+                return timestamp_resolution_;
             }
 
             void set_prefix(const prefix_base &p) {
@@ -139,10 +116,10 @@ namespace influxdblptool {
 
     }
 
-    template<typename Type, typename Duration>
+    template<typename Type>
     typename std::enable_if<std::is_base_of_v<intern::serializable_config,Type>,Type>::type&
-    operator<<(Type& o,timestamp_resolution_type<Duration>) {
-        o.set_timepoint_serializer(time::serialize_timepoint<Duration>);
+    operator<<(Type& o,timestamp_resolution tr) {
+        o.set_current_timestamp_resolution(tr);
         return o;
     }
 

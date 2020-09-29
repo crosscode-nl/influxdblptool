@@ -9,8 +9,10 @@
 
 namespace influxdblptool {
 
+    std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint, timestamp_resolution tr);
+
     template <auto now>
-    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, time::Serialize_timepoint serialize_timepoint) {
+    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, timestamp_resolution tr) {
         s << item.measurement();
         if (!item.tags().empty()) {
             s << "," << item.tags();
@@ -18,23 +20,23 @@ namespace influxdblptool {
         s << " " << item.fields();
         if (item.timestamp().has_value()) {
             s << " ";
-            serialize_timepoint(s, item.timestamp().value());
+            serialize_timepoint(s, item.timestamp().value(), tr);
         }
         return s;
     }
 
     template <auto now>
-    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, time::Serialize_timepoint serialize_timepoint, const std::string& prefix) {
+    std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, timestamp_resolution tr, const std::string& prefix) {
         s << prefix;
-        return serialize_point_custom_timestamp(s, item,serialize_timepoint);
+        return serialize_point_custom_timestamp(s, item, tr);
     }
 
     template <auto now>
     std::ostream& operator<<(std::ostream& s, const point_custom_timestamp<now>& item){
         if (empty(item.prefix())) {
-            return serialize_point_custom_timestamp(s, item, item.timepoint_serializer());
+            return serialize_point_custom_timestamp(s, item, item.current_timestamp_resolution());
         }
-        return serialize_point_custom_timestamp(s, item, item.timepoint_serializer(),item.prefix());
+        return serialize_point_custom_timestamp(s, item, item.current_timestamp_resolution(),item.prefix());
     }
 
     std::ostream& operator<<(std::ostream& s, const tag_key& tk);

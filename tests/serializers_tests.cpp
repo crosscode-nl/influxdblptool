@@ -22,17 +22,17 @@ TEST_SUITE("serializers") {
         pt << tag{"name","unittest"} << field{"memory%",40} << 2s;
         std::stringstream s;
         SUBCASE("microseconds") {
-            pt << timestamp_resolution<std::chrono::microseconds>;
+            pt << timestamp_resolution::microseconds;
             s << pt;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000000");
         }
         SUBCASE("milliseconds") {
-            pt << timestamp_resolution<std::chrono::milliseconds>;
+            pt << timestamp_resolution::milliseconds;
             s << pt;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000");
         }
         SUBCASE("seconds") {
-            pt << timestamp_resolution<std::chrono::seconds>;
+            pt << timestamp_resolution::seconds;
             s << pt;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2");
         }
@@ -45,21 +45,21 @@ TEST_SUITE("serializers") {
         pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 1s);
         std::stringstream s;
         SUBCASE("microseconds") {
-            pts << timestamp_resolution<std::chrono::microseconds>;
+            pts << timestamp_resolution::microseconds;
             s << pts;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000000\n"
                                "system,name=unittest cpu%=50i,memory%=40i 3000000\n"
                                "system,name=unittest cpu%=50i,memory%=40i 1000000\n");
         }
         SUBCASE("milliseconds") {
-            pts << timestamp_resolution<std::chrono::milliseconds>;
+            pts << timestamp_resolution::milliseconds;
             s << pts;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2000\n"
                                "system,name=unittest cpu%=50i,memory%=40i 3000\n"
                                "system,name=unittest cpu%=50i,memory%=40i 1000\n");
         }
         SUBCASE("milliseconds") {
-            pts << timestamp_resolution<std::chrono::seconds>;
+            pts << timestamp_resolution::seconds;
             s << pts;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2\n"
                                "system,name=unittest cpu%=50i,memory%=40i 3\n"

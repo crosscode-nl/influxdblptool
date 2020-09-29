@@ -13,17 +13,17 @@ int main() {
     std::cout << ptn << "\n"; // default resolution is nanoseconds
 
     point ptmu{"measurement",field{"field_key","field_value"}};
-    ptmu << timestamp_resolution<std::chrono::microseconds>; // set resolution to microseconds
+    ptmu << timestamp_resolution::microseconds; // set resolution to microseconds
     ptmu << 1000s;
     std::cout << ptmu << "\n";
 
     point ptm{"measurement",field{"field_key","field_value"}};
-    ptm << timestamp_resolution<std::chrono::milliseconds>; // set resolution to milliseconds
+    ptm << timestamp_resolution::milliseconds; // set resolution to milliseconds
     ptm << 1000s;
     std::cout << ptm << "\n";
 
     point pts{"measurement",field{"field_key","field_value"}};
-    pts << timestamp_resolution<std::chrono::seconds>; // set resolution to seconds
+    pts << timestamp_resolution::seconds; // set resolution to seconds
     pts << 1000s;
     std::cout << pts;
 

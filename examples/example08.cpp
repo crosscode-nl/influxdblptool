@@ -24,10 +24,10 @@ int main() {
 
     points pts;
     pts << insert_prefix;
-    pts << timestamp_resolution<std::chrono::milliseconds>;
+    pts << timestamp_resolution::milliseconds;
     pts << (make_point() << 1s);
     // setting timestamp_resolution has no effect
-    pts << (make_point() << 2s << timestamp_resolution<std::chrono::microseconds>);
+    pts << (make_point() << 2s << timestamp_resolution::microseconds);
     std::cout << pts;
 
     return 0;
