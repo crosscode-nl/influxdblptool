@@ -11,7 +11,7 @@ std::chrono::system_clock::time_point fake_now() {
 TEST_SUITE("serializers") {
     TEST_CASE("point serialize correctly with INSERT prefix") {
         point pt{"system",field{"cpu%", 50}};
-        pt << insert_prefix{};
+        pt << insert_prefix;
         pt << tag{"name","unittest"} << field{"memory%",40} << 2s;
         std::stringstream s;
         s << pt;
@@ -68,7 +68,7 @@ TEST_SUITE("serializers") {
     }
     TEST_CASE("multiple points serialize correctly with INSERT prefix") {
         points pts;
-        pts << insert_prefix{};
+        pts << insert_prefix;
         pts << (point{"system",field{"cpu%", 50}} << tag{"name","unittest"} << field{"memory%",40} << 2s);
         pts << (point{"system",field{"cpu%", 1}} << tag{"name","unittest"} << field{"memory%",30} << 3s);
         pts << (point{"system",field{"cpu%", 1}} << tag{"name","unittest"} << field{"memory%",10} << 1s);

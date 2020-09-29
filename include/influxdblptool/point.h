@@ -31,9 +31,11 @@ namespace influxdblptool {
     };
 
 
-    struct insert_prefix : prefix_base {
+    struct insert_prefix_type : prefix_base {
         [[nodiscard]] std::string get() const override;
     };
+
+    inline constexpr insert_prefix_type insert_prefix = insert_prefix_type{};
 
     template <typename T> struct is_valid_duration : std::false_type {};
     template <>struct is_valid_duration<std::chrono::seconds> : std::true_type {};
@@ -146,7 +148,7 @@ namespace influxdblptool {
 
     template<typename Type>
     typename std::enable_if<std::is_base_of_v<intern::serializable_config,Type>,Type>::type&
-    operator<<(Type& o,const insert_prefix& p) {
+    operator<<(Type& o,const insert_prefix_type& p) {
         o.set_prefix(p);
         return o;
     }

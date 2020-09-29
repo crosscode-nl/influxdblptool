@@ -42,13 +42,13 @@ See the file [LICENSE](LICENSE).
 * [example02.cpp](examples/example02.cpp) This example demonstrates adding fields and field types.  
 * [example03.cpp](examples/example03.cpp) This example demonstrates adding a tag to the point.
 * [example04.cpp](examples/example04.cpp) This example demonstrates removing a timestamp from a point.
-* [example04.cpp](examples/example05.cpp) This example demonstrates setting a custom timestamp.
+* [example05.cpp](examples/example05.cpp) This example demonstrates setting a custom timestamp.
+* [example06.cpp](examples/example06.cpp) This example demonstrates adding an INSERT prefix.
 
 Not all examples are created yet. See the [unit tests](tests/serializers_tests.cpp) for more examples. 
 
 ## TODO
 
-* Add a fluent interface.
 * Add comments for Doxygen doc generation.
 * Add more examples.
 * Setup continuous integration.

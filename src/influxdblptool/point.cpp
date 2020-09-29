@@ -13,7 +13,7 @@ namespace influxdblptool {
 
     }
 
-    [[nodiscard]] std::string insert_prefix::get() const {
+    [[nodiscard]] std::string insert_prefix_type::get() const {
         return "INSERT "s;
     }
 
