@@ -47,6 +47,7 @@ target_include_directories(influxdblptool PUBLIC include)
 
 add_subdirectory(tests)
 add_subdirectory(examples)
+add_subdirectory(benchmarks)
 
 
 
