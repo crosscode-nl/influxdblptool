@@ -36,40 +36,20 @@ namespace influxdblptool::escapers {
         return escape<',', ' '>(s);
     }
 
-    std::size_t escape_measurement_value_count(std::string_view s) {
-        return escape_count<',', ' '>(s);
-    }
-
     std::string escape_tag_key(std::string_view s) {
         return escape<',', '=', ' '>(s);
-    }
-
-    std::size_t escape_tag_key_count(std::string_view s) {
-        return escape_count<',', '=', ' '>(s);
     }
 
     std::string escape_tag_value(std::string_view s) {
         return escape<',', '=', ' '>(s);
     }
 
-    std::size_t escape_tag_value_count(std::string_view s) {
-        return escape_count<',', '=', ' '>(s);
-    }
-
     std::string escape_field_key(std::string_view s) {
         return escape<',', '=', ' '>(s);
     }
 
-    std::size_t escape_field_key_count(std::string_view s) {
-        return escape_count<',', '=', ' '>(s);
-    }
-
     std::string escape_field_string_value(std::string_view s) {
         return escape<'\"', '\\'>(s);
-    }
-
-    std::size_t escape_field_string_value_count(std::string_view s) {
-        return escape_count<'\"', '\\'>(s);
     }
 
 }
