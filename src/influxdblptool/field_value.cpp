@@ -9,11 +9,12 @@ namespace influxdblptool {
     field_double::field_double(float value) : value_(value) {
         validators::throw_when_double_value_invalid(value_);
     }
-
     field_double::field_double(const field_double& s) : value_(s.value_) {
         validators::throw_when_double_value_invalid(value_);
     }
-
+    field_double::field_double(field_double&& s) : value_(std::move(s.value_)) {
+        validators::throw_when_double_value_invalid(value_);
+    }
     field_double::operator double() const {
         return value_;
     }

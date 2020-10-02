@@ -5,9 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(cmake/googlebenchmark.cmake)
 
-SET(SRC
-        src/stack_container_bm.cpp
-)
+file(GLOB BENCHMARKS_SRC "src/*.cpp")
 
-add_executable(benchmarks ${SRC})
-target_link_libraries(benchmarks ${3RDPARTY_LIBRARIES})
+add_executable(benchmarks ${BENCHMARKS_SRC})
+target_link_libraries(benchmarks ${3RDPARTY_LIBRARIES} influxdblptool)

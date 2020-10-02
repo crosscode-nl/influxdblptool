@@ -138,6 +138,11 @@ namespace influxdblptool {
             std::vector<Point> points_{};
         public:
 
+            void reserve(typename std::vector<Point>::size_type size) {
+                points_.reserve(size);
+            }
+
+
             points<Point>& operator<<(Point p) {
                 points_.emplace_back(std::move(p));
                 return *this;

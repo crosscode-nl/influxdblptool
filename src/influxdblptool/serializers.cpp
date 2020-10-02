@@ -67,11 +67,11 @@ namespace influxdblptool {
         }
 
         void operator()(const uint64_t& v) {
-            *os_ << std::to_string(v) << "u";
+            *os_ << std::to_string(v) + "u";
         }
 
         void operator()(const int64_t& v) {
-            *os_ << std::to_string(v) << "i";
+            *os_ << std::to_string(v) + "i";
         }
     };
 
@@ -88,7 +88,7 @@ namespace influxdblptool {
     template<typename TValue>
     std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, timestamp_resolution tr) {
         auto serialize = [&s,&tr](auto item) mutable {
-            serialize_point_custom_timestamp(s,item, tr) << "\n";
+            serialize_point_custom_timestamp(s,item, tr) << '\n';
         };
         std::for_each(begin(items), end(items), serialize);
         return s;
@@ -97,7 +97,7 @@ namespace influxdblptool {
     template<typename TValue>
     std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, timestamp_resolution tr, const std::string &prefix) {
         auto serialize = [&s,&prefix,&tr](auto item) mutable {
-            serialize_point_custom_timestamp(s,item, tr, prefix) << "\n";
+            serialize_point_custom_timestamp(s,item, tr, prefix) << '\n';
         };
         std::for_each(begin(items), end(items), serialize);
         return s;

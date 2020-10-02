@@ -15,11 +15,11 @@ namespace influxdblptool {
     std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, timestamp_resolution tr) {
         s << item.measurement();
         if (!item.tags().empty()) {
-            s << "," << item.tags();
+            s << ',' << item.tags();
         }
-        s << " " << item.fields();
+        s << ' ' << item.fields();
         if (item.timestamp().has_value()) {
-            s << " ";
+            s << ' ';
             serialize_timepoint(s, item.timestamp().value(), tr);
         }
         return s;
