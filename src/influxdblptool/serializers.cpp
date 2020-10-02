@@ -12,13 +12,15 @@ namespace influxdblptool {
         switch (tr) {
 
             case timestamp_resolution::nanoseconds:
-                return (s << std::chrono::duration_cast<std::chrono::nanoseconds>(timePoint.time_since_epoch()).count());
+                return (s << " " << std::chrono::duration_cast<std::chrono::nanoseconds>(timePoint.time_since_epoch()).count());
             case timestamp_resolution::microseconds:
-                return (s << std::chrono::duration_cast<std::chrono::microseconds>(timePoint.time_since_epoch()).count());
+                return (s << " " << std::chrono::duration_cast<std::chrono::microseconds>(timePoint.time_since_epoch()).count());
             case timestamp_resolution::milliseconds:
-                return (s << std::chrono::duration_cast<std::chrono::milliseconds>(timePoint.time_since_epoch()).count());
+                return (s << " " << std::chrono::duration_cast<std::chrono::milliseconds>(timePoint.time_since_epoch()).count());
             case timestamp_resolution::seconds:
-                return (s << std::chrono::duration_cast<std::chrono::seconds>(timePoint.time_since_epoch()).count());
+                return (s << " " << std::chrono::duration_cast<std::chrono::seconds>(timePoint.time_since_epoch()).count());
+            case timestamp_resolution::none:
+                return s;
         }
         return s;
     }

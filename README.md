@@ -52,7 +52,6 @@ See the file [LICENSE](LICENSE).
 ## TODO
 
 * Add comments for Doxygen doc generation.
-* Add more examples.
 * Add option to disable timestamp via setting timestamp resolution.
 * Setup continuous integration.
 * Code quality assessment by a 3rd party.

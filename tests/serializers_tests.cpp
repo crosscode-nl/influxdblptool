@@ -36,6 +36,11 @@ TEST_SUITE("serializers") {
             s << pt;
             REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i 2");
         }
+        SUBCASE("none") {
+            pt << timestamp_resolution::none;
+            s << pt;
+            REQUIRE(s.str() == "system,name=unittest cpu%=50i,memory%=40i");
+        }
     }
     TEST_CASE("multiple points serialize correctly with time serializer resolution set to:") {
         points pts;

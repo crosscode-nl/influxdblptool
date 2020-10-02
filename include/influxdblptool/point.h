@@ -28,6 +28,7 @@ namespace influxdblptool {
         microseconds,
         milliseconds,
         seconds,
+        none
     };
 
     namespace intern {
@@ -141,7 +142,6 @@ namespace influxdblptool {
             void reserve(typename std::vector<Point>::size_type size) {
                 points_.reserve(size);
             }
-
 
             points<Point>& operator<<(Point p) {
                 points_.emplace_back(std::move(p));

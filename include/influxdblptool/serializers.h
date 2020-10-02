@@ -19,7 +19,6 @@ namespace influxdblptool {
         }
         s << ' ' << item.fields();
         if (item.timestamp().has_value()) {
-            s << ' ';
             serialize_timepoint(s, item.timestamp().value(), tr);
         }
         return s;
