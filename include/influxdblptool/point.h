@@ -8,6 +8,9 @@
 /// This is the main namespace. Users of this library only need to use this namespace.
 namespace influxdblptool {
 
+    /// \brief The option_timestamp can be used to provide a time_point or nothing.
+    ///
+    /// This allows for selectively disable timestamps on points.
     using optional_timestamp = std::optional<std::chrono::system_clock::time_point>;
 
     /// base class for prefixes.
@@ -23,7 +26,7 @@ namespace influxdblptool {
     /// insert prefix is used for enabling insert prefixes on point or points.
     inline constexpr insert_prefix_type insert_prefix = insert_prefix_type{};
 
-    /// timestamp_resolution enumeration is used for changing the timestamp resolution on point or points.
+    /// \brief timestamp_resolution enumeration is used for changing the timestamp resolution on point or points.
     enum class timestamp_resolution {
         /// Used to set timestamp serialization resolution to nanoseconds.
         nanoseconds,
@@ -39,22 +42,32 @@ namespace influxdblptool {
 
     /// This is an internal namespace. It is used to hide types from the main namespace. It is internally used by this library.
     namespace intern {
+        /// Base class for types that allow setting a prefix or timestamp_resolution. points and point both need
+        /// this functionality.
         class serializable_config {
             std::string prefix_{};
             timestamp_resolution timestamp_resolution_{timestamp_resolution::nanoseconds};
         public:
+            /// Set the timestamp resolution to be used during serialization.
+            /// \param ts The timestamp_resolution
             void set_current_timestamp_resolution(timestamp_resolution ts) {
                 timestamp_resolution_ = ts;
             }
 
+            /// Returns the timestamp resolution to be used during serialization.
+            /// \return the timestamp resolution to be used during serialization.
             [[nodiscard]] timestamp_resolution current_timestamp_resolution() const {
                 return timestamp_resolution_;
             }
 
+            /// Set the prefix to prepend for each point that is serialized.
+            /// \param p The prefix to prepend for each point that is serialized.
             void set_prefix(const prefix_base &p) {
                 prefix_ = p.get();
             }
 
+            /// Returns the prefix to prepend for each point that is serialized.
+            /// \return The prefix to prepend for each point that is serialized.
             [[nodiscard]] std::string prefix() const {
                 return prefix_;
             }
@@ -141,20 +154,30 @@ namespace influxdblptool {
 
         };
 
+        /// A point aggregate that accepts any any point type.
+        /// This is templated to enable unit testing with fakes.
+        /// \tparam Point the type of point in this collectin.
         template <typename Point>
         class points : public serializable_config {
             std::vector<Point> points_{};
         public:
 
+            /// Reserve size when you know the amount of points you are going to add. This decreases allocations.
+            /// \param size The vector size
             void reserve(typename std::vector<Point>::size_type size) {
                 points_.reserve(size);
             }
 
+            /// Output operator that accepts a point.
+            /// \param p The point to add to points.
+            /// \return A reference to the object the point is outputted to.
             points<Point>& operator<<(Point p) {
                 points_.emplace_back(std::move(p));
                 return *this;
             }
 
+            /// Cast operator that returns a const reference to the vector<Point> member field.
+            /// \return a const reference to the vector<Point> member field.
             explicit operator const std::vector<Point>&() const {
                 return points_;
             }
@@ -162,6 +185,12 @@ namespace influxdblptool {
 
     }
 
+    /// Output operator that accepts an object of timestamp_resolution.
+    /// This is used to change the resolution of timestamps serialization.
+    /// \tparam A type inheriting intern::serializable_config, basically point or points.
+    /// \param o An object of type inheriting intern::serializable_config, basically point or points.
+    /// \param tr An object of timestamp_resolution.
+    /// \return The operator returns a reference to the object of type inheriting intern::serializable_config, basically point or points.
     template<typename Type>
     typename std::enable_if<std::is_base_of_v<intern::serializable_config,Type>,Type>::type&
     operator<<(Type& o,timestamp_resolution tr) {
@@ -169,18 +198,38 @@ namespace influxdblptool {
         return o;
     }
 
+    /// Output operator that accepts an object implementing prefix_base.
+    /// This is used to allow a prefix for each serialized point to be enabled.
+    /// \tparam A type inheriting intern::serializable_config, basically point or points.
+    /// \param o An object of type inheriting intern::serializable_config, basically point or points.
+    /// \param p An object implementing prefix_base.
+    /// \return The operator returns a reference to the object of type inheriting intern::serializable_config, basically point or points.
     template<typename Type>
     typename std::enable_if<std::is_base_of_v<intern::serializable_config,Type>,Type>::type&
-    operator<<(Type& o,const insert_prefix_type& p) {
+    operator<<(Type& o,const prefix_base& p) {
         o.set_prefix(p);
         return o;
     }
 
+    /// \brief This is a serializable point template that allows for a different implementation for now being passed as
+    //// a parameter. Used for testing.
     template <auto now>
     using point_custom_timestamp = intern::point<measurement_value, tags_map, fields_map, now>;
+    /// \brief This is a serializable point. See examples how to use this.
     using point = point_custom_timestamp<std::chrono::system_clock::now>;
+    /// \brief This is a serializable collection of point. See examples how to use this.
     using points = intern::points<point>;
 
 }
+
+/// \example example01.cpp
+/// \example example02.cpp
+/// \example example03.cpp
+/// \example example04.cpp
+/// \example example05.cpp
+/// \example example06.cpp
+/// \example example07.cpp
+/// \example example08.cpp
+/// \example example09.cpp
 
 #endif //INFLUXDBLPTOOL_POINT_H

@@ -9,6 +9,9 @@ namespace influxdblptool {
 
     namespace intern {
 
+        /// A validated string accept string values, but will validate input on assignment or initialization.
+        /// It will use the validator Callable passed via throw_when_invalid.
+        /// \tparam throw_when_invalid The validator Callable that throws a validation_exception on invalid input.
         template <auto throw_when_invalid>
         class validated_string {
             std::string value_;

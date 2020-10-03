@@ -37,6 +37,8 @@ namespace influxdblptool {
 
     }
 
+    /// field_double is a type that accepts valid floats and doubles.
+    /// Infinite or NaN doubles and floats are invalid an will throw and validation_exception.
     class field_double {
         double value_;
     public:
@@ -52,6 +54,9 @@ namespace influxdblptool {
 
     using field_variant = std::variant<field_double,field_string_value,bool,std::uint64_t,std::int64_t>;
 
+    /// field_value can contain multiple types: double, string, bool, int64 and unsigned int64.
+    /// It will try to cast C++ types to validated types. Validated types will throw an validation_exception
+    /// when the input is not valid for that type.
     class field_value  {
     private:
         field_variant field_variant_;
