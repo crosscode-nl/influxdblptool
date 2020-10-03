@@ -7,6 +7,7 @@
 
 namespace influxdblptool {
 
+    /// The traits namespace contains all custom type traits. It is internally used by this library.
     namespace traits {
 
         template <typename T>

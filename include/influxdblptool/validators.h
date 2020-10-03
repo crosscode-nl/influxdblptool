@@ -10,6 +10,7 @@ namespace influxdblptool {
         using std::invalid_argument::invalid_argument;
     };
 
+    /// The validatos namespace contains all validators. It is internally used by this library.
     namespace validators {
 
         void throw_when_measurement_invalid(std::string_view input);

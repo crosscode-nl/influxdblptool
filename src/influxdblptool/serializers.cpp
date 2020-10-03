@@ -50,35 +50,38 @@ namespace influxdblptool {
         return s;
     }
 
-    class serializing_visitor {
-        std::ostream *os_;
-    public:
-        explicit serializing_visitor(std::ostream *os) : os_(os) {}
+    namespace intern {
 
-        void operator()(const field_double& v) {
-            *os_ << (double) v;
-        }
+        class serializing_visitor {
+            std::ostream *os_;
+        public:
+            explicit serializing_visitor(std::ostream *os) : os_(os) {}
 
-        void operator()(const field_string_value& v) {
-            *os_ << "\"" << v << "\"";
+            void operator()(const field_double &v) {
+                *os_ << (double) v;
+            }
 
-        }
+            void operator()(const field_string_value &v) {
+                *os_ << "\"" << v << "\"";
 
-        void operator()(const bool& v) {
-            *os_ << (v ? "t" : "f");
-        }
+            }
 
-        void operator()(const uint64_t& v) {
-            *os_ << std::to_string(v) + "u";
-        }
+            void operator()(const bool &v) {
+                *os_ << (v ? "t" : "f");
+            }
 
-        void operator()(const int64_t& v) {
-            *os_ << std::to_string(v) + "i";
-        }
-    };
+            void operator()(const uint64_t &v) {
+                *os_ << std::to_string(v) + "u";
+            }
+
+            void operator()(const int64_t &v) {
+                *os_ << std::to_string(v) + "i";
+            }
+        };
+    }
 
     std::ostream& operator<<(std::ostream& s, const field_variant& fv) {
-        std::visit(serializing_visitor{&s}, fv);
+        std::visit(intern::serializing_visitor{&s}, fv);
         return s;
     }
 

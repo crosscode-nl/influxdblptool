@@ -5,32 +5,39 @@
 #include <chrono>
 #include <vector>
 
+/// This is the main namespace. Users of this library only need to use this namespace.
 namespace influxdblptool {
 
     using optional_timestamp = std::optional<std::chrono::system_clock::time_point>;
 
-    // base class for prefixes.
+    /// base class for prefixes.
     struct prefix_base {
         [[nodiscard]] virtual std::string get() const = 0;
     };
 
-    // implementation for an insert prefix
+    /// implementation for an insert prefix
     struct insert_prefix_type : prefix_base {
         [[nodiscard]] std::string get() const override;
     };
 
-    // insert prefix is used for enabling insert prefixes on point or points.
+    /// insert prefix is used for enabling insert prefixes on point or points.
     inline constexpr insert_prefix_type insert_prefix = insert_prefix_type{};
 
     /// timestamp_resolution enumeration is used for changing the timestamp resolution on point or points.
     enum class timestamp_resolution {
+        /// Used to set timestamp serialization resolution to nanoseconds.
         nanoseconds,
+        /// Used to set timestamp serialization resolution to microseconds.
         microseconds,
+        /// Used to set timestamp serialization resolution to milliseconds.
         milliseconds,
+        /// Used to set timestamp serialization resolution to seconds.
         seconds,
+        /// Used to disable timestamp serialization.
         none
     };
 
+    /// This is an internal namespace. It is used to hide types from the main namespace. It is internally used by this library.
     namespace intern {
         class serializable_config {
             std::string prefix_{};

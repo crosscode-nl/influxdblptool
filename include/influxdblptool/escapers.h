@@ -4,6 +4,7 @@
 #include <sstream>
 #include <array>
 
+/// The escapers namespace contains all escapers. It is internally used by this library.
 namespace influxdblptool::escapers {
 
     std::string escape_measurement_value(std::string_view s);

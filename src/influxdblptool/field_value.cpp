@@ -30,16 +30,20 @@ namespace influxdblptool {
         return *this;
     }
 
-    class assigning_visitor {
-        field_value *f_;
-    public:
-        explicit assigning_visitor(field_value* f) : f_(f) {}
+    namespace intern {
 
-        template <typename T>
-        void operator()(const T& v) {
-            *f_ = v;
-        }
-    };
+        class assigning_visitor {
+            field_value *f_;
+        public:
+            explicit assigning_visitor(field_value *f) : f_(f) {}
+
+            template<typename T>
+            void operator()(const T &v) {
+                *f_ = v;
+            }
+        };
+
+    }
 
     field_value::field_value(field_string_value v) : field_variant_{std::move(v)} {}
     field_value::field_value(field_double v) : field_variant_{std::move(v)} {}
@@ -79,8 +83,7 @@ namespace influxdblptool {
     }
 
     field_value& field_value::operator=(const field_value& v) {
-        assigning_visitor av{this};
-        std::visit(av,v.field_variant_);
+        std::visit(intern::assigning_visitor{this},v.field_variant_);
         return *this;
     }
 
