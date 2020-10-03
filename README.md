@@ -51,6 +51,6 @@ See the file [LICENSE](LICENSE).
 
 ## TODO
 
-* Add comments for Doxygen doc generation.
 * Setup continuous integration.
 * Code quality assessment by a 3rd party.
+* Write usage/installation guide.
