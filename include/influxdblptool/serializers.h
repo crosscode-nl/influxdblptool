@@ -9,8 +9,19 @@
 
 namespace influxdblptool {
 
+    /// Serializes a time_point.
+    /// \param s The ostream to output to.
+    /// \param timePoint The time_point to serialize.
+    /// \param tr The resolution of the timestamp to serialize.
+    /// \return The ostream that is outputted to.
     std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint, timestamp_resolution tr);
 
+    /// Serializes a point with a custom 'now' Callable.
+    /// \tparam now Callable that returns current time.
+    /// \param s The ostream to output to.
+    /// \param item The point with a custom 'now' Callable.
+    /// \param tr The resolution of the timestamp to serialize.
+    /// \return The ostream that is outputted to.
     template <auto now>
     std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, timestamp_resolution tr) {
         s << item.measurement();
@@ -24,12 +35,24 @@ namespace influxdblptool {
         return s;
     }
 
+    /// Serializes a point with a custom 'now' Callable.
+    /// \tparam now Callable that returns current time.
+    /// \param s The ostream to output to.
+    /// \param item The point with a custom 'now' Callable to serialize.
+    /// \param tr The resolution of the timestamp to serialize.
+    /// \param prefix Prefix to prepend for the serialized point with custom 'now' Callable.
+    /// \return The ostream that is outputted to.
     template <auto now>
     std::ostream& serialize_point_custom_timestamp(std::ostream& s, const point_custom_timestamp<now>& item, timestamp_resolution tr, const std::string& prefix) {
         s << prefix;
         return serialize_point_custom_timestamp(s, item, tr);
     }
 
+    /// Serializes a point with a custom 'now' Callable.
+    /// \tparam now Callable that returns current time.
+    /// \param s The ostream to output to.
+    /// \param item The point with a custom 'now' Callable to serialize.
+    /// \return The ostream to output to.
     template <auto now>
     std::ostream& operator<<(std::ostream& s, const point_custom_timestamp<now>& item){
         if (empty(item.prefix())) {
