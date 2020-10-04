@@ -12,13 +12,6 @@ See:
 * [Line Protocol 1.8 Reference](https://docs.influxdata.com/influxdb/v1.8/write_protocols/line_protocol_reference/)
 * [Line Protocol 2.0 Reference](https://v2.docs.influxdata.com/v2.0/reference/syntax/line-protocol/)
 
-## License
-
-MIT
-Copyright 2020 CrossCode / P. Vollebregt 
-
-See the file [LICENSE](LICENSE).
-
 ## Design choices
 
 * An easy to use interface for using C++ output operators for consumers of this library.
@@ -49,8 +42,78 @@ See the file [LICENSE](LICENSE).
 * [example08.cpp](examples/example08.cpp) This example demonstrates the points collection.
 * [example09.cpp](examples/example09.cpp) This example demonstrates validation. 
 
+## Installation
+
+There are multiple ways to use and install this project. I will describe my favorite option only.
+
+Consider the following example project: 
+
+```cmake
+cmake_minimum_required(VERSION 3.17)
+project(example)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(example main.cpp)
+```
+
+This will build a C++17 project with a main.cpp file.
+
+Now to add this library to the project you can use [FetchContent CMake module](https://cmake.org/cmake/help/v3.18/module/FetchContent.html). 
+
+The minimal requirement is to add: 
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+        influxdblptool
+        GIT_REPOSITORY https://github.com/crosscode-nl/influxdblptool
+)
+FetchContent_MakeAvailable(influxdblptool)
+```
+
+And to link against the library: 
+
+```cmake
+target_link_libraries(example influxdblptool)
+```
+
+Which will result in the following CMakeLists.txt:
+
+```cmake
+cmake_minimum_required(VERSION 3.17)
+project(example)
+
+include(FetchContent)
+FetchContent_Declare(
+        influxdblptool
+        GIT_REPOSITORY https://github.com/crosscode-nl/influxdblptool
+)
+FetchContent_MakeAvailable(influxdblptool)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(example main.cpp)
+target_link_libraries(example influxdblptool)
+```
+
+Now see the examples to learn how to use this library.
+
+TIP: Use `GIT_TAG` in `FetchContent_Declare` to pin a certain version to get reproducible builds.
+
 ## TODO
 
 * Setup continuous integration.
 * Code quality assessment by a 3rd party.
-* Write usage/installation guide.
+
+## License
+
+MIT License
+
+Copyright (c) 2019 CrossCode / P. Vollebregt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
