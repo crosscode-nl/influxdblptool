@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
 project(influxdblptool
-        VERSION 0.12.0
+        VERSION 0.12.1
         DESCRIPTION "InfluxDb Line Protocol Tool"
         LANGUAGES C CXX)
 
@@ -16,7 +16,7 @@ if (BUILD_INFLUXDBLPTOOL_DOCS)
 include(cmake/doxygen.cmake)
 endif()
 
-configure_file(src/influxdblptool/version.cpp.in src/influxdblptool/version.cpp)
+configure_file(src/influxdblptool/version.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/src/influxdblptool/version.cpp)
 
 list(APPEND INFLUXDBLPTOOL_HEADERS
         include/influxdblptool.h
@@ -36,7 +36,7 @@ list(APPEND INFLUXDBLPTOOL_SRC
         src/influxdblptool/field_value.cpp
         src/influxdblptool/serializers.cpp
         src/influxdblptool/point.cpp
-        ${CMAKE_BINARY_DIR}/src/influxdblptool/version.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/influxdblptool/version.cpp
         )
 
 add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
