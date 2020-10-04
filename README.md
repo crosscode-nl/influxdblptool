@@ -44,7 +44,10 @@ See:
 
 ## Installation
 
-There are multiple ways to use and install this project. I will describe my favorite option only.
+There are multiple ways to add this library to your project. 
+
+I will describe my favorite option only. This method emulates dependency management of more modern 
+languages and build systems like Rust+Cargo and Go as best as it can.
 
 Consider the following example project: 
 
