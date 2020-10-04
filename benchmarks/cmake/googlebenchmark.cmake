@@ -1,6 +1,8 @@
 # Download and unpack googletest at configure time
 configure_file(cmake/googlebenchmark.cmake.in googlebenchmark-download/CMakeLists.txt)
 
+SET(BENCHMARK_ENABLE_GTEST_TESTS OFF)
+
 SET(BENCHMARK_DOWNLOAD_DEPENDENCIES ON)
 
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .

@@ -6,7 +6,15 @@ project(influxdblptool
         LANGUAGES C CXX)
 
 include(cmake/buildsetup.cmake)
+
+option(BUILD_INFLUXDBLPTOOL_TESTS "Set this to ON to build unit tests")
+option(BUILD_INFLUXDBLPTOOL_DOCS "Set this to ON to build docs")
+option(BUILD_INFLUXDBLPTOOL_EXAMPLES "Set this to ON to build examples")
+option(BUILD_INFLUXDBLPTOOL_BENCHMARKS "Set this to ON to build benchmarks")
+
+if (BUILD_INFLUXDBLPTOOL_DOCS)
 include(cmake/doxygen.cmake)
+endif()
 
 configure_file(src/influxdblptool/version.cpp.in src/influxdblptool/version.cpp)
 
@@ -45,9 +53,16 @@ install(DIRECTORY include/influxdblptool DESTINATION ${CMAKE_INSTALL_PREFIX}/inc
 
 target_include_directories(influxdblptool PUBLIC include)
 
-add_subdirectory(tests)
-add_subdirectory(examples)
-add_subdirectory(benchmarks)
+if (BUILD_INFLUXDBLPTOOL_TESTS)
+    add_subdirectory(tests)
+endif()
 
+if (BUILD_INFLUXDBLPTOOL_EXAMPLES)
+    add_subdirectory(examples)
+endif()
+
+if (BUILD_INFLUXDBLPTOOL_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()
 
 
