@@ -62,7 +62,7 @@ add_executable(example main.cpp)
 
 This will build a C++17 project with a main.cpp file.
 
-Now to add this library to the project you can use [FetchContent CMake module](https://cmake.org/cmake/help/v3.18/module/FetchContent.html). 
+Now to add this library to the project you can use the [FetchContent CMake module](https://cmake.org/cmake/help/v3.18/module/FetchContent.html). 
 
 The minimal requirement is to add: 
 
