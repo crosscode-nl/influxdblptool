@@ -1,6 +1,5 @@
 #include "doctest.h"
 #include "influxdblptool/version.h"
-#include <string>
 #include <regex>
 using namespace std::literals;
 
