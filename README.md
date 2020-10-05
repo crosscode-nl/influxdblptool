@@ -106,7 +106,6 @@ TIP: Use `GIT_TAG` in `FetchContent_Declare` to pin a certain version to get rep
 
 ## TODO
 
-* Setup continuous integration.
 * Code quality assessment by a 3rd party.
 
 ## License
