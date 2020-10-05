@@ -73,10 +73,10 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-            - clang-7.0
+            - clang-7
             - cmake
       env:
-        - MATRIX_EVAL="CC=clang-7.0 && CXX=clang++-7.0"
+        - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7"
     - os: linux
       addons:
         apt:
@@ -102,13 +102,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-10.0
           packages:
             - g++-10
-            - clang-10.0
+            - clang-10
             - cmake
       env:
-        - MATRIX_EVAL="CC=clang-10.0 && CXX=clang++-10.0"
+        - MATRIX_EVAL="CC=clang-10 && CXX=clang++-10"
     - os: osx
       osx_image: xcode10.3
     - os: osx
@@ -122,7 +121,7 @@ script:
   - cd build
   - cmake ..
   - make VERBOSE=1
-  - ctest -VV
+  - tests/influxdblptooltests
 branches:
   only:
     - master

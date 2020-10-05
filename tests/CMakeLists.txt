@@ -25,4 +25,6 @@ target_link_libraries(influxdblptooltests influxdblptool ${3RDPARTY_LIBRARIES})
 target_include_directories(influxdblptooltests PUBLIC include)
 target_compile_features(influxdblptooltests PUBLIC cxx_std_17)
 
+include(cmake/doctest.cmake)
+doctest_discover_tests(influxdblptooltests TEST_SPEC *)
 

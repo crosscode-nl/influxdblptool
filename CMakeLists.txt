@@ -55,10 +55,6 @@ install(DIRECTORY include/influxdblptool DESTINATION ${CMAKE_INSTALL_PREFIX}/inc
 
 target_include_directories(influxdblptool PUBLIC include)
 
-if (BUILD_INFLUXDBLPTOOL_TESTS)
-    add_subdirectory(tests)
-endif()
-
 if (BUILD_INFLUXDBLPTOOL_EXAMPLES)
     add_subdirectory(examples)
 endif()
@@ -67,4 +63,7 @@ if (BUILD_INFLUXDBLPTOOL_BENCHMARKS)
     add_subdirectory(benchmarks)
 endif()
 
-
+if (BUILD_INFLUXDBLPTOOL_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
