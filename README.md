@@ -1,4 +1,4 @@
-# InfluxDB Line Writer Protocol
+# InfluxDB Line Writer Protocol [![Build Status](https://travis-ci.com/crosscode-nl/influxdblptool.svg?branch=master)](https://travis-ci.com/crosscode-nl/influxdblptool) 
 
 ## Introduction
 
