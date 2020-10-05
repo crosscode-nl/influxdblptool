@@ -9,6 +9,17 @@
 
 namespace influxdblptool {
 
+    std::ostream& operator<<(std::ostream& s, const tag_key& tk);
+    std::ostream& operator<<(std::ostream& s, const tag_value& tv);
+    std::ostream& operator<<(std::ostream& s, const field_key& fk);
+    std::ostream& operator<<(std::ostream& s, const field_string_value& fsv);
+    std::ostream& operator<<(std::ostream& s, const measurement_value& mv);
+    std::ostream& operator<<(std::ostream& s, const field_variant& fv);
+    std::ostream& operator<<(std::ostream& s, const field_value& fv);
+    std::ostream& operator<<(std::ostream& s, const fields_map& items);
+    std::ostream& operator<<(std::ostream& s, const tags_map& items);
+    std::ostream& operator<<(std::ostream& s, const points& items);
+
     /// Serializes a time_point.
     /// \param s The ostream to output to.
     /// \param timePoint The time_point to serialize.
@@ -61,16 +72,6 @@ namespace influxdblptool {
         return serialize_point_custom_timestamp(s, item, item.current_timestamp_resolution(),item.prefix());
     }
 
-    std::ostream& operator<<(std::ostream& s, const tag_key& tk);
-    std::ostream& operator<<(std::ostream& s, const tag_value& tv);
-    std::ostream& operator<<(std::ostream& s, const field_key& fk);
-    std::ostream& operator<<(std::ostream& s, const field_string_value& fsv);
-    std::ostream& operator<<(std::ostream& s, const measurement_value& mv);
-    std::ostream& operator<<(std::ostream& s, const field_variant& fv);
-    std::ostream& operator<<(std::ostream& s, const field_value& fv);
-    std::ostream& operator<<(std::ostream& s, const fields_map& items);
-    std::ostream& operator<<(std::ostream& s, const tags_map& items);
-    std::ostream& operator<<(std::ostream& s, const points& items);
 
 }
 
