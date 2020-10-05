@@ -82,24 +82,21 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-8
           packages:
             - g++-8
-            - clang-8.0
+            - clang-8
             - cmake
       env:
-        - MATRIX_EVAL="CC=clang-8.0 && CXX=clang++-8.0"
+        - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
     - os: linux
       addons:
         apt:
-          sources:
-            - llvm-toolchain-bionic-9
           packages:
             - g++-9
-            - clang-9.0
+            - clang-9
             - cmake
       env:
-        - MATRIX_EVAL="CC=clang-9.0 && CXX=clang++-9.0"
+        - MATRIX_EVAL="CC=clang-9 && CXX=clang++-9"
     - os: linux
       addons:
         apt:
@@ -112,8 +109,6 @@ matrix:
             - cmake
       env:
         - MATRIX_EVAL="CC=clang-10.0 && CXX=clang++-10.0"
-    - os: osx
-      osx_image: xcode9.4
     - os: osx
       osx_image: xcode10.3
     - os: osx
