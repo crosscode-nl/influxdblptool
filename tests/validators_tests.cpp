@@ -2,6 +2,7 @@
 #include "influxdblptool/validators.h"
 #include <vector>
 #include <algorithm>
+#include <string>
 
 using namespace influxdblptool;
 using namespace influxdblptool::validators;
