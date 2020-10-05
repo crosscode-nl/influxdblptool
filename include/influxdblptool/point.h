@@ -4,6 +4,7 @@
 #include "influxdblptool/string_types.h"
 #include <chrono>
 #include <vector>
+#include <optional>
 
 /// This is the main namespace. Users of this library only need to use this namespace.
 namespace influxdblptool {
