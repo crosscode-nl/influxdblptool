@@ -2,12 +2,10 @@ version: 1.0.{build}
 image:
   - Visual Studio 2019
   - Visual Studio 2017
-  - Visual Studio 2015
 install:
   - cmd: git submodule update --init --recursive
 build_script:
   - cmd: >-
-      cd C:\projects\influxdblptool
       mkdir build
       cd build
       cmake .. -Dgtest_force_shared_crt=ON -DCMAKE_BUILD_TYPE=Release
