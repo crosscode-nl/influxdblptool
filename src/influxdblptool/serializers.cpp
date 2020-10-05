@@ -1,5 +1,4 @@
 #include "influxdblptool/serializers.h"
-#include <numeric>
 
 namespace influxdblptool {
 

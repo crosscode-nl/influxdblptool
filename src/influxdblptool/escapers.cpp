@@ -6,7 +6,7 @@ namespace influxdblptool::escapers {
     template <char... Ch>
     std::size_t escape_count(std::string_view input) {
         auto char_count = [](std::size_t& in, const char& inputChar) {
-            auto needsEscape = [](const char& matchChar) {
+            auto needsEscape = [](const char& matchChar) -> bool {
                 return (...||(Ch==matchChar));
             };
             return in + ((needsEscape(inputChar)?std::size_t{2}:std::size_t{1}));
@@ -20,7 +20,7 @@ namespace influxdblptool::escapers {
         std::string result;
         result.reserve(escape_count<Ch...>(input) + 1);
         auto escape_char = [&result](const char& inputChar){
-            auto needsEscape = [](const char& matchChar) {
+            auto needsEscape = [](const char& matchChar) -> bool {
                 return (...||(Ch==matchChar));
             };
             if (needsEscape(inputChar)) {

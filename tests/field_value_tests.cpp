@@ -1,6 +1,5 @@
 #include "doctest.h"
 #include "influxdblptool/field_value.h"
-#include <sstream>
 
 using namespace std::literals;
 using namespace influxdblptool;
@@ -16,19 +15,19 @@ TEST_SUITE("field_value") {
         SUBCASE("field_double casts to double") {
             const double d{100.5};
             field_double fd{d};
-            REQUIRE(d==double{fd});
+            REQUIRE(d==static_cast<double>(fd));
         }
         SUBCASE("field_double assigns from double") {
             const double d{100.5};
             field_double fd{};
             fd = d;
-            REQUIRE(d==double{fd});
+            REQUIRE(d==static_cast<double>(fd));
         }
         SUBCASE("field_double assigns from float") {
             field_double fd{};
             const float d{100.5};
             fd = d;
-            REQUIRE(d==double{fd});
+            REQUIRE(d==static_cast<double>(fd));
         }
         SUBCASE("field_double throws when infinite double is given") {
             REQUIRE_THROWS_AS_MESSAGE(field_double{std::numeric_limits<double>::infinity()},validator_exception,"Infinite value not allowed.");

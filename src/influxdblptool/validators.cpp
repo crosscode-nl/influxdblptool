@@ -1,7 +1,6 @@
 #include "influxdblptool/validators.h"
 #include <algorithm>
 #include <cmath>
-#include "influxdblptool/point.h"
 
 namespace influxdblptool::validators {
 
