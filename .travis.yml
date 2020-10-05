@@ -10,26 +10,6 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-5
-            - cmake
-      env:
-        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-6
-            - cmake
-      env:
-        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
             - g++-7
             - cmake
       env:
@@ -54,16 +34,6 @@ matrix:
             - cmake
       env:
         - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-10
-            - cmake
-      env:
-        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
     - os: linux
       addons:
         apt:

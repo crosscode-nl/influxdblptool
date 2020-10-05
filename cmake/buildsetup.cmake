@@ -7,5 +7,3 @@ if (INFLUXDBLPTOOL_ENABLE_CODE_COVERAGE)
 else()
     add_compile_options("$<$<CONFIG:DEBUG>:-W;-Wall;-Werror;-Wshadow;-Wextra;-Wpedantic;-pedantic-errors;>")
 endif()
-
-set(CMAKE_CXX_STANDARD 17)

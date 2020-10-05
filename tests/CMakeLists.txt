@@ -23,6 +23,6 @@ list(APPEND TEST_INCLUDE
 add_executable(influxdblptooltests ${TEST_SRC} ${TEST_INCLUDE})
 target_link_libraries(influxdblptooltests influxdblptool ${3RDPARTY_LIBRARIES})
 target_include_directories(influxdblptooltests PUBLIC include)
-
+target_compile_features(influxdblptooltests PUBLIC cxx_std_17)
 
 

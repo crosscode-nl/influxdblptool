@@ -40,6 +40,7 @@ list(APPEND INFLUXDBLPTOOL_SRC
         )
 
 add_library(influxdblptool ${INFLUXDBPLTOOL_HEADERS} ${INFLUXDBLPTOOL_SRC})
+target_compile_features(influxdblptool PUBLIC cxx_std_17)
 
 set_target_properties(influxdblptool PROPERTIES PUBLIC_HEADER "include/influxdblptool.h")
 
