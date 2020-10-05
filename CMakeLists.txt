@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.5.1)
 
 project(influxdblptool
         VERSION 0.13.0
@@ -13,7 +13,7 @@ option(BUILD_INFLUXDBLPTOOL_EXAMPLES "Set this to ON to build examples")
 option(BUILD_INFLUXDBLPTOOL_BENCHMARKS "Set this to ON to build benchmarks")
 
 if (BUILD_INFLUXDBLPTOOL_DOCS)
-include(cmake/doxygen.cmake)
+    include(cmake/doxygen.cmake)
 endif()
 
 configure_file(src/influxdblptool/version.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/src/influxdblptool/version.cpp)

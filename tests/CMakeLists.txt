@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.5.1)
 project(influxdblptooltests
         VERSION 0.0.1
         DESCRIPTION "InfluxDb Line Protocol Tool Tests"
