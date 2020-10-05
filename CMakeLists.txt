@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.17)
 
 project(influxdblptool
-        VERSION 0.12.2
+        VERSION 0.13.0
         DESCRIPTION "InfluxDb Line Protocol Tool"
         LANGUAGES C CXX)
 
 include(cmake/buildsetup.cmake)
 
-option(BUILD_INFLUXDBLPTOOL_TESTS "Set this to ON to build unit tests")
+option(BUILD_INFLUXDBLPTOOL_TESTS "Set this to ON to build unit tests" ON)
 option(BUILD_INFLUXDBLPTOOL_DOCS "Set this to ON to build docs")
 option(BUILD_INFLUXDBLPTOOL_EXAMPLES "Set this to ON to build examples")
 option(BUILD_INFLUXDBLPTOOL_BENCHMARKS "Set this to ON to build benchmarks")
