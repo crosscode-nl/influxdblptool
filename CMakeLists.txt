@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.2)
 
 project(influxdblptool
-        VERSION 0.17.0
+        VERSION 0.18.0
         #DESCRIPTION "InfluxDb Line Protocol Tool"
         LANGUAGES C CXX)
 
