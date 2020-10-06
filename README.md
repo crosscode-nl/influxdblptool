@@ -182,7 +182,7 @@ Examine the following examples to learn how to use this library.
 
 ## Reasons for creating this library
 
-* Refresh and update my C++ knowledge with more recent C++17 standards.
+* Update my C++ knowledge with the new features added in the C++17 standard.
 * I needed this library for another project.
 * Try out TDD development and SOLID principles using templates.
 * Try out different unit test frameworks.
