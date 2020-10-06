@@ -44,16 +44,36 @@ target_compile_features(influxdblptool PUBLIC cxx_std_17)
 
 set_target_properties(influxdblptool PROPERTIES PUBLIC_HEADER "include/influxdblptool.h")
 
-install(TARGETS influxdblptool
-        EXPORT influxdblptool
-        RUNTIME DESTINATION bin
-        ARCHIVE DESTINATION lib
-        PUBLIC_HEADER DESTINATION include)
+target_include_directories(influxdblptool INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
+target_include_directories(influxdblptool PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 install(DIRECTORY include/influxdblptool DESTINATION ${CMAKE_INSTALL_PREFIX}/include/influxdblptool
         FILES_MATCHING PATTERN "*.h")
 
-target_include_directories(influxdblptool PUBLIC include)
+install(TARGETS influxdblptool
+        EXPORT InfluxDBLPToolTargets
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib
+        PUBLIC_HEADER DESTINATION include)
+
+include(CMakePackageConfigHelpers)
+
+install(EXPORT InfluxDBLPToolTargets DESTINATION lib/cmake/InfluxDBLPTool)
+write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/InfluxDBLPTool/InfluxDBLPToolConfigVersion.cmake"
+        VERSION ${Upstream_VERSION}
+        COMPATIBILITY AnyNewerVersion
+)
+
+install(
+        FILES
+        cmake/InfluxDBLPToolConfig.cmake
+        "${CMAKE_CURRENT_BINARY_DIR}/InfluxDBLPTool/InfluxDBLPToolConfigVersion.cmake"
+        DESTINATION
+        lib/cmake/InfluxDBLPTool
+        COMPONENT
+        Devel
+)
 
 if (BUILD_INFLUXDBLPTOOL_EXAMPLES)
     add_subdirectory(examples)

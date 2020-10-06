@@ -46,8 +46,8 @@ See:
 
 There are multiple ways to add this library to your project. I will describe the most advantageous method. 
 
-This method emulates dependency management of more modern 
-languages and build systems like Rust+Cargo and Go as best as it can.
+This method emulates dependency management of more modern languages and build systems like Rust+Cargo and Go 
+as best as it can.
 
 Consider the following example project: 
 
@@ -104,9 +104,7 @@ Now see the examples to learn how to use this library.
 
 TIP: Use `GIT_TAG` in `FetchContent_Declare` to pin a certain version to get reproducible builds.
 
-## TODO
-
-* Code quality assessment by a 3rd party.
+For more information about other strategies you could read this blog post. http://www.saoe.net/blog/using-cmake-with-external-projects/
 
 ## License
 

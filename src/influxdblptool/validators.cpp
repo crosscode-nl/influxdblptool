@@ -87,9 +87,4 @@ namespace influxdblptool::validators {
         if (std::isinf(value)) throw validator_exception("Infinite value not allowed.");
     }
 
-
-
-    // TODO: Test how influxDB behaves when # not at start of line.
-    // TODO: Test how influxDB behaves with \n in keys. Maybe it is allowed?
-
 }
