@@ -44,7 +44,14 @@ See:
 
 ## Installation
 
-There are multiple ways to add this library to your project. I will describe the most advantageous method. 
+There are multiple ways to add this library to your project.
+
+There are too many tools for C++ to describe them all. I will describe two methods, both for CMake users. 
+
+The first method will download the source code and build against it, the second will use an installed version of the
+library.  
+
+### CMake FetchContent (Preferred)
 
 This method emulates dependency management of more modern languages and build systems like Rust+Cargo and Go 
 as best as it can.
@@ -55,9 +62,8 @@ Consider the following example project:
 cmake_minimum_required(VERSION 3.17)
 project(example)
 
-set(CMAKE_CXX_STANDARD 17)
-
 add_executable(example main.cpp)
+target_compile_features(example PUBLIC cxx_std_17)
 ```
 
 This will build a C++17 project with a main.cpp file.
@@ -81,11 +87,14 @@ And to link against the library:
 target_link_libraries(example influxdblptool)
 ```
 
-Which will result in the following CMakeLists.txt:
+This will result in the following CMakeLists.txt:
 
 ```cmake
 cmake_minimum_required(VERSION 3.17)
 project(example)
+
+add_executable(example main.cpp)
+target_compile_features(example PUBLIC cxx_std_17)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -93,16 +102,74 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/crosscode-nl/influxdblptool
 )
 FetchContent_MakeAvailable(influxdblptool)
-
-set(CMAKE_CXX_STANDARD 17)
-
-add_executable(example main.cpp)
 target_link_libraries(example influxdblptool)
 ```
 
 Now see the examples to learn how to use this library.
 
 TIP: Use `GIT_TAG` in `FetchContent_Declare` to pin a certain version to get reproducible builds.
+
+### CMake Find_Package
+
+This method will use CMake's find_package.
+
+The first step is to install the library on the system.
+
+#### Installing onto the system
+
+This method requires InfluxDBLPTool to be build and installed on the system.
+
+```bash
+git clone https://github.com/crosscode-nl/influxdblptool
+mkdir influxdblptool-build
+cd influxdblptool-build
+cmake ../influxdblptool -DCMAKE_BUILD_TYPE=Release
+sudo make install 
+```
+
+Or if you want it in your user directory: 
+
+```bash
+git clone https://github.com/crosscode-nl/influxdblptool
+mkdir influxdblptool-build
+cd influxdblptool-build
+cmake ../influxdblptool -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME
+make install 
+```
+
+#### Using the installed library
+
+Consider the following example project: 
+
+```cmake
+cmake_minimum_required(VERSION 3.17)
+project(example)
+
+add_executable(example main.cpp)
+target_compile_features(example PUBLIC cxx_std_17)
+```
+
+To use an installed library you just have to add: 
+
+```cmake
+find_package(InfluxDBLPTool 0.19.0 REQUIRED)
+target_link_libraries(example InfluxDBLPTool::influxdblptool)
+```
+
+This will result in the following CMakeLists.txt:
+
+```cmake
+cmake_minimum_required(VERSION 3.17)
+project(example)
+
+add_executable(example main.cpp)
+target_compile_features(example PUBLIC cxx_std_17)
+
+find_package(InfluxDBLPTool 0.19.0 REQUIRED)
+target_link_libraries(example InfluxDBLPTool::influxdblptool)
+```
+
+### Others methods
 
 For more information about other strategies you could read this blog post. http://www.saoe.net/blog/using-cmake-with-external-projects/
 

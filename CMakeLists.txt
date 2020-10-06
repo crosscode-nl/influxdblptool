@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.2)
 
 project(influxdblptool
-        VERSION 0.18.0
+        VERSION 0.19.0
         #DESCRIPTION "InfluxDb Line Protocol Tool"
         LANGUAGES C CXX)
 
@@ -47,7 +47,7 @@ set_target_properties(influxdblptool PROPERTIES PUBLIC_HEADER "include/influxdbl
 target_include_directories(influxdblptool INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include> $<INSTALL_INTERFACE:include>)
 target_include_directories(influxdblptool PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
-install(DIRECTORY include/influxdblptool DESTINATION ${CMAKE_INSTALL_PREFIX}/include/influxdblptool
+install(DIRECTORY include/influxdblptool DESTINATION ${CMAKE_INSTALL_PREFIX}/include
         FILES_MATCHING PATTERN "*.h")
 
 install(TARGETS influxdblptool
@@ -58,7 +58,10 @@ install(TARGETS influxdblptool
 
 include(CMakePackageConfigHelpers)
 
-install(EXPORT InfluxDBLPToolTargets DESTINATION lib/cmake/InfluxDBLPTool)
+install(EXPORT InfluxDBLPToolTargets
+        NAMESPACE InfluxDBLPTool::
+        DESTINATION lib/cmake/InfluxDBLPTool)
+
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/InfluxDBLPTool/InfluxDBLPToolConfigVersion.cmake"
         VERSION ${Upstream_VERSION}
