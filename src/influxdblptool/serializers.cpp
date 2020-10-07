@@ -91,7 +91,7 @@ namespace influxdblptool {
 
     template<typename TValue>
     std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, timestamp_resolution tr) {
-        auto serialize = [&s,&tr](auto item) mutable {
+        auto serialize = [&s,&tr](const auto &item) mutable {
             serialize_point_custom_timestamp(s,item, tr) << '\n';
         };
         std::for_each(begin(items), end(items), serialize);
@@ -100,7 +100,7 @@ namespace influxdblptool {
 
     template<typename TValue>
     std::ostream& serialize_vector(std::ostream& s, const std::vector<TValue>& items, timestamp_resolution tr, const std::string &prefix) {
-        auto serialize = [&s,&prefix,&tr](auto item) mutable {
+        auto serialize = [&s,&prefix,&tr](const auto &item) mutable {
             serialize_point_custom_timestamp(s,item, tr, prefix) << '\n';
         };
         std::for_each(begin(items), end(items), serialize);
@@ -109,7 +109,7 @@ namespace influxdblptool {
 
     template<typename TKey, typename TValue>
     std::ostream& serialize_map(std::ostream& s, const std::map<TKey, TValue>& items) {
-        auto serialize_pair = [&s, first = true](auto item) mutable {
+        auto serialize_pair = [&s, first = true](const auto &item) mutable {
             if (first) {
                 first = false;
             } else {
