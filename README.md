@@ -1,6 +1,10 @@
 # InfluxDBLPTool 
+[![GitHub version](https://badge.fury.io/gh/crosscode-nl%2Finfluxdblptool.svg)](https://badge.fury.io/gh/crosscode-nl%2Finfluxdblptool)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/crosscode-nl/influxdblptool.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/crosscode-nl/influxdblptool/context:cpp)
 [![Build Status](https://travis-ci.com/crosscode-nl/influxdblptool.svg?branch=master)](https://travis-ci.com/crosscode-nl/influxdblptool) 
 [![Build status](https://ci.appveyor.com/api/projects/status/eje2c2beookmn93b?svg=true)](https://ci.appveyor.com/project/crosscode-nl/influxdblptool)
+[![Standard](https://img.shields.io/badge/c%2B%2B-17/20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Introduction
 
