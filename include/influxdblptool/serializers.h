@@ -20,6 +20,17 @@ namespace influxdblptool {
     std::ostream& operator<<(std::ostream& s, const tags_map& items);
     std::ostream& operator<<(std::ostream& s, const points& items);
 
+    std::string to_string( const tag_key& tk);
+    std::string to_string( const tag_value& tv);
+    std::string to_string( const field_key& fk);
+    std::string to_string( const field_string_value& fsv);
+    std::string to_string( const measurement_value& mv);
+    std::string to_string( const field_variant& fv);
+    std::string to_string( const field_value& fv);
+    std::string to_string( const fields_map& items);
+    std::string to_string( const tags_map& items);
+    std::string to_string( const points& items);
+
     /// Serializes a time_point.
     /// \param s The ostream to output to.
     /// \param timePoint The time_point to serialize.
@@ -70,6 +81,13 @@ namespace influxdblptool {
             return serialize_point_custom_timestamp(s, item, item.current_timestamp_resolution());
         }
         return serialize_point_custom_timestamp(s, item, item.current_timestamp_resolution(),item.prefix());
+    }
+
+    template <auto now>
+    std::string to_string(const point_custom_timestamp<now>& item) {
+        std::stringstream ss;
+        ss << item;
+        return ss.str();
     }
 
 

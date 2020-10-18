@@ -172,6 +172,7 @@ Examine the following examples to learn how to use this library.
 * [example07.cpp](examples/example07.cpp) This example demonstrates adding an INSERT prefix.
 * [example08.cpp](examples/example08.cpp) This example demonstrates the points collection.
 * [example09.cpp](examples/example09.cpp) This example demonstrates validation. 
+* [example10.cpp](examples/example10.cpp) This example demonstrates to_string serialization
 
 ## Design choices
 

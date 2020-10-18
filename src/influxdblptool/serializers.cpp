@@ -49,6 +49,22 @@ namespace influxdblptool {
         return s;
     }
 
+    std::string to_string( const tag_key& tk) {
+        return escapers::escape_tag_key(static_cast<std::string_view>(tk));
+    }
+    std::string to_string( const tag_value& tv) {
+        return escapers::escape_tag_value(static_cast<std::string_view>(tv));
+    }
+    std::string to_string( const field_key& fk) {
+        return escapers::escape_field_key(static_cast<std::string_view>(fk));
+    }
+    std::string to_string( const field_string_value& fsv) {
+        return escapers::escape_field_string_value(static_cast<std::string_view>(fsv));
+    }
+    std::string to_string( const measurement_value& mv) {
+        return escapers::escape_measurement_value(static_cast<std::string_view>(mv));
+    }
+
     namespace intern {
 
         class serializing_visitor {
@@ -87,6 +103,15 @@ namespace influxdblptool {
     std::ostream& operator<<(std::ostream& s, const field_value& fv) {
         s << static_cast<const field_variant>(fv);
         return s;
+    }
+
+    std::string to_string( const field_variant& fv) {
+        std::stringstream ss;
+        std::visit(intern::serializing_visitor{&ss}, fv);
+        return ss.str();
+    }
+    std::string to_string( const field_value& fv) {
+        return to_string(static_cast<const field_variant>(fv));
     }
 
     template<typename TValue>
@@ -135,5 +160,23 @@ namespace influxdblptool {
         }
         return serialize_vector(s, static_cast<const std::vector<point>>(items), items.current_timestamp_resolution(), items.prefix());
     }
+
+
+    std::string to_string( const fields_map& items) {
+        std::stringstream ss;
+        ss << items;
+        return ss.str();
+    }
+    std::string to_string( const tags_map& items) {
+        std::stringstream ss;
+        ss << items;
+        return ss.str();
+    }
+    std::string to_string( const points& items) {
+        std::stringstream ss;
+        ss << items;
+        return ss.str();
+    }
+
 
 }
