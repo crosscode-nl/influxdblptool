@@ -1,6 +1,6 @@
 #include "influxdblptool/field_value.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     field_double::field_double(double value) : value_(value) {
         validators::throw_when_double_value_invalid(value_);

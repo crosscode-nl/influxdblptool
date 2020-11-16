@@ -2,7 +2,7 @@
 #include "influxdblptool/field_value.h"
 
 using namespace std::literals;
-using namespace influxdblptool;
+using namespace crosscode::influxdblptool;
 
 TEST_SUITE("field_value") {
     TEST_CASE("field_double works correctly") {

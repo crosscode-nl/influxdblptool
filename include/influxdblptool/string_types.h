@@ -5,7 +5,7 @@
 #include "influxdblptool/validators.h"
 #include "influxdblptool/escapers.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     namespace intern {
 

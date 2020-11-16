@@ -10,7 +10,7 @@
 // in the collection. It makes no sense to individually change these settings per point, and when you do so
 // it will not have an effect.
 
-using namespace influxdblptool;
+using namespace crosscode::influxdblptool;
 
 point make_point() {
     return (point{"measurement",field{"field_string","field_string_value"}}

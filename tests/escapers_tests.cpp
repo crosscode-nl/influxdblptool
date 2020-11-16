@@ -12,7 +12,7 @@ using namespace std::literals;
  * Field value	= Double quote, Backslash
 */
 
-using namespace influxdblptool::escapers;
+using namespace crosscode::influxdblptool::escapers;
 TEST_SUITE("escapers") {
     TEST_CASE("escape_measurement_value escapes: Comma, Space")
     {

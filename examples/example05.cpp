@@ -5,7 +5,7 @@
 //
 // You can use chrono::duration to set a timestamp since epoch (1970-01-01 00:00:00 UTC)
 int main() {
-    using namespace influxdblptool;
+    using namespace crosscode::influxdblptool;
     using namespace std::literals;
 
     point pt1{"measurement",field{"field_key","field_value"}};

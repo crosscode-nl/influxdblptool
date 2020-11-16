@@ -5,7 +5,7 @@
 //
 // When a point does not have a timestamp it will get a timestamp of the current time when it is inserted into InfluxDB.
 int main() {
-    using namespace influxdblptool;
+    using namespace crosscode::influxdblptool;
     using namespace std::literals;
 
     point pt{"measurement",field{"field_key","field_value"}};

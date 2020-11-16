@@ -1,6 +1,6 @@
 #include "influxdblptool/point.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     using namespace std::literals;
 

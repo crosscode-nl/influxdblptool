@@ -1,18 +1,18 @@
 #include "doctest.h"
 #include "influxdblptool/string_types.h"
 
-using namespace influxdblptool;
+using namespace crosscode::influxdblptool;
 using namespace std::literals;
 
 const int KB = 1024;
 
 TEST_SUITE("string_types_tests") {
     
-    static_assert(std::is_same_v<tag_key,influxdblptool::intern::validated_string<validators::throw_when_tag_key_invalid>>);
-    static_assert(std::is_same_v<tag_value,influxdblptool::intern::validated_string<validators::throw_when_tag_value_invalid>>);
-    static_assert(std::is_same_v<field_key,influxdblptool::intern::validated_string<validators::throw_when_field_key_invalid>>);
-    static_assert(std::is_same_v<field_string_value,influxdblptool::intern::validated_string<validators::throw_when_field_string_value_invalid>>);
-    static_assert(std::is_same_v<measurement_value,influxdblptool::intern::validated_string<validators::throw_when_measurement_invalid>>);
+    static_assert(std::is_same_v<tag_key,crosscode::influxdblptool::intern::validated_string<validators::throw_when_tag_key_invalid>>);
+    static_assert(std::is_same_v<tag_value,crosscode::influxdblptool::intern::validated_string<validators::throw_when_tag_value_invalid>>);
+    static_assert(std::is_same_v<field_key,crosscode::influxdblptool::intern::validated_string<validators::throw_when_field_key_invalid>>);
+    static_assert(std::is_same_v<field_string_value,crosscode::influxdblptool::intern::validated_string<validators::throw_when_field_string_value_invalid>>);
+    static_assert(std::is_same_v<measurement_value,crosscode::influxdblptool::intern::validated_string<validators::throw_when_measurement_invalid>>);
     static_assert(std::is_same_v<measurement,measurement_value>);
     TEST_CASE("measurement")
     {

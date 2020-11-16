@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <string>
 
-using namespace influxdblptool;
-using namespace influxdblptool::validators;
+using namespace crosscode::influxdblptool;
+using namespace crosscode::influxdblptool::validators;
 
 const int KB = 1024;
 

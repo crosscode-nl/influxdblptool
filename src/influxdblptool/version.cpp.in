@@ -2,7 +2,11 @@
 
 using namespace std::literals;
 
+namespace crosscode::influxdblptool {
+
 std::string_view version() {
     constexpr std::string_view version_value = "@influxdblptool_VERSION@"sv;
     return version_value;
+}
+
 }

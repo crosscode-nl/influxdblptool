@@ -16,7 +16,7 @@
 // By default the current timestamp is added with a nanosecond resolution.
 // The point can be serialized to an ostream.
 int main() {
-    using namespace influxdblptool;
+    using namespace crosscode::influxdblptool;
     std::cout << point{"measurement",field{"field_key","field_value"}};
     return 0;
 }

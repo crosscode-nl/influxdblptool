@@ -5,7 +5,7 @@
 #include <array>
 
 /// The escapers namespace contains all escapers. It is internally used by this library.
-namespace influxdblptool::escapers {
+namespace crosscode::influxdblptool::escapers {
 
     /// Escapes a string_view to become an acceptable input as a measurement.
     /// Escapes commas and spaces.

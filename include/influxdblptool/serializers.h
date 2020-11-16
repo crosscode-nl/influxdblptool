@@ -7,7 +7,7 @@
 #include "string_types.h"
 #include "point.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     std::ostream& operator<<(std::ostream& s, const tag_key& tk);
     std::ostream& operator<<(std::ostream& s, const tag_value& tv);

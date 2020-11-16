@@ -1,6 +1,6 @@
 #include "influxdblptool/serializers.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     std::ostream& serialize_timepoint(std::ostream& s, const std::chrono::system_clock::time_point& timePoint, timestamp_resolution tr) {
         // This assumes that epoch is 1970-01-01T00:00:00Z, which it probably is in case of a system_clock. However,

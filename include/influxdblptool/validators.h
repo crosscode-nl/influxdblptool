@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     class validator_exception : public std::invalid_argument {
         using std::invalid_argument::invalid_argument;

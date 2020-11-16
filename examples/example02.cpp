@@ -15,7 +15,7 @@
 //
 // Overloads of the value parameter of the field constructor exist to convert from C++ types that don't cause narrowing.
 int main() {
-    using namespace influxdblptool;
+    using namespace crosscode::influxdblptool;
     point pt{"measurement",field{"string","string value"}};
     pt << field{"double",1.5};
     pt << field{"bool",true};

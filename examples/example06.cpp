@@ -5,7 +5,7 @@
 //
 // The insert prefix can be used for loading the data via the CLI. https://docs.influxdata.com/influxdb/v1.8/tools/shell/
 int main() {
-    using namespace influxdblptool;
+    using namespace crosscode::influxdblptool;
     using namespace std::literals;
 
     point ptn{"measurement",field{"field_key","field_value"}};

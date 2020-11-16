@@ -5,7 +5,7 @@
 #include "string_types.h"
 #include "field_value.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     /// tags_map is an alias of std::map<tag_key, tag_value>
     using tags_map = std::map<tag_key, tag_value>;

@@ -2,7 +2,7 @@
 #include "influxdblptool/serializers.h"
 
 using namespace std::literals;
-using namespace influxdblptool;
+using namespace crosscode::influxdblptool;
 
 std::chrono::system_clock::time_point fake_now() {
     return std::chrono::system_clock::time_point{1s};

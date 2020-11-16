@@ -2,6 +2,7 @@
 #include "influxdblptool/version.h"
 #include <regex>
 using namespace std::literals;
+using namespace crosscode::influxdblptool;
 
 TEST_SUITE("version") {
     TEST_CASE ("Test if version is valid semver") {

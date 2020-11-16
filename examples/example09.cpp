@@ -12,7 +12,7 @@
 //
 // See validators.cpp or InfluxDB documentation for all possible invalid input.
 
-using namespace influxdblptool;
+using namespace crosscode::influxdblptool;
 
 int main() {
     using namespace std::literals;

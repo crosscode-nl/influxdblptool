@@ -5,7 +5,7 @@
 //
 // Serialization can be achieved using the output stream operator, but to_string method is also supported.
 
-using namespace influxdblptool;
+using namespace crosscode::influxdblptool;
 
 int main() {
     using namespace std::literals;

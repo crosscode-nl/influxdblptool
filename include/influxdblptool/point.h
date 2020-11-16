@@ -7,7 +7,7 @@
 #include <optional>
 
 /// This is the main namespace. Users of this library only need to use this namespace.
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     /// \brief The option_timestamp can be used to provide a time_point or nothing.
     ///

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <string>
 
-namespace influxdblptool::validators {
+namespace crosscode::influxdblptool::validators {
 
     using namespace std::literals;
     using namespace influxdblptool;

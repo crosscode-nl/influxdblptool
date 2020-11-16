@@ -5,7 +5,7 @@
 #include <variant>
 #include "string_types.h"
 
-namespace influxdblptool {
+namespace crosscode::influxdblptool {
 
     /// The traits namespace contains all custom type traits. It is internally used by this library.
     namespace traits {

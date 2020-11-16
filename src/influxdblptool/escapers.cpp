@@ -1,7 +1,7 @@
 #include "influxdblptool/escapers.h"
 #include <numeric>
 
-namespace influxdblptool::escapers {
+namespace crosscode::influxdblptool::escapers {
 
     template <char... Ch>
     std::size_t escape_count(std::string_view input) {
