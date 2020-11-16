@@ -56,6 +56,7 @@ include(FetchContent)
 FetchContent_Declare(
         influxdblptool
         GIT_REPOSITORY https://github.com/crosscode-nl/influxdblptool
+        GIT_TAG v2.0.0
 )
 FetchContent_MakeAvailable(influxdblptool)
 ```
@@ -79,6 +80,7 @@ include(FetchContent)
 FetchContent_Declare(
         influxdblptool
         GIT_REPOSITORY https://github.com/crosscode-nl/influxdblptool
+        GIT_TAG v2.0.0
 )
 FetchContent_MakeAvailable(influxdblptool)
 target_link_libraries(example influxdblptool)
@@ -131,7 +133,7 @@ target_compile_features(example PUBLIC cxx_std_17)
 To use an installed library you just have to add: 
 
 ```cmake
-find_package(InfluxDBLPTool 1.1.0 REQUIRED)
+find_package(InfluxDBLPTool 2.0.0 REQUIRED)
 target_link_libraries(example InfluxDBLPTool::influxdblptool)
 ```
 
@@ -144,7 +146,7 @@ project(example)
 add_executable(example main.cpp)
 target_compile_features(example PUBLIC cxx_std_17)
 
-find_package(InfluxDBLPTool 1.1.0 REQUIRED)
+find_package(InfluxDBLPTool 2.0.0 REQUIRED)
 target_link_libraries(example InfluxDBLPTool::influxdblptool)
 ```
 
